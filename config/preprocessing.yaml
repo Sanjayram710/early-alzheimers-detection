@@ -1,0 +1,46 @@
+# MRI Preprocessing & Pipeline Configuration
+
+# Output image specifications
+image_size: 224
+channels: 1
+
+# Transform toggles
+normalize: true
+gaussian_blur: true
+blur_kernel: [3, 3]
+blur_sigma: 0.0
+median_filter: false
+median_kernel: 3
+
+clahe: true
+clahe_clip_limit: 2.0
+clahe_tile_grid_size: [8, 8]
+
+brain_crop: false
+brain_crop_threshold: 10
+
+# Splitting ratios (must sum to 1.0)
+train_ratio: 0.70
+val_ratio: 0.15
+test_ratio: 0.15
+
+# Execution parameters
+batch_size: 32
+seed: 42
+
+# Label encoding mapping
+label_mapping:
+  NonDemented: 0
+  VeryMildDemented: 1
+  MildDemented: 2
+  ModerateDemented: 3
+
+# Medical Data Augmentation (Applied ONLY to Training split)
+augmentation:
+  rotation: 15
+  zoom: 0.1
+  width_shift: 0.1
+  height_shift: 0.1
+  brightness: 0.2
+  contrast: 0.1
+  horizontal_flip: false

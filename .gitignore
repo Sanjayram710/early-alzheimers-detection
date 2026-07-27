@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual Environment
+venv/
+.venv/
+.env
+
+# Dataset
+data/
+processed_dataset/
+datasets/
+*.zip
+
+# Database
+*.db
+
+# Model Files
+*.h5
+*.keras
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Training Outputs
+logs/
+runs/
+checkpoints/
+tensorboard_logs/
+
+# Uploads
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build
+build/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db

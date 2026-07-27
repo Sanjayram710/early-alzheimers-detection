@@ -1,0 +1,20 @@
+{
+  "total_images_scanned": 33984,
+  "valid_images": 33984,
+  "corrupted_images": 0,
+  "target_image_size": "224x224",
+  "target_channels": 1,
+  "mean_pixel_value": 0.3243,
+  "std_pixel_value": 0.3123,
+  "splits": {
+    "train_count": 23788,
+    "validation_count": 5098,
+    "test_count": 5098
+  },
+  "class_distribution": {
+    "MildDemented": 8960,
+    "ModerateDemented": 6464,
+    "NonDemented": 9600,
+    "VeryMildDemented": 8960
+  }
+}
