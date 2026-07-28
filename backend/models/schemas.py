@@ -42,7 +42,11 @@ class TokenData(BaseModel):
 # Prediction Schemas
 class PredictionResponse(BaseModel):
     id: str
-    patient_id: Optional[str]
+    patient_id: Optional[str] = None
+    patient_name: Optional[str] = None
+    patient_age: Optional[int] = None
+    blood_group: Optional[str] = None
+    symptoms: Optional[List[str]] = None
     predicted_class: str
     confidence: float
     class_probabilities: Dict[str, float]
@@ -63,7 +67,10 @@ class PredictionResponse(BaseModel):
 
 class PredictionHistoryItem(BaseModel):
     id: str
-    patient_id: Optional[str]
+    patient_id: Optional[str] = None
+    patient_name: Optional[str] = None
+    patient_age: Optional[int] = None
+    blood_group: Optional[str] = None
     predicted_class: str
     confidence: float
     model_version: str

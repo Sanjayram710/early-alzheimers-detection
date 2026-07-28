@@ -32,8 +32,12 @@ class InferenceService:
         file_bytes: bytes,
         filename: str,
         patient_id: Optional[str],
-        current_user: User,
-        db: AsyncSession
+        patient_name: Optional[str] = None,
+        patient_age: Optional[int] = None,
+        blood_group: Optional[str] = None,
+        symptoms: Optional[list] = None,
+        current_user: User = None,
+        db: AsyncSession = None
     ) -> Prediction:
         # 1. Save uploaded original MRI scan
         file_id, orig_path = storage_service.save_upload_bytes(file_bytes, filename)
@@ -55,7 +59,11 @@ class InferenceService:
         # 4. Create Prediction ORM Record
         prediction_record = Prediction(
             patient_id=patient_id or f"PT-{file_id[:8].upper()}",
-            user_id=current_user.id,
+            patient_name=patient_name,
+            patient_age=patient_age,
+            blood_group=blood_group,
+            symptoms=symptoms,
+            user_id=current_user.id if current_user else None,
             original_image_path=str(orig_path),
             heatmap_path=heatmap_path_str,
             overlay_path=overlay_path_str,
