@@ -50,6 +50,7 @@ node_modules/
 # Data
 data/raw/
 data/processed/
+processed_dataset/
 
 # OS
 .DS_Store
