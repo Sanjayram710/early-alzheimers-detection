@@ -31,6 +31,10 @@ class Prediction(Base):
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     patient_id = Column(String(100), index=True, nullable=True)
+    patient_name = Column(String(255), nullable=True)
+    patient_age = Column(Integer, nullable=True)
+    blood_group = Column(String(10), nullable=True)
+    symptoms = Column(JSON, nullable=True)
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
     
     original_image_path = Column(String(500), nullable=False)

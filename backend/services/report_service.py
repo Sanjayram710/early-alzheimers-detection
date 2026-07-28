@@ -44,6 +44,10 @@ class ReportService:
         pdf_path = self.pdf_generator.generate_report(
             report_id=pred.id,
             patient_id=pred.patient_id or "N/A",
+            patient_name=pred.patient_name,
+            patient_age=pred.patient_age,
+            blood_group=pred.blood_group,
+            symptoms=pred.symptoms,
             predicted_class=pred.predicted_class,
             confidence=pred.confidence,
             class_probabilities=pred.class_probabilities,

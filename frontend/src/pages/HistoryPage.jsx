@@ -34,6 +34,7 @@ export const HistoryPage = () => {
 
   const filteredHistory = history.filter((item) =>
     (item.patient_id || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (item.patient_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.predicted_class.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -51,7 +52,7 @@ export const HistoryPage = () => {
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
           <input
             type="text"
-            placeholder="Search by Patient ID or Class..."
+            placeholder="Search by Patient Name, ID or Class..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
@@ -73,11 +74,12 @@ export const HistoryPage = () => {
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-900/80 text-slate-400 font-semibold uppercase tracking-wider border-b border-slate-800">
                 <tr>
-                  <th className="p-4">Prediction ID</th>
+                  <th className="p-4">Patient Name</th>
                   <th className="p-4">Patient ID</th>
+                  <th className="p-4">Age</th>
+                  <th className="p-4">Blood Group</th>
                   <th className="p-4">Predicted Stage</th>
                   <th className="p-4">Confidence</th>
-                  <th className="p-4">Model</th>
                   <th className="p-4">Date</th>
                   <th className="p-4 text-right">Action</th>
                 </tr>
@@ -85,8 +87,10 @@ export const HistoryPage = () => {
               <tbody className="divide-y divide-slate-800/60 text-slate-300">
                 {filteredHistory.map((item) => (
                   <tr key={item.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="p-4 font-mono text-slate-400">{item.id.slice(0, 8)}...</td>
-                    <td className="p-4 font-semibold text-white">{item.patient_id || 'N/A'}</td>
+                    <td className="p-4 font-bold text-white">{item.patient_name || 'N/A'}</td>
+                    <td className="p-4 font-mono text-slate-400">{item.patient_id || 'N/A'}</td>
+                    <td className="p-4 text-slate-300">{item.patient_age ? `${item.patient_age} yrs` : 'N/A'}</td>
+                    <td className="p-4 font-semibold text-red-400">{item.blood_group || 'N/A'}</td>
                     <td className="p-4">
                       <span className={`px-2.5 py-1 rounded-full font-semibold ${
                         item.predicted_class.includes('Non')
@@ -97,7 +101,6 @@ export const HistoryPage = () => {
                       </span>
                     </td>
                     <td className="p-4 font-mono font-bold text-white">{(item.confidence * 100).toFixed(1)}%</td>
-                    <td className="p-4 uppercase text-slate-400">{item.model_version}</td>
                     <td className="p-4 text-slate-400">{new Date(item.created_at).toLocaleDateString()}</td>
                     <td className="p-4 text-right">
                       <button

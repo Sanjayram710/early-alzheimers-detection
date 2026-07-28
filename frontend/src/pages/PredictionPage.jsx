@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Brain, FileText, Download, CheckCircle, AlertTriangle, ArrowLeft, Clock, Activity, Star } from 'lucide-react';
+import { Brain, FileText, Download, CheckCircle, AlertTriangle, ArrowLeft, Clock, Activity, Star, User, Calendar, Droplet } from 'lucide-react';
 import { GradCamViewer } from '../components/GradCamViewer';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
 import api from '../services/api';
@@ -29,6 +29,10 @@ export const PredictionPage = () => {
   const {
     id,
     patient_id,
+    patient_name,
+    patient_age,
+    blood_group,
+    symptoms,
     predicted_class,
     confidence,
     class_probabilities,
@@ -92,7 +96,7 @@ export const PredictionPage = () => {
             <span>Upload Another MRI</span>
           </Link>
           <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-white">Prediction Analysis Results</h1>
-          <span className="text-xs text-slate-400 font-mono">ID: {id} | Patient: {patient_id || 'N/A'}</span>
+          <span className="text-xs text-slate-400 font-mono">ID: {id} | Patient: {patient_name ? `${patient_name} (${patient_id || 'N/A'})` : (patient_id || 'N/A')}</span>
         </div>
 
         <button
@@ -110,7 +114,7 @@ export const PredictionPage = () => {
       {/* Main Results Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* Left Column: Classification Summary */}
+        {/* Left Column: Classification Summary & Patient Profile */}
         <div className="space-y-6">
           <div className={`glass-card p-6 rounded-2xl border ${stageColor} space-y-4`}>
             <span className="text-xs font-semibold uppercase tracking-wider block opacity-80">Predicted Disease Stage</span>
@@ -119,6 +123,52 @@ export const PredictionPage = () => {
             <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-300">
               <span>Confidence Score:</span>
               <span className="font-bold text-base font-mono">{(confidence * 100).toFixed(2)}%</span>
+            </div>
+          </div>
+
+          {/* Patient Metadata Summary Card */}
+          <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-4">
+            <h3 className="font-semibold text-sm text-white flex items-center space-x-2 border-b border-slate-800/80 pb-2.5">
+              <User className="w-4 h-4 text-blue-400" />
+              <span>Patient Profile & Symptoms</span>
+            </h3>
+
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="space-y-1">
+                <span className="text-slate-400 flex items-center space-x-1"><User className="w-3 h-3 text-slate-500" /><span>Name</span></span>
+                <p className="font-bold text-white truncate">{patient_name || 'Not Specified'}</p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 flex items-center space-x-1"><Calendar className="w-3 h-3 text-slate-500" /><span>Age</span></span>
+                <p className="font-bold text-white">{patient_age ? `${patient_age} yrs` : 'N/A'}</p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 flex items-center space-x-1"><Droplet className="w-3 h-3 text-slate-500" /><span>Blood Group</span></span>
+                <p className="font-bold text-red-400">{blood_group || 'N/A'}</p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 flex items-center space-x-1"><FileText className="w-3 h-3 text-slate-500" /><span>Patient ID</span></span>
+                <p className="font-mono text-slate-300 truncate">{patient_id || 'N/A'}</p>
+              </div>
+            </div>
+
+            {/* Observed Symptoms Badges */}
+            <div className="pt-2 border-t border-slate-800/80 space-y-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Observed Symptoms</span>
+              {symptoms && symptoms.length > 0 ? (
+                <div className="flex flex-wrap gap-1.5">
+                  {symptoms.map((sym, idx) => (
+                    <span key={idx} className="px-2.5 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[11px] font-medium leading-tight">
+                      {sym}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-slate-500 italic">No symptoms recorded</p>
+              )}
             </div>
           </div>
 

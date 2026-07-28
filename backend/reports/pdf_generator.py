@@ -35,6 +35,10 @@ class PDFReportGenerator:
         class_probabilities: Dict[str, float],
         model_version: str,
         inference_time_ms: float,
+        patient_name: Optional[str] = None,
+        patient_age: Optional[int] = None,
+        blood_group: Optional[str] = None,
+        symptoms: Optional[list] = None,
         original_image_path: Optional[str] = None,
         overlay_base64: Optional[str] = None,
         disclaimer_text: Optional[str] = None
@@ -110,16 +114,21 @@ class PDFReportGenerator:
         story.append(Spacer(1, 10))
         story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#2563eb"), spaceAfter=15))
 
-        # Metadata Table
+        # Metadata Table (Patient Information & Study Metadata)
         now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        symptoms_str = ", ".join(symptoms) if symptoms else "None Reported"
         meta_data = [
             [Paragraph("<b>Report ID:</b>", body_style), Paragraph(report_id, body_style),
              Paragraph("<b>Date:</b>", body_style), Paragraph(now_str, body_style)],
-            [Paragraph("<b>Patient / Study ID:</b>", body_style), Paragraph(patient_id or "N/A", body_style),
+            [Paragraph("<b>Patient Name:</b>", body_style), Paragraph(patient_name or "N/A", body_style),
+             Paragraph("<b>Patient ID:</b>", body_style), Paragraph(patient_id or "N/A", body_style)],
+            [Paragraph("<b>Age:</b>", body_style), Paragraph(str(patient_age) if patient_age else "N/A", body_style),
+             Paragraph("<b>Blood Group:</b>", body_style), Paragraph(blood_group or "N/A", body_style)],
+            [Paragraph("<b>Reported Symptoms:</b>", body_style), Paragraph(symptoms_str, body_style),
              Paragraph("<b>Model Version:</b>", body_style), Paragraph(model_version, body_style)]
         ]
 
-        t_meta = Table(meta_data, colWidths=[1.3*inch, 2.3*inch, 1.2*inch, 2.4*inch])
+        t_meta = Table(meta_data, colWidths=[1.4*inch, 2.2*inch, 1.3*inch, 2.3*inch])
         t_meta.setStyle(TableStyle([
             ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#f8fafc")),
             ('PADDING', (0,0), (-1,-1), 6),

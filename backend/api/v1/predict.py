@@ -1,4 +1,5 @@
-from typing import Optional
+import json
+from typing import Optional, List
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,11 +21,15 @@ ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".dcm", ".dicom", ".nii", ".gz"}
 async def predict_mri(
     file: UploadFile = File(...),
     patient_id: Optional[str] = Form(None),
+    patient_name: Optional[str] = Form(None),
+    patient_age: Optional[int] = Form(None),
+    blood_group: Optional[str] = Form(None),
+    symptoms: Optional[str] = Form(None),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Accepts brain MRI image upload (DICOM, NIfTI, PNG, JPG), runs deep learning inference,
+    Accepts brain MRI image upload (DICOM, NIfTI, PNG, JPG) with patient metadata, runs deep learning inference,
     generates Grad-CAM visual explainability heatmap, logs prediction record, and returns response.
     """
     # 1. Validate File extension
@@ -51,11 +56,27 @@ async def predict_mri(
             detail="Uploaded file is empty."
         )
 
+    # Parse symptoms if string
+    parsed_symptoms: Optional[List[str]] = None
+    if symptoms:
+        try:
+            parsed = json.loads(symptoms)
+            if isinstance(parsed, list):
+                parsed_symptoms = [str(s) for s in parsed]
+            else:
+                parsed_symptoms = [str(parsed)]
+        except Exception:
+            parsed_symptoms = [s.strip() for s in symptoms.split(",") if s.strip()]
+
     # 3. Process Prediction
     pred_record = await InferenceService.process_prediction(
         file_bytes=contents,
         filename=filename,
         patient_id=patient_id,
+        patient_name=patient_name,
+        patient_age=patient_age,
+        blood_group=blood_group,
+        symptoms=parsed_symptoms,
         current_user=current_user,
         db=db
     )
