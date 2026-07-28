@@ -48,12 +48,8 @@ dist/
 node_modules/
 *.mjs
 
-# Datasets
-Alzheimers disease dataset/
-data/
-datasets/
-
 # OS
 .DS_Store
 Thumbs.db
+
 
