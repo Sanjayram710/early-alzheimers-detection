@@ -65,6 +65,8 @@ class ModelTrainer:
         val_dataset: tf.data.Dataset,
         epochs: int = 50,
         batch_size: int = 32,
+        steps_per_epoch: Optional[int] = None,
+        validation_steps: Optional[int] = None,
         patience_early_stopping: int = 10,
         patience_reduce_lr: int = 5
     ) -> Tuple[tf.keras.callbacks.History, Dict[str, Any]]:
@@ -127,6 +129,8 @@ class ModelTrainer:
             train_dataset,
             validation_data=val_dataset,
             epochs=epochs,
+            steps_per_epoch=steps_per_epoch,
+            validation_steps=validation_steps,
             callbacks=cb_stack,
             verbose=1
         )

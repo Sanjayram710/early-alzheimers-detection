@@ -76,6 +76,9 @@ def main():
     train_df = pd.read_csv(train_csv)
     val_df = pd.read_csv(val_csv)
 
+    steps_per_epoch = max(1, len(train_df) // args.batch_size)
+    val_steps = max(1, len(val_df) // args.batch_size)
+
     train_ds = build_tf_dataset(train_df, batch_size=args.batch_size, is_training=True)
     val_ds = build_tf_dataset(val_df, batch_size=args.batch_size, is_training=False)
 
@@ -92,7 +95,9 @@ def main():
         train_dataset=train_ds,
         val_dataset=val_ds,
         epochs=args.epochs,
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
+        steps_per_epoch=steps_per_epoch,
+        validation_steps=val_steps
     )
 
     logger.info(f"Training completed successfully. Artifacts saved: {metadata}")
