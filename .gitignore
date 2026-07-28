@@ -9,7 +9,6 @@ venv/
 .env
 
 
-
 # Database
 *.db
 
@@ -48,8 +47,12 @@ dist/
 node_modules/
 *.mjs
 
+# Data
+data/raw/
+data/processed/
+
 # OS
 .DS_Store
 Thumbs.db
 
-
+

@@ -39,7 +39,11 @@ class MRIPredictor:
     ):
         self.model_name = model_name
         self.class_names = class_names or DEFAULT_CLASSES
-        self.weights_path = Path(weights_path) if weights_path else None
+        if weights_path:
+            self.weights_path = Path(weights_path)
+        else:
+            default_w = Path("./ml/saved_models") / f"{model_name}_best.keras"
+            self.weights_path = default_w if default_w.exists() else None
         self.model_wrapper = None
         self.gradcam = None
 

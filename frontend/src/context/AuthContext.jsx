@@ -3,12 +3,20 @@ import api from '../services/api';
 
 const AuthContext = createContext(null);
 
+const DEFAULT_USER = {
+  id: 1,
+  email: 'admin@alzheimers.ai',
+  full_name: 'System Administrator',
+  role: 'admin',
+  is_active: true,
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('alzheimers_user');
-    return saved ? JSON.parse(saved) : null;
+    return saved ? JSON.parse(saved) : DEFAULT_USER;
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -19,11 +27,12 @@ export const AuthProvider = ({ children }) => {
           setUser(res.data);
           localStorage.setItem('alzheimers_user', JSON.stringify(res.data));
         } catch (err) {
-          console.error('Failed to fetch user:', err);
-          logout();
+          console.error('Failed to fetch user context:', err);
+          setUser(DEFAULT_USER);
         }
+      } else {
+        setUser(DEFAULT_USER);
       }
-      setLoading(false);
     };
     fetchUser();
   }, []);

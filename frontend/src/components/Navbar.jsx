@@ -16,17 +16,14 @@ export const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/', icon: Brain },
-    { name: 'Upload MRI', path: '/upload', icon: Upload, authRequired: true },
-    { name: 'Dashboard', path: '/dashboard', icon: BarChart2, authRequired: true },
-    { name: 'History', path: '/history', icon: History, authRequired: true },
-    { name: 'Reports', path: '/reports', icon: FileText, authRequired: true },
+    { name: 'Upload MRI', path: '/upload', icon: Upload },
+    { name: 'Dashboard', path: '/dashboard', icon: BarChart2 },
+    { name: 'History', path: '/history', icon: History },
+    { name: 'Reports', path: '/reports', icon: FileText },
+    { name: 'Admin', path: '/admin', icon: Shield },
     { name: 'About', path: '/about', icon: Info },
     { name: 'Contact', path: '/contact', icon: Mail },
   ];
-
-  if (isAdmin) {
-    navLinks.push({ name: 'Admin', path: '/admin', icon: Shield, authRequired: true });
-  }
 
   const isActive = (path) => location.pathname === path;
 
@@ -51,7 +48,6 @@ export const Navbar = () => {
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => {
-              if (link.authRequired && !user) return null;
               const Icon = link.icon;
               return (
                 <Link
@@ -70,38 +66,15 @@ export const Navbar = () => {
             })}
           </div>
 
-          {/* User Auth Buttons */}
+          {/* User Profile Badge */}
           <div className="hidden md:flex items-center space-x-3">
-            {user ? (
-              <div className="flex items-center space-x-3">
+            {user && (
+              <div className="flex items-center space-x-3 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <div className="text-right">
                   <span className="block text-xs font-semibold text-white">{user.full_name}</span>
                   <span className="block text-[10px] text-blue-400 uppercase font-bold tracking-wider">{user.role}</span>
                 </div>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-red-600/20 hover:border-red-500/30 border border-slate-700 transition-all"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Logout</span>
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Link
-                  to="/login"
-                  className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-                >
-                  <LogIn className="w-4 h-4" />
-                  <span>Login</span>
-                </Link>
-                <Link
-                  to="/register"
-                  className="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-md shadow-blue-500/20 transition-all"
-                >
-                  <UserPlus className="w-4 h-4" />
-                  <span>Register</span>
-                </Link>
               </div>
             )}
           </div>
@@ -123,7 +96,6 @@ export const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-800 bg-slate-950 px-4 pt-2 pb-4 space-y-2">
           {navLinks.map((link) => {
-            if (link.authRequired && !user) return null;
             const Icon = link.icon;
             return (
               <Link
@@ -139,20 +111,6 @@ export const Navbar = () => {
               </Link>
             );
           })}
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-400 hover:bg-red-950/30"
-            >
-              <LogOut className="w-5 h-5" />
-              <span>Logout</span>
-            </button>
-          ) : (
-            <div className="pt-2 border-t border-slate-800 flex flex-col space-y-2">
-              <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-2 text-sm font-medium text-slate-300 bg-slate-900 rounded-lg">Login</Link>
-              <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg">Register</Link>
-            </div>
-          )}
         </div>
       )}
     </nav>

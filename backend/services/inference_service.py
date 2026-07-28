@@ -17,9 +17,10 @@ _predictor_instance: Optional[MRIPredictor] = None
 def get_predictor() -> MRIPredictor:
     global _predictor_instance
     if _predictor_instance is None:
+        weights_file = Path(settings.MODEL_WEIGHTS_DIR) / f"{settings.DEFAULT_MODEL_NAME}_best.keras"
         _predictor_instance = MRIPredictor(
             model_name=settings.DEFAULT_MODEL_NAME,
-            weights_path=None
+            weights_path=weights_file if weights_file.exists() else None
         )
     return _predictor_instance
 
