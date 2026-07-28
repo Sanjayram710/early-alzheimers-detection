@@ -47,7 +47,6 @@ build/
 dist/
 node_modules/
 *.mjs
-*.zip
 
 # Datasets
 Alzheimers disease dataset/
@@ -56,4 +55,5 @@ datasets/
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbs.db
+
