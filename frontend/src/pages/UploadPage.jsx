@@ -34,7 +34,6 @@ export const UploadPage = () => {
   const [patientId, setPatientId] = useState('');
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [customSymptom, setCustomSymptom] = useState('');
-  const [selectedDemoId, setSelectedDemoId] = useState('');
   const [demoLoadedBanner, setDemoLoadedBanner] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -65,45 +64,7 @@ export const UploadPage = () => {
     setPatientId(demoObj.patientId);
     setSelectedSymptoms(demoObj.symptoms || []);
     setCustomSymptom(demoObj.notes || '');
-    setSelectedDemoId(demoObj.id);
     setDemoLoadedBanner(`Auto-filled: ${demoObj.name} (${demoObj.patientId}) - ${demoObj.age} yrs, ${demoObj.bloodGroup}`);
-
-    // Auto-generate sample synthetic brain MRI scan if no file is selected yet
-    if (!file) {
-      const canvas = document.createElement('canvas');
-      canvas.width = 256;
-      canvas.height = 256;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(0, 0, 256, 256);
-      
-      // Draw brain cortex outline simulation
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath();
-      ctx.ellipse(128, 128, 85, 100, 0, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      ctx.fillStyle = '#334155';
-      ctx.beginPath();
-      ctx.ellipse(100, 115, 30, 40, 0, 0, 2 * Math.PI);
-      ctx.ellipse(156, 115, 30, 40, 0, 0, 2 * Math.PI);
-      ctx.fill();
-
-      ctx.fillStyle = '#6D5EF5';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText(`DEMO MRI: ${demoObj.patientId}`, 20, 240);
-
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const demoFile = new File([blob], `${demoObj.patientId}_brain_scan.png`, { type: 'image/png' });
-          setFile(demoFile);
-          setPreview(canvas.toDataURL());
-        }
-      });
-    }
   };
 
   const handleRandomDemo = () => {
@@ -122,7 +83,7 @@ export const UploadPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
-      setError('Please select an MRI image file or click Auto-Fill Demo Patient.');
+      setError('Please select an MRI image file.');
       return;
     }
 
@@ -178,52 +139,6 @@ export const UploadPage = () => {
 
       <DisclaimerBanner />
 
-      {/* Demo Patient Presets Selector Bar */}
-      <div className="bg-gradient-to-r from-white via-[#EEF2FF] to-white p-5 rounded-[28px] border border-white/90 shadow-[12px_12px_28px_rgba(163,177,198,0.35),-10px_-10px_24px_rgba(255,255,255,0.95)] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center space-x-3.5">
-          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center flex-shrink-0">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white shadow-inner">
-              <Sparkles className="w-5 h-5" />
-            </div>
-          </div>
-          <div>
-            <span className="font-bold text-sm text-[#1F2937] flex items-center gap-1.5">
-              Quick Demo Patient Presets <span className="px-2 py-0.5 rounded-full bg-[#6D5EF5] text-white text-[10px]">50 Cohort Profiles</span>
-            </span>
-            <span className="text-xs text-[#6B7280] font-medium">Click to auto-fill patient demographics, symptoms & demo MRI</span>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-          <select
-            value={selectedDemoId}
-            onChange={(e) => {
-              const found = DEMO_PATIENTS.find(p => p.id === e.target.value);
-              if (found) applyDemoPatient(found);
-            }}
-            className="w-full sm:w-64 px-4 py-2.5 rounded-full bg-[#F4F6FB] text-xs font-bold text-[#1F2937] shadow-[inset_3px_3px_6px_rgba(163,177,198,0.25),inset_-3px_-3px_6px_rgba(255,255,255,0.9)] border border-white/80 focus:outline-none focus:border-[#6D5EF5] cursor-pointer"
-          >
-            <option value="">-- Choose Demo Patient (1 of 50) --</option>
-            {DEMO_PATIENTS.map((p, idx) => (
-              <option key={p.id} value={p.id}>
-                #{idx + 1}: {p.name} ({p.age}y, {p.bloodGroup})
-              </option>
-            ))}
-          </select>
-
-          <ClayButton
-            type="button"
-            variant="primary"
-            size="sm"
-            icon={Sparkles}
-            onClick={handleRandomDemo}
-            className="w-full sm:w-auto text-xs whitespace-nowrap"
-          >
-            Auto-Fill Random Demo
-          </ClayButton>
-        </div>
-      </div>
-
       {demoLoadedBanner && (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -237,7 +152,7 @@ export const UploadPage = () => {
           <button
             type="button"
             onClick={() => setDemoLoadedBanner(null)}
-            className="text-xs text-[#15803D] underline ml-4 hover:opacity-80"
+            className="text-xs text-[#15803D] underline ml-4 hover:opacity-80 font-bold"
           >
             Dismiss
           </button>
@@ -253,18 +168,32 @@ export const UploadPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         
-        {/* Section 1: Patient General Demographics */}
+        {/* Section 1: Patient General Demographics with single Demo Button */}
         <ClayCard hoverEffect={false} padding="p-6 sm:p-8">
-          <div className="flex items-center space-x-3 border-b border-slate-200/70 pb-4 mb-6">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white">
-                <User className="w-4 h-4" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/70 pb-4 mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white">
+                  <User className="w-4 h-4" />
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-[#1F2937]">1. Patient Demographic Details</h2>
+                <p className="text-xs text-[#6B7280] font-medium">Enter general medical identity details</p>
               </div>
             </div>
-            <div>
-              <h2 className="text-lg font-bold text-[#1F2937]">1. Patient Demographic Details</h2>
-              <p className="text-xs text-[#6B7280] font-medium">Enter general medical identity details</p>
-            </div>
+
+            {/* Single Demo Button placed on the right side of Section 1 */}
+            <ClayButton
+              type="button"
+              variant="secondary"
+              size="sm"
+              icon={Sparkles}
+              onClick={handleRandomDemo}
+              className="w-full sm:w-auto text-xs whitespace-nowrap font-bold"
+            >
+              Fill Demo Patient Data
+            </ClayButton>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
