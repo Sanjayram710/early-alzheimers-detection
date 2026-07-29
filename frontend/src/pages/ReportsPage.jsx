@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Download, Calendar } from 'lucide-react';
+import { FileText, Download, Calendar, Brain } from 'lucide-react';
+import { motion } from 'framer-motion';
 import api from '../services/api';
+import { ClayCard } from '../components/clay/ClayCard';
+import { ClayButton } from '../components/clay/ClayButton';
 
 export const ReportsPage = () => {
   const [reports, setReports] = useState([]);
@@ -37,46 +40,60 @@ export const ReportsPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-6xl mx-auto px-4 py-8 space-y-6"
+    >
       <div>
-        <h1 className="font-display text-3xl font-extrabold text-white">Downloadable Clinical Reports</h1>
-        <p className="text-slate-400 text-sm">Archived PDF decision support reports generated for MRI scans</p>
+        <h1 className="font-display text-3xl sm:text-[42px] leading-tight font-extrabold text-[#1F2937] tracking-tight">
+          Downloadable Clinical Reports
+        </h1>
+        <p className="text-[#6B7280] text-sm sm:text-base font-medium">
+          Archived PDF decision support reports generated for MRI scans
+        </p>
       </div>
 
       {loading ? (
-        <div className="py-16 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+        <div className="py-20 text-center space-y-3">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-2 shadow-[8px_8px_20px_rgba(163,177,198,0.35)] flex items-center justify-center mx-auto animate-bounce">
+            <Brain className="w-6 h-6 text-[#6D5EF5]" />
+          </div>
+          <p className="text-xs font-bold text-[#6B7280]">Loading Archived PDF Reports...</p>
         </div>
       ) : reports.length === 0 ? (
-        <div className="glass-card p-12 text-center rounded-2xl border border-slate-800 text-slate-400 text-sm">
-          No PDF reports generated yet. Run a prediction to generate reports.
-        </div>
+        <ClayCard padding="p-12 text-center" hoverEffect={false}>
+          <p className="text-base font-bold text-[#1F2937]">No PDF reports generated yet</p>
+          <p className="text-xs text-[#6B7280] font-medium mt-1">Run a prediction to automatically generate clinical PDF reports.</p>
+        </ClayCard>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {reports.map((r) => (
-            <div key={r.id} className="glass-card p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
-              <div className="space-y-1">
-                <div className="flex items-center space-x-2 text-blue-400 font-semibold text-sm">
+            <ClayCard key={r.id} padding="p-6" className="flex items-center justify-between">
+              <div className="space-y-1.5">
+                <div className="flex items-center space-x-2 text-[#6D5EF5] font-bold text-sm">
                   <FileText className="w-4 h-4" />
                   <span>Clinical Report #{r.id.slice(0, 8)}</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-slate-400">
-                  <Calendar className="w-3.5 h-3.5" />
+                <div className="flex items-center space-x-2 text-xs font-medium text-[#6B7280]">
+                  <Calendar className="w-3.5 h-3.5 text-[#6D5EF5]" />
                   <span>Generated: {new Date(r.generated_at).toLocaleString()}</span>
                 </div>
               </div>
 
-              <button
+              <ClayButton
+                variant="primary"
+                size="sm"
+                icon={Download}
                 onClick={() => handleDownload(r.id, r.prediction_id)}
-                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-all flex items-center space-x-1.5 shadow-md shadow-blue-500/20"
               >
-                <Download className="w-4 h-4" />
-                <span>PDF</span>
-              </button>
-            </div>
+                PDF
+              </ClayButton>
+            </ClayCard>
           ))}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };

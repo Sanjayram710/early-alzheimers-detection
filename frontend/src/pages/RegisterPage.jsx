@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Brain, UserPlus, Lock, Mail, User, AlertCircle, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { ClayCard } from '../components/clay/ClayCard';
+import { ClayInput } from '../components/clay/ClayInput';
+import { ClayButton } from '../components/clay/ClayButton';
 
 export const RegisterPage = () => {
   const [fullName, setFullName] = useState('');
@@ -30,99 +34,104 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md space-y-8 glass-card p-8 rounded-2xl border border-slate-800 shadow-2xl">
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-purple-600/10 border border-purple-500/20 flex items-center justify-center mx-auto text-purple-400">
-            <UserPlus className="w-6 h-6" />
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-[80vh] flex items-center justify-center px-4 py-8"
+    >
+      <ClayCard padding="p-8 sm:p-10" className="w-full max-w-md space-y-7" hoverEffect={false}>
+        <div className="text-center space-y-3">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-1 shadow-[6px_6px_14px_rgba(163,177,198,0.3),-4px_-4px_10px_rgba(255,255,255,0.95)] flex items-center justify-center mx-auto">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#8E82FF] to-[#6D5EF5] flex items-center justify-center text-white shadow-inner">
+              <UserPlus className="w-6 h-6" />
+            </div>
           </div>
-          <h2 className="font-display text-2xl font-bold text-white">Create Account</h2>
-          <p className="text-xs text-slate-400">Register as a Researcher, Clinician, or Admin</p>
+          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-[#1F2937] tracking-tight">
+            Create Account
+          </h2>
+          <p className="text-xs font-medium text-[#6B7280]">
+            Register as a Researcher, Clinician, or Admin
+          </p>
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-red-950/50 border border-red-500/30 text-red-300 text-xs flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          <div className="p-3.5 rounded-[18px] bg-[#FEE2E2] border border-[#FCA5A5] text-[#991B1B] text-xs font-bold flex items-center space-x-2 shadow-sm">
+            <AlertCircle className="w-4 h-4 text-[#EF4444] flex-shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-300">Full Name</label>
-            <div className="relative">
-              <User className="w-4 h-4 text-slate-500 absolute left-3 top-3.5" />
-              <input
-                type="text"
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Dr. Eleanor Vance"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500"
-              />
-            </div>
-          </div>
+          <ClayInput
+            label="Full Name"
+            icon={User}
+            required
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="Dr. Eleanor Vance"
+          />
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-300">Email Address</label>
-            <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3.5" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="eleanor@research.org"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500"
-              />
-            </div>
-          </div>
+          <ClayInput
+            label="Email Address"
+            icon={Mail}
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="eleanor@research.org"
+          />
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-300">Password</label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3.5" />
-              <input
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500"
-              />
-            </div>
-          </div>
+          <ClayInput
+            label="Password"
+            icon={Lock}
+            type="password"
+            required
+            minLength={6}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+          />
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-300">Account Role</label>
+          <div className="space-y-1.5 w-full">
+            <label className="block text-xs font-semibold text-[#1F2937] ml-1 tracking-wide">
+              Account Role
+            </label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500"
+              className="w-full px-5 py-3.5 rounded-[22px] bg-[#F4F6FB] text-sm text-[#1F2937] font-medium shadow-[inset_4px_4px_8px_rgba(163,177,198,0.35),inset_-4px_-4px_8px_rgba(255,255,255,0.95)] border border-white/60 focus:outline-none focus:border-[#6D5EF5] appearance-none cursor-pointer"
             >
               <option value="user">User / Clinician</option>
               <option value="admin">System Administrator</option>
             </select>
           </div>
 
-          <button
+          <ClayButton
             type="submit"
+            variant="primary"
             disabled={loading}
-            className="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/20 disabled:opacity-50 transition-all flex items-center justify-center space-x-2 text-sm"
+            icon={loading ? null : UserPlus}
+            className="w-full py-3.5 text-sm font-bold mt-2"
           >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
-            <span>Register Account</span>
-          </button>
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Creating Account...</span>
+              </div>
+            ) : (
+              'Register Account'
+            )}
+          </ClayButton>
         </form>
 
-        <div className="text-center text-xs text-slate-400">
+        <div className="text-center text-xs font-semibold text-[#6B7280]">
           Already registered?{' '}
-          <Link to="/login" className="text-blue-400 font-semibold hover:underline">
+          <Link to="/login" className="text-[#6D5EF5] font-bold hover:underline">
             Sign in here
           </Link>
         </div>
-      </div>
-    </div>
+      </ClayCard>
+    </motion.div>
   );
 };
