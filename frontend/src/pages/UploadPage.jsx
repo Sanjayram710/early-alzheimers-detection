@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, FileImage, AlertCircle, ArrowRight, Loader2, User, Calendar, Droplet, Activity, CheckSquare, Square, FileText } from 'lucide-react';
+import { Upload, FileImage, AlertCircle, ArrowRight, Loader2, User, Calendar, Droplet, Activity, CheckSquare, Square, FileText, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import api from '../services/api';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
+import { ClayCard } from '../components/clay/ClayCard';
+import { ClayInput } from '../components/clay/ClayInput';
+import { ClayButton } from '../components/clay/ClayButton';
 
 const ALZHEIMERS_SYMPTOMS = [
   "Memory loss disrupting daily life",
@@ -100,83 +104,77 @@ export const UploadPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8"
+    >
       <div className="text-center space-y-2">
-        <h1 className="font-display text-3xl font-extrabold text-white">Patient Intake & Brain MRI Upload</h1>
-        <p className="text-slate-400 text-sm">Enter patient details, select observed symptoms, and upload MRI scan for AI analysis</p>
+        <h1 className="font-display text-3xl sm:text-[42px] leading-tight font-extrabold text-[#1F2937] tracking-tight">
+          Patient Intake & Brain MRI Upload
+        </h1>
+        <p className="text-[#6B7280] text-sm sm:text-base font-medium">
+          Enter patient details, select observed symptoms, and upload MRI scan for AI analysis
+        </p>
       </div>
 
       <DisclaimerBanner />
 
       {error && (
-        <div className="p-4 rounded-xl bg-red-950/50 border border-red-500/40 text-red-300 text-sm flex items-center space-x-3">
-          <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-          <span>{error}</span>
+        <div className="p-4 rounded-[22px] bg-[#FEE2E2] border border-[#FCA5A5] text-[#991B1B] text-sm flex items-center space-x-3 shadow-[6px_6px_16px_rgba(239,68,68,0.2)]">
+          <AlertCircle className="w-5 h-5 text-[#EF4444] flex-shrink-0" />
+          <span className="font-bold">{error}</span>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
         
         {/* Section 1: Patient General Demographics */}
-        <div className="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
-          <div className="flex items-center space-x-3 border-b border-slate-800 pb-4">
-            <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400">
-              <User className="w-5 h-5" />
+        <ClayCard hoverEffect={false} padding="p-6 sm:p-8">
+          <div className="flex items-center space-x-3 border-b border-slate-200/70 pb-4 mb-6">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white">
+                <User className="w-4 h-4" />
+              </div>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">1. Patient Demographic Details</h2>
-              <p className="text-xs text-slate-400">Enter general medical identity details</p>
+              <h2 className="text-lg font-bold text-[#1F2937]">1. Patient Demographic Details</h2>
+              <p className="text-xs text-[#6B7280] font-medium">Enter general medical identity details</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {/* Patient Name */}
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                Patient Name
-              </label>
-              <div className="relative">
-                <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
-                <input
-                  type="text"
-                  value={patientName}
-                  onChange={(e) => setPatientName(e.target.value)}
-                  placeholder="e.g. John Doe"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-            </div>
+            <ClayInput
+              label="Patient Name"
+              icon={User}
+              placeholder="e.g. John Doe"
+              value={patientName}
+              onChange={(e) => setPatientName(e.target.value)}
+            />
 
-            {/* Patient Age */}
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                Age (Years)
-              </label>
-              <div className="relative">
-                <Calendar className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
-                <input
-                  type="number"
-                  min="1"
-                  max="120"
-                  value={patientAge}
-                  onChange={(e) => setPatientAge(e.target.value)}
-                  placeholder="e.g. 68"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-            </div>
+            <ClayInput
+              label="Age (Years)"
+              icon={Calendar}
+              type="number"
+              min="1"
+              max="120"
+              placeholder="e.g. 68"
+              value={patientAge}
+              onChange={(e) => setPatientAge(e.target.value)}
+            />
 
-            {/* Blood Group */}
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+            {/* Blood Group Select */}
+            <div className="space-y-1.5 w-full">
+              <label className="block text-xs font-semibold text-[#1F2937] ml-1 tracking-wide">
                 Blood Group
               </label>
-              <div className="relative">
-                <Droplet className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+              <div className="relative flex items-center">
+                <Droplet className="w-4 h-4 text-[#6D5EF5] absolute left-4 pointer-events-none" />
                 <select
                   value={bloodGroup}
                   onChange={(e) => setBloodGroup(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 transition-colors appearance-none cursor-pointer"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-[22px] bg-[#F4F6FB] text-sm text-[#1F2937] font-medium shadow-[inset_4px_4px_8px_rgba(163,177,198,0.35),inset_-4px_-4px_8px_rgba(255,255,255,0.95)] border border-white/60 focus:outline-none focus:border-[#6D5EF5] focus:ring-2 focus:ring-[#6D5EF5]/20 appearance-none cursor-pointer"
                 >
                   <option value="">-- Select Blood Group --</option>
                   {BLOOD_GROUPS.map((bg) => (
@@ -186,34 +184,27 @@ export const UploadPage = () => {
               </div>
             </div>
 
-            {/* Patient / Study ID */}
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                Patient / Study ID (Optional)
-              </label>
-              <div className="relative">
-                <FileText className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
-                <input
-                  type="text"
-                  value={patientId}
-                  onChange={(e) => setPatientId(e.target.value)}
-                  placeholder="e.g. PT-98231 or OAS1_0001"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-            </div>
+            <ClayInput
+              label="Patient / Study ID (Optional)"
+              icon={FileText}
+              placeholder="e.g. PT-98231 or OAS1_0001"
+              value={patientId}
+              onChange={(e) => setPatientId(e.target.value)}
+            />
           </div>
-        </div>
+        </ClayCard>
 
         {/* Section 2: Observed Symptoms Checklist */}
-        <div className="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
-          <div className="flex items-center space-x-3 border-b border-slate-800 pb-4">
-            <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
-              <Activity className="w-5 h-5" />
+        <ClayCard hoverEffect={false} padding="p-6 sm:p-8">
+          <div className="flex items-center space-x-3 border-b border-slate-200/70 pb-4 mb-6">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8E82FF] to-[#6D5EF5] flex items-center justify-center text-white">
+                <Activity className="w-4 h-4" />
+              </div>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">2. Alzheimer's Symptoms & Clinical Observations</h2>
-              <p className="text-xs text-slate-400">Select any symptoms currently exhibited by the patient</p>
+              <h2 className="text-lg font-bold text-[#1F2937]">2. Symptoms & Clinical Observations</h2>
+              <p className="text-xs text-[#6B7280] font-medium">Select any symptoms currently exhibited by the patient</p>
             </div>
           </div>
 
@@ -225,26 +216,26 @@ export const UploadPage = () => {
                   key={symptom}
                   type="button"
                   onClick={() => toggleSymptom(symptom)}
-                  className={`p-3.5 rounded-xl border text-left transition-all flex items-start space-x-3 ${
+                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border ${
                     isChecked
-                      ? 'bg-purple-600/15 border-purple-500/50 text-purple-200 shadow-md shadow-purple-950/40'
-                      : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
+                      ? 'bg-gradient-to-br from-[#EEF2FF] to-[#E0E7FF] border-[#6D5EF5] text-[#1F2937] shadow-[6px_6px_14px_rgba(109,94,245,0.2)]'
+                      : 'bg-[#F4F6FB] border-white/80 text-[#6B7280] shadow-[inset_3px_3px_6px_rgba(163,177,198,0.2),inset_-3px_-3px_6px_rgba(255,255,255,0.9)] hover:text-[#1F2937]'
                   }`}
                 >
                   {isChecked ? (
-                    <CheckSquare className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                    <CheckSquare className="w-5 h-5 text-[#6D5EF5] flex-shrink-0 mt-0.5" />
                   ) : (
-                    <Square className="w-5 h-5 text-slate-600 flex-shrink-0 mt-0.5" />
+                    <Square className="w-5 h-5 text-[#9CA3AF] flex-shrink-0 mt-0.5" />
                   )}
-                  <span className="text-xs leading-relaxed font-medium">{symptom}</span>
+                  <span className="text-xs leading-relaxed font-semibold">{symptom}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Additional Notes */}
-          <div className="space-y-2 pt-2">
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+          <div className="space-y-2 pt-4">
+            <label className="block text-xs font-semibold text-[#1F2937] tracking-wider uppercase ml-1">
               Other Symptoms / Clinical Notes (Optional)
             </label>
             <textarea
@@ -252,25 +243,27 @@ export const UploadPage = () => {
               value={customSymptom}
               onChange={(e) => setCustomSymptom(e.target.value)}
               placeholder="Enter any additional behavioral or cognitive observations..."
-              className="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full p-4 rounded-[22px] bg-[#F4F6FB] text-xs text-[#1F2937] placeholder-[#9CA3AF] font-medium shadow-[inset_4px_4px_8px_rgba(163,177,198,0.35),inset_-4px_-4px_8px_rgba(255,255,255,0.95)] border border-white/60 focus:outline-none focus:border-[#6D5EF5] transition-colors"
             />
           </div>
-        </div>
+        </ClayCard>
 
         {/* Section 3: MRI Scan Upload */}
-        <div className="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
-          <div className="flex items-center space-x-3 border-b border-slate-800 pb-4">
-            <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
-              <Upload className="w-5 h-5" />
+        <ClayCard hoverEffect={false} padding="p-6 sm:p-8">
+          <div className="flex items-center space-x-3 border-b border-slate-200/70 pb-4 mb-6">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#22C55E] to-[#4ADE80] flex items-center justify-center text-white">
+                <Upload className="w-4 h-4" />
+              </div>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">3. Upload Patient Brain MRI Scan</h2>
-              <p className="text-xs text-slate-400">Supported formats: DICOM (.dcm), NIfTI (.nii, .nii.gz), PNG, JPG (Max 25MB)</p>
+              <h2 className="text-lg font-bold text-[#1F2937]">3. Upload Patient Brain MRI Scan</h2>
+              <p className="text-xs text-[#6B7280] font-medium">Supported formats: DICOM (.dcm), NIfTI (.nii, .nii.gz), PNG, JPG (Max 25MB)</p>
             </div>
           </div>
 
-          {/* File Upload Box */}
-          <div className="relative border-2 border-dashed border-slate-700 hover:border-blue-500/50 rounded-xl p-8 text-center transition-all bg-slate-900/40 group">
+          {/* Indented Clay Dropzone Slot */}
+          <div className="relative rounded-[28px] p-8 text-center bg-[#F4F6FB] border border-white/80 shadow-[inset_6px_6px_14px_rgba(163,177,198,0.3),inset_-6px_-6px_14px_rgba(255,255,255,0.95)] group hover:border-[#6D5EF5] transition-all">
             <input
               type="file"
               onChange={handleFileChange}
@@ -280,48 +273,50 @@ export const UploadPage = () => {
 
             {preview ? (
               <div className="space-y-3">
-                <img src={preview} alt="MRI Preview" className="max-h-56 mx-auto rounded-lg border border-slate-700 object-contain shadow-lg" />
-                <p className="text-xs font-semibold text-blue-400">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>
+                <img src={preview} alt="MRI Preview" className="max-h-56 mx-auto rounded-[20px] border border-white/80 object-contain shadow-[8px_8px_20px_rgba(163,177,198,0.3)]" />
+                <p className="text-xs font-bold text-[#6D5EF5]">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>
               </div>
             ) : (
-              <div className="space-y-3">
-                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mx-auto text-blue-400 group-hover:scale-110 transition-transform">
+              <div className="space-y-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-1 shadow-[6px_6px_16px_rgba(163,177,198,0.3),-4px_-4px_12px_rgba(255,255,255,0.95)] flex items-center justify-center mx-auto text-[#6D5EF5] group-hover:scale-110 transition-transform">
                   <Upload className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="block text-base font-semibold text-white">Click or drag brain MRI scan here</span>
-                  <span className="block text-xs text-slate-400 mt-1">DICOM, NIfTI, PNG or JPG files up to 25MB</span>
+                  <span className="block text-base font-bold text-[#1F2937]">Click or drag brain MRI scan here</span>
+                  <span className="block text-xs text-[#6B7280] font-medium mt-1">DICOM, NIfTI, PNG or JPG files up to 25MB</span>
                 </div>
                 {file && (
-                  <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 text-xs font-mono">
-                    <FileImage className="w-4 h-4 text-blue-400" />
+                  <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white border border-white/80 text-[#1F2937] text-xs font-mono font-bold shadow-md">
+                    <FileImage className="w-4 h-4 text-[#6D5EF5]" />
                     <span>{file.name}</span>
                   </div>
                 )}
               </div>
             )}
           </div>
-        </div>
+        </ClayCard>
 
         {/* Submit Button */}
-        <button
+        <ClayButton
           type="submit"
+          variant="primary"
+          size="lg"
           disabled={loading || !file}
-          className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-xl shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center space-x-2 text-base"
+          className="w-full py-4 text-base font-bold"
         >
           {loading ? (
-            <>
+            <div className="flex items-center space-x-2">
               <Loader2 className="w-5 h-5 animate-spin" />
               <span>Processing Patient Data & Analyzing MRI...</span>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="flex items-center space-x-2">
               <span>Run AI Prediction & Grad-CAM Analysis</span>
               <ArrowRight className="w-5 h-5" />
-            </>
+            </div>
           )}
-        </button>
+        </ClayButton>
       </form>
-    </div>
+    </motion.div>
   );
 };

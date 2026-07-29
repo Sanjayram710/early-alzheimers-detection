@@ -1,86 +1,93 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, ArrowUpRight, Zap, Users, Eye, Shield, Activity } from 'lucide-react';
+import { Brain, ArrowUpRight, Zap, Users, Eye, Shield, Activity, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
+import { ClayCard } from '../components/clay/ClayCard';
+import { ClayButton } from '../components/clay/ClayButton';
 
 export const HomePage = () => {
   return (
-    <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      
-      {/* Outer Main Container Card matching reference image layout */}
-      <div className="relative rounded-[36px] border border-blue-500/20 bg-slate-950/90 p-6 sm:p-12 shadow-[0_0_90px_rgba(37,99,235,0.15)] overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8"
+    >
+      {/* Hero Outer Container */}
+      <div className="relative rounded-[36px] border border-white/80 bg-gradient-to-br from-white via-[#F8FAFC] to-[#EEF2FF] p-6 sm:p-12 shadow-[16px_16px_40px_rgba(163,177,198,0.35),-14px_-14px_32px_rgba(255,255,255,0.95)] overflow-hidden">
         
-        {/* Background Ambient Glow Orbs */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-0 w-[600px] h-[600px] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-10 right-10 -z-0 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
+        {/* Background Ambient Lighting Blobs */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-0 w-[500px] h-[500px] bg-[#6D5EF5]/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-10 right-10 -z-0 w-[300px] h-[300px] bg-[#8E82FF]/10 rounded-full blur-[90px] pointer-events-none" />
 
-        {/* Central Portal Viewport Window */}
-        <div className="relative z-10 max-w-2xl mx-auto my-4 sm:my-8 portal-window rounded-[50px] p-8 sm:p-16 text-center flex flex-col items-center justify-center transition-all duration-300">
+        {/* Central Viewport Portal Window */}
+        <div className="relative z-10 max-w-2xl mx-auto my-4 sm:my-8 bg-gradient-to-br from-white to-[#EEF2FF] border border-white/90 rounded-[48px] p-8 sm:p-14 text-center flex flex-col items-center justify-center shadow-[12px_12px_28px_rgba(163,177,198,0.35),-10px_-10px_24px_rgba(255,255,255,0.95)]">
           
-          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-widest mb-6 shadow-inner">
-            <Brain className="w-4 h-4 text-blue-400" />
+          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#F4F6FB] border border-white/80 text-[#6D5EF5] text-xs font-bold uppercase tracking-widest mb-6 shadow-[inset_2px_2px_4px_rgba(163,177,198,0.2),inset_-2px_-2px_4px_rgba(255,255,255,0.8)]">
+            <Brain className="w-4 h-4 text-[#6D5EF5]" />
             <span>AI Neuro-Diagnostic Platform</span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] mb-6">
+          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#1F2937] tracking-tight leading-[1.1] mb-6">
             Experience AI Diagnosis <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-white to-blue-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6D5EF5] via-[#8E82FF] to-[#4A3BC3]">
               Like Never Before
             </span>
           </h1>
 
-          <p className="text-slate-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed mb-8 font-medium">
+          <p className="text-[#6B7280] text-sm sm:text-base max-w-md mx-auto leading-relaxed mb-8 font-medium">
             From structural brain MRI scans to Grad-CAM heatmaps and clinical decision support, we create AI diagnostics that feel effortless and precise.
           </p>
 
-          <Link
-            to="/upload"
-            className="group px-8 py-3.5 rounded-full font-bold text-slate-950 bg-white hover:bg-slate-100 shadow-2xl shadow-blue-500/30 transition-all duration-300 flex items-center space-x-3 hover:scale-105"
-          >
-            <span className="text-sm">Explore Analysis</span>
-            <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white group-hover:rotate-45 transition-transform">
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
+          <Link to="/upload">
+            <ClayButton variant="primary" size="lg" icon={ArrowUpRight}>
+              Explore MRI Analysis
+            </ClayButton>
           </Link>
         </div>
 
-        {/* Floating Bottom Cards */}
+        {/* Floating Feature Clay Cards */}
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 sm:mt-12">
           
-          {/* Bottom Left Card */}
-          <div className="glass-card-sunrock p-6 sm:p-8 rounded-3xl text-left relative overflow-hidden group">
-            <div className="w-11 h-11 rounded-2xl bg-white flex items-center justify-center text-blue-600 mb-5 shadow-lg shadow-white/10 group-hover:scale-110 transition-transform">
-              <Zap className="w-6 h-6 text-blue-600 fill-blue-600" />
+          {/* Feature 1 */}
+          <ClayCard padding="p-8">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-1 shadow-[6px_6px_14px_rgba(163,177,198,0.3),-4px_-4px_10px_rgba(255,255,255,0.95)] mb-5 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white shadow-inner">
+                <Zap className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="font-display text-xl font-bold text-white mb-2">
+            <h3 className="font-display text-xl font-bold text-[#1F2937] mb-2">
               Authentic Clinical Precision
             </h3>
-            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            <p className="text-[#6B7280] text-xs sm:text-sm leading-relaxed font-medium">
               Detect subtle structural hippocampal changes, cortical atrophy, and early stage indicators with expert deep learning models trained on benchmark datasets.
             </p>
-          </div>
+          </ClayCard>
 
-          {/* Bottom Right Card */}
-          <div className="glass-card-sunrock p-6 sm:p-8 rounded-3xl text-left relative overflow-hidden group">
-            <div className="w-11 h-11 rounded-2xl bg-white flex items-center justify-center text-blue-600 mb-5 shadow-lg shadow-white/10 group-hover:scale-110 transition-transform">
-              <Users className="w-6 h-6 text-blue-600" />
+          {/* Feature 2 */}
+          <ClayCard padding="p-8">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-1 shadow-[6px_6px_14px_rgba(163,177,198,0.3),-4px_-4px_10px_rgba(255,255,255,0.95)] mb-5 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#22C55E] to-[#4ADE80] flex items-center justify-center text-white shadow-inner">
+                <Users className="w-5 h-5" />
+              </div>
             </div>
-            <h3 className="font-display text-xl font-bold text-white mb-2">
+            <h3 className="font-display text-xl font-bold text-[#1F2937] mb-2">
               Stress-Free Every Step
             </h3>
-            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            <p className="text-[#6B7280] text-xs sm:text-sm leading-relaxed font-medium">
               From DICOM/NIfTI ingestion to automated PDF report generation, we handle every detail so medical specialists can focus on care.
             </p>
-          </div>
+          </ClayCard>
 
         </div>
 
-        {/* Disclaimer Footer Banner */}
+        {/* Disclaimer Banner */}
         <div className="relative z-10 pt-8 max-w-4xl mx-auto">
           <DisclaimerBanner />
         </div>
 
       </div>
-    </div>
+    </motion.div>
   );
 };

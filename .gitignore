@@ -44,7 +44,8 @@ htmlcov/
 # Build & Node
 build/
 dist/
-node_modules/
+**/node_modules/
+frontend/node_modules/
 *.mjs
 
 # Data
