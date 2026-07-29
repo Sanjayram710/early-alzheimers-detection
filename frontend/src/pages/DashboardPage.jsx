@@ -84,7 +84,7 @@ export const DashboardPage = () => {
         />
         <ClayStatCard
           title="Active Model Version"
-          value={stats?.active_model_version || 'custom_cnn'}
+          value={stats?.active_model_version || 'NeuroDxNet'}
           subtitle="Convolutional Backbone"
           icon={Brain}
           trend="Production v1.4"
