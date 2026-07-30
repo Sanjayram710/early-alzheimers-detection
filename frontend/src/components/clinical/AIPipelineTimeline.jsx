@@ -17,14 +17,13 @@ import {
   ChevronDown,
   ChevronUp,
   ArrowRight,
-  Info,
   Zap,
-  Activity as PulseIcon
+  CheckCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const AIPipelineTimeline = ({
-  currentStageIndex = 11,
+  currentStageIndex = 8,
   isProcessing = false,
   qualityScore = 92,
   totalRuntimeMs = 127
@@ -32,13 +31,21 @@ export const AIPipelineTimeline = ({
   const [selectedStageId, setSelectedStageId] = useState(null);
   const [hoveredStageId, setHoveredStageId] = useState(null);
 
+  // Grouped stages with specific color schemes by functional role
   const stages = [
     {
       id: 'patient',
-      title: 'Patient Registered',
+      title: 'Patient Information',
       shortDesc: 'Demographics Logged',
       timeMs: 5,
       icon: UserCheck,
+      color: {
+        bg: 'bg-[#EFF6FF]',
+        border: 'border-[#BFDBFE]',
+        text: 'text-[#1D4ED8]',
+        badgeBg: 'bg-[#3B82F6]',
+        glow: 'rgba(59, 130, 246, 0.4)'
+      },
       operations: [
         'Validated patient ID & clinical metadata',
         'Recorded symptoms & blood group profile',
@@ -53,6 +60,13 @@ export const AIPipelineTimeline = ({
       shortDesc: 'DICOM / NIfTI Stream',
       timeMs: 12,
       icon: Upload,
+      color: {
+        bg: 'bg-[#DBEAFE]',
+        border: 'border-[#93C5FD]',
+        text: 'text-[#1E40AF]',
+        badgeBg: 'bg-[#2563EB]',
+        glow: 'rgba(37, 99, 235, 0.4)'
+      },
       operations: [
         'Streamed binary file payload (Max 25MB)',
         'Header parsing & slice integrity check',
@@ -64,101 +78,96 @@ export const AIPipelineTimeline = ({
     {
       id: 'mip',
       title: 'Medical Image Processing',
-      shortDesc: 'MIP Pipeline Run',
+      shortDesc: 'Quality, Denoise, CLAHE & ROI',
       timeMs: 31,
       icon: Sliders,
-      operations: [
-        'Initiated Medical Image Processing orchestrator',
-        'Configured Gaussian spatial filtering parameters',
-        'Initialized CLAHE contrast equalization grid'
+      isGroup: true,
+      subOperations: [
+        { label: 'Quality Assessment', time: '2 ms' },
+        { label: 'Gaussian Denoising', time: '8 ms' },
+        { label: 'CLAHE Enhancement', time: '10 ms' },
+        { label: 'ROI Extraction', time: '6 ms' },
+        { label: 'Intensity Normalization', time: '5 ms' }
       ],
-      input: 'Raw Pixel Buffer',
-      output: 'Preprocessed Tensor Stream'
-    },
-    {
-      id: 'quality',
-      title: 'Quality Assessment',
-      shortDesc: 'SNR & Sharpness Check',
-      timeMs: 2,
-      icon: Sparkles,
+      color: {
+        bg: 'bg-[#F3E8FF]',
+        border: 'border-[#DDD6FE]',
+        text: 'text-[#6B21A8]',
+        badgeBg: 'bg-[#8B5CF6]',
+        glow: 'rgba(139, 92, 246, 0.4)'
+      },
       operations: [
-        'Calculated mean image brightness & RMS contrast',
-        'Computed Laplacian sharpness variance (587.17)',
-        'Estimated MAD background noise index (4.45)',
-        'Generated composite Quality Score (92/100)'
+        'Image Quality Assessment (Brightness, Contrast, Sharpness)',
+        'Gaussian 5x5 spatial kernel denoising',
+        'CLAHE 8x8 adaptive contrast equalization',
+        'Otsu brain contour ROI bounding box extraction',
+        'Min-Max pixel intensity scaling [0.0 - 1.0]'
       ],
-      input: 'Raw RGB Array',
-      output: 'Image Quality Metrics Payload'
-    },
-    {
-      id: 'denoise',
-      title: 'Gaussian Denoising',
-      shortDesc: 'Spatial Noise Reduction',
-      timeMs: 8,
-      icon: Sliders,
-      operations: [
-        'Applied 5x5 Gaussian kernel spatial smoothing',
-        'Attenuated high-frequency thermal noise',
-        'Preserved cortical boundary sharpness'
-      ],
-      input: 'Noisy Image Tensor',
-      output: 'Smoothed Image Array'
-    },
-    {
-      id: 'clahe',
-      title: 'CLAHE Enhancement',
-      shortDesc: 'Adaptive Contrast',
-      timeMs: 10,
-      icon: Layers,
-      operations: [
-        'Divided slice into 8x8 contextual tiles',
-        'Applied clip limit 2.0 histogram equalization',
-        'Enhanced tissue contrast across white/gray matter'
-      ],
-      input: 'Smoothed Image Array',
-      output: 'High-Contrast MRI Array'
-    },
-    {
-      id: 'roi',
-      title: 'ROI Extraction',
-      shortDesc: 'Brain Contour Crop',
-      timeMs: 6,
-      icon: Sliders,
-      operations: [
-        'Segmented brain tissue via Otsu thresholding',
-        'Extracted largest convex brain contour',
-        'Cropped zero-padding background boundaries'
-      ],
-      input: 'High-Contrast MRI Array',
-      output: 'Cropped ROI Brain Region'
+      input: 'Raw Image Array',
+      output: 'Enhanced 224x224x3 Tensor'
     },
     {
       id: 'neurodxnet',
-      title: 'NeuroDxNet Inference',
+      title: 'NeuroDxNet CNN',
       shortDesc: 'CNN Forward Pass',
       timeMs: 47,
       icon: Brain,
+      color: {
+        bg: 'bg-[#FEF3C7]',
+        border: 'border-[#FDE68A]',
+        text: 'text-[#92400E]',
+        badgeBg: 'bg-[#F59E0B]',
+        glow: 'rgba(245, 158, 11, 0.4)'
+      },
       operations: [
-        'Rescaled pixels to Min-Max [0.0 - 1.0]',
-        'Broadcasted tensor to shape (1, 224, 224, 3)',
-        'Executed forward pass on NeuroDxNet CNN architecture'
+        'Broadcasted preprocessed tensor to shape (1, 224, 224, 3)',
+        'Evaluated feature maps across convolutional layers',
+        'Generated raw category logit distribution'
       ],
       input: 'Normalized 224x224x3 Tensor',
-      output: 'Class Logit Distribution'
+      output: 'Raw Logit Vector'
     },
     {
       id: 'prediction',
       title: 'Stage Prediction',
-      shortDesc: 'Disease Classification',
+      shortDesc: 'Disease Severity',
       timeMs: 3,
       icon: Activity,
+      color: {
+        bg: 'bg-[#FFE4E6]',
+        border: 'border-[#FECDD3]',
+        text: 'text-[#9F1239]',
+        badgeBg: 'bg-[#E11D48]',
+        glow: 'rgba(225, 29, 72, 0.4)'
+      },
       operations: [
-        'Applied Softmax probability normalization',
+        'Applied Softmax probability distribution scaling',
         'Identified top category: Non Demented / Demented',
-        'Formatted stage severity classification'
+        'Calculated class score ranking'
       ],
-      input: 'Class Logit Distribution',
+      input: 'Raw Logit Vector',
       output: 'Predicted Disease Category'
+    },
+    {
+      id: 'confidence',
+      title: 'Confidence Analysis',
+      shortDesc: 'Uncertainty Weighting',
+      timeMs: 2,
+      icon: CheckCircle,
+      color: {
+        bg: 'bg-[#E0F2FE]',
+        border: 'border-[#BAE6FD]',
+        text: 'text-[#075985]',
+        badgeBg: 'bg-[#06B6D4]',
+        glow: 'rgba(6, 182, 212, 0.4)'
+      },
+      operations: [
+        'Evaluated top class probability confidence percentage',
+        'Validated prediction margin against uncertainty threshold',
+        'Formatted clinical probability score'
+      ],
+      input: 'Softmax Vector',
+      output: 'Confidence Score (%)'
     },
     {
       id: 'gradcam',
@@ -166,40 +175,54 @@ export const AIPipelineTimeline = ({
       shortDesc: 'Attention Heatmap',
       timeMs: 29,
       icon: Eye,
+      color: {
+        bg: 'bg-[#CCFBF1]',
+        border: 'border-[#99F6E4]',
+        text: 'text-[#115E59]',
+        badgeBg: 'bg-[#0D9488]',
+        glow: 'rgba(13, 148, 136, 0.4)'
+      },
       operations: [
-        'Extracted target conv layer gradients',
-        'Generated weighted activation heatmap',
+        'Extracted feature map gradients from target conv layer',
+        'Computed channel-weighted activation heatmap',
         'Overlaid heatmap on preprocessed brain MRI'
       ],
       input: 'CNN Conv Gradients',
-      output: 'Visual Heatmap & Overlay URLs'
+      output: 'Visual Heatmap & Overlay Data'
     },
     {
       id: 'report',
-      title: 'Clinical Report Generation',
-      shortDesc: 'PDF Document Render',
+      title: 'Clinical Report',
+      shortDesc: 'PDF Generation',
       timeMs: 14,
       icon: FileText,
+      color: {
+        bg: 'bg-[#DCFCE7]',
+        border: 'border-[#86EFAC]',
+        text: 'text-[#166534]',
+        badgeBg: 'bg-[#16A34A]',
+        glow: 'rgba(22, 163, 74, 0.4)'
+      },
       operations: [
         'Compiled patient metadata & MIP summary',
         'Embedded side-by-side MRI & Grad-CAM images',
-        'Generated downloadable clinical decision PDF'
+        'Rendered downloadable publication-ready PDF report'
       ],
       input: 'Study Results Payload',
-      output: 'Publication-Ready PDF File'
+      output: 'Downloadable PDF Document'
     }
   ];
+
+  const activeStageIndex = isProcessing ? Math.min(currentStageIndex, stages.length - 1) : stages.length;
 
   const toggleStageExpand = (id) => {
     setSelectedStageId(selectedStageId === id ? null : id);
   };
 
-  const activeStageIndex = isProcessing ? Math.min(currentStageIndex, stages.length - 1) : stages.length;
-
   return (
     <div className="bg-white/94 backdrop-blur-[20px] rounded-[32px] p-6 sm:p-8 border-2 border-[#3B82F6] shadow-[0_20px_40px_rgba(59,130,246,0.16),0_8px_16px_rgba(0,0,0,0.03),inset_0_2.5px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)] space-y-6">
       
-      {/* Pipeline Header Bar & Health Telemetry */}
+      {/* Clean Pipeline Header Bar & Health Telemetry */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow-[0_6px_16px_rgba(59,130,246,0.20),inset_0_2px_3px_rgba(255,255,255,1)] border border-white flex items-center justify-center">
@@ -210,19 +233,19 @@ export const AIPipelineTimeline = ({
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="font-display font-extrabold text-lg text-[#0F172A]">
-                End-to-End Medical AI Workflow Connected Pipeline
+                NeuroDxNet Processing Pipeline
               </h2>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#DCFCE7] text-[#15803D] border border-[#86EFAC] uppercase tracking-wider">
-                Siemens / GE Standard
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE] uppercase tracking-wider">
+                Clinical Research Workflow
               </span>
             </div>
             <p className="text-xs text-[#475569] font-semibold mt-0.5">
-              Interactive clinical execution graph, per-stage timings & operational verification
+              Continuous connected medical AI execution graph, per-stage timings & operational logs
             </p>
           </div>
         </div>
 
-        {/* Pipeline Health Summary Badges */}
+        {/* Health Telemetry Badges */}
         <div className="flex flex-wrap items-center gap-2">
           <div className="px-3.5 py-1.5 rounded-full bg-[#DCFCE7] border border-[#86EFAC] text-[#15803D] text-xs font-extrabold flex items-center space-x-1.5 shadow-2xs">
             <ShieldCheck className="w-4 h-4 text-[#22C55E]" />
@@ -231,7 +254,7 @@ export const AIPipelineTimeline = ({
 
           <div className="px-3.5 py-1.5 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-extrabold flex items-center space-x-1.5 shadow-2xs">
             <Clock className="w-4 h-4 text-[#3B82F6]" />
-            <span>Total Duration: <strong className="font-mono">{totalRuntimeMs} ms</strong></span>
+            <span>Total Time: <strong className="font-mono">{totalRuntimeMs} ms</strong></span>
           </div>
 
           <div className="px-3.5 py-1.5 rounded-full bg-[#F8FAFC] border border-slate-200 text-[#0F172A] text-xs font-extrabold">
@@ -240,39 +263,47 @@ export const AIPipelineTimeline = ({
         </div>
       </div>
 
-      {/* Clinical Health System Status Pills Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-bold">
-        <div className="p-3 rounded-[20px] bg-[#F8FAFC] border border-slate-200 flex items-center justify-between">
-          <span className="text-[#64748B]">Image Quality Index:</span>
-          <span className="text-[#22C55E] font-extrabold">{qualityScore}/100</span>
+      {/* Execution Metrics Summary Panel */}
+      <div className="p-4 rounded-[24px] bg-[#F8FAFC] border border-slate-200/90 grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs font-bold">
+        <div className="p-3 rounded-[18px] bg-white border border-slate-200 text-center">
+          <span className="text-[#64748B] block text-[10px] uppercase tracking-wider">Total Time</span>
+          <span className="text-sm font-mono font-extrabold text-[#3B82F6] block mt-0.5">{totalRuntimeMs} ms</span>
         </div>
-        <div className="p-3 rounded-[20px] bg-[#F8FAFC] border border-slate-200 flex items-center justify-between">
-          <span className="text-[#64748B]">Inference Engine:</span>
-          <span className="text-[#3B82F6] font-extrabold">Healthy</span>
+
+        <div className="p-3 rounded-[18px] bg-white border border-slate-200 text-center">
+          <span className="text-[#64748B] block text-[10px] uppercase tracking-wider">Fastest Stage</span>
+          <span className="text-xs font-mono font-bold text-[#22C55E] block mt-0.5">Confidence (2 ms)</span>
         </div>
-        <div className="p-3 rounded-[20px] bg-[#F8FAFC] border border-slate-200 flex items-center justify-between">
-          <span className="text-[#64748B]">Grad-CAM Heatmap:</span>
-          <span className="text-[#8B5CF6] font-extrabold">Generated</span>
+
+        <div className="p-3 rounded-[18px] bg-white border border-slate-200 text-center">
+          <span className="text-[#64748B] block text-[10px] uppercase tracking-wider">Longest Stage</span>
+          <span className="text-xs font-mono font-bold text-[#F59E0B] block mt-0.5">NeuroDxNet (47 ms)</span>
         </div>
-        <div className="p-3 rounded-[20px] bg-[#F8FAFC] border border-slate-200 flex items-center justify-between">
-          <span className="text-[#64748B]">Clinical PDF Report:</span>
-          <span className="text-[#15803D] font-extrabold">Ready</span>
+
+        <div className="p-3 rounded-[18px] bg-white border border-slate-200 text-center">
+          <span className="text-[#64748B] block text-[10px] uppercase tracking-wider">Avg Stage Time</span>
+          <span className="text-xs font-mono font-bold text-[#8B5CF6] block mt-0.5">11.5 ms</span>
+        </div>
+
+        <div className="p-3 rounded-[18px] bg-[#DCFCE7] border border-[#86EFAC] text-center col-span-2 sm:col-span-1">
+          <span className="text-[#15803D] block text-[10px] uppercase tracking-wider">Status</span>
+          <span className="text-xs font-bold text-[#15803D] block mt-0.5">Completed Successfully</span>
         </div>
       </div>
 
-      {/* Connected Connected Pipeline Visual Stage Graph */}
-      <div className="relative pt-2 pb-4 overflow-x-auto">
-        <div className="min-w-[1000px] flex items-center justify-between relative">
+      {/* Continuous Connected Pipeline Graph */}
+      <div className="relative pt-4 pb-6 overflow-x-auto">
+        <div className="min-w-[1050px] flex items-center justify-between relative px-4">
           
-          {/* Background Connecting Line */}
-          <div className="absolute top-1/2 left-6 right-6 h-1 bg-slate-200 -translate-y-1/2 z-0 rounded-full" />
+          {/* Continuous Background Track Line */}
+          <div className="absolute top-[28px] left-10 right-10 h-1.5 bg-slate-200 -translate-y-1/2 z-0 rounded-full" />
           
-          {/* Active Progress Line */}
+          {/* Animated Flow Connector Gradient Line */}
           <motion.div
-            className="absolute top-1/2 left-6 h-1 bg-gradient-to-r from-[#22C55E] via-[#3B82F6] to-[#60A5FA] -translate-y-1/2 z-0 rounded-full"
+            className="absolute top-[28px] left-10 h-1.5 bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#16A34A] -translate-y-1/2 z-0 rounded-full"
             initial={{ width: '0%' }}
             animate={{ width: `${Math.min(100, (activeStageIndex / stages.length) * 100)}%` }}
-            transition={{ duration: 1, ease: 'easeInOut' }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
           />
 
           {stages.map((stage, idx) => {
@@ -285,55 +316,77 @@ export const AIPipelineTimeline = ({
             return (
               <div key={stage.id} className="relative z-10 flex flex-col items-center group">
                 
-                {/* Stage Connected Node Circle Button */}
+                {/* Node Button with Functional Color Coding */}
                 <button
                   type="button"
                   onClick={() => toggleStageExpand(stage.id)}
                   onMouseEnter={() => setHoveredStageId(stage.id)}
                   onMouseLeave={() => setHoveredStageId(null)}
-                  className={`w-11 h-11 rounded-full flex items-center justify-center border-2 transition-all cursor-pointer select-none shadow-md ${
+                  className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 cursor-pointer select-none shadow-md ${
                     isCompleted
-                      ? 'bg-[#22C55E] border-white text-white shadow-[0_4px_14px_rgba(34,197,94,0.4)] scale-100 hover:scale-110'
+                      ? `${stage.color.bg} ${stage.color.border} ${stage.color.text} shadow-[0_4px_14px_rgba(0,0,0,0.08)] hover:scale-110`
                       : isCurrent
                       ? 'bg-[#3B82F6] border-white text-white shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-pulse scale-110 ring-4 ring-[#3B82F6]/30'
                       : 'bg-white border-slate-300 text-slate-400 hover:border-[#3B82F6] hover:text-[#3B82F6]'
                   } ${isSelected ? 'ring-4 ring-[#3B82F6] scale-110' : ''}`}
                 >
                   {isCompleted ? (
-                    <Check className="w-5 h-5 stroke-[3]" />
+                    <StageIcon className="w-5 h-5" />
                   ) : isCurrent ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Loader2 className="w-5 h-5 animate-spin text-white" />
                   ) : (
                     <StageIcon className="w-4 h-4" />
                   )}
                 </button>
 
-                {/* Stage Node Text Labels */}
-                <div className="mt-2 text-center max-w-[90px]">
-                  <span className={`block text-[11px] font-extrabold leading-tight ${isCompleted ? 'text-[#0F172A]' : isCurrent ? 'text-[#2563EB]' : 'text-[#64748B]'}`}>
+                {/* Stage Text Information with Visual Hierarchy */}
+                <div className="mt-2.5 text-center max-w-[105px]">
+                  <span className={`block text-xs font-extrabold leading-tight ${isCompleted ? 'text-[#0F172A]' : isCurrent ? 'text-[#2563EB]' : 'text-[#64748B]'}`}>
                     {stage.title}
                   </span>
-                  <span className="block text-[9px] font-bold text-[#64748B] mt-0.5 font-mono">
+                  
+                  <span className="block text-[10px] font-mono font-bold text-[#2563EB] mt-0.5">
                     {stage.timeMs} ms
+                  </span>
+
+                  <span className="block text-[9px] font-semibold text-[#64748B] truncate mt-0.5">
+                    {stage.shortDesc}
+                  </span>
+
+                  {/* Status Colored Pill Badge */}
+                  <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold border ${
+                    isCompleted ? 'bg-[#DCFCE7] text-[#15803D] border-[#86EFAC]' : isCurrent ? 'bg-[#DBEAFE] text-[#1D4ED8] border-[#BFDBFE]' : 'bg-[#F1F5F9] text-[#64748B] border-slate-200'
+                  }`}>
+                    {isCompleted ? 'Completed' : isCurrent ? 'Running...' : 'Pending'}
                   </span>
                 </div>
 
-                {/* Hover Tooltip Overlay */}
+                {/* Hover Tooltip Overlay with Operations & Output Details */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                      className="absolute bottom-full mb-3 w-56 p-3 rounded-[20px] bg-[#0F172A] text-white text-[11px] font-bold shadow-xl border border-slate-700 z-30 pointer-events-none space-y-1.5"
+                      className="absolute bottom-full mb-3 w-64 p-3.5 rounded-[22px] bg-[#0F172A] text-white text-xs font-bold shadow-xl border border-slate-700 z-30 pointer-events-none space-y-2"
                     >
-                      <div className="flex items-center justify-between border-b border-slate-700 pb-1">
-                        <span className="text-[#3B82F6] font-extrabold">{stage.title}</span>
-                        <span className="text-emerald-400 font-mono">{stage.timeMs} ms</span>
+                      <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
+                        <span className="text-[#3B82F6] font-extrabold text-xs">{stage.title}</span>
+                        <span className="text-emerald-400 font-mono font-bold text-[11px]">{stage.timeMs} ms</span>
                       </div>
-                      <p className="text-slate-300 font-normal leading-tight">{stage.shortDesc}</p>
-                      <div className="text-[10px] text-slate-400">
-                        <span>Input: <strong className="text-slate-200">{stage.input}</strong></span>
+
+                      <div className="space-y-1 text-[11px] text-slate-300">
+                        <span className="text-slate-400 font-semibold uppercase text-[9px] block">Operations Performed:</span>
+                        {stage.operations.slice(0, 3).map((op, idx) => (
+                          <div key={idx} className="flex items-center space-x-1.5">
+                            <CheckCircle2 className="w-3 h-3 text-[#22C55E] flex-shrink-0" />
+                            <span className="truncate">{op}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-1.5 border-t border-slate-800 text-[10px] text-slate-400">
+                        <span>Output: <strong className="text-sky-300 font-mono">{stage.output}</strong></span>
                       </div>
                     </motion.div>
                   )}
@@ -344,7 +397,43 @@ export const AIPipelineTimeline = ({
         </div>
       </div>
 
-      {/* Expandable Detailed Operational Drawer Panel */}
+      {/* Visually Grouped Preprocessing Sub-Operations Highlight Box */}
+      <div className="p-4 rounded-[24px] bg-gradient-to-r from-[#F3E8FF]/80 to-[#EFF6FF]/80 border-2 border-[#8B5CF6]/50 shadow-2xs space-y-3">
+        <div className="flex items-center justify-between border-b border-[#DDD6FE] pb-2">
+          <span className="text-xs font-extrabold text-[#6B21A8] uppercase tracking-wider flex items-center gap-1.5">
+            <Sliders className="w-4 h-4 text-[#8B5CF6]" />
+            <span>Grouped Preprocessing Operations (Medical Image Processing Stage)</span>
+          </span>
+          <span className="text-[11px] font-mono font-bold text-[#8B5CF6] bg-white px-3 py-0.5 rounded-full border border-[#DDD6FE]">
+            31 ms Total
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-xs font-bold">
+          <div className="p-2.5 rounded-xl bg-white border border-[#DDD6FE] flex items-center justify-between shadow-2xs">
+            <span className="text-[#0F172A] truncate">✓ Quality Check</span>
+            <span className="text-[#8B5CF6] font-mono text-[11px]">2 ms</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-white border border-[#DDD6FE] flex items-center justify-between shadow-2xs">
+            <span className="text-[#0F172A] truncate">✓ Gaussian Denoise</span>
+            <span className="text-[#8B5CF6] font-mono text-[11px]">8 ms</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-white border border-[#DDD6FE] flex items-center justify-between shadow-2xs">
+            <span className="text-[#0F172A] truncate">✓ CLAHE Contrast</span>
+            <span className="text-[#8B5CF6] font-mono text-[11px]">10 ms</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-white border border-[#DDD6FE] flex items-center justify-between shadow-2xs">
+            <span className="text-[#0F172A] truncate">✓ Brain ROI Crop</span>
+            <span className="text-[#8B5CF6] font-mono text-[11px]">6 ms</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-white border border-[#DDD6FE] flex items-center justify-between shadow-2xs col-span-2 sm:col-span-1">
+            <span className="text-[#0F172A] truncate">✓ Normalization</span>
+            <span className="text-[#8B5CF6] font-mono text-[11px]">5 ms</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Expandable Operational Verification Details Drawer */}
       <AnimatePresence>
         {selectedStageId && (
           <motion.div
@@ -375,7 +464,7 @@ export const AIPipelineTimeline = ({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <span className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider block">
-                        Verified Clinical Operations
+                        Verified Operations
                       </span>
                       <div className="space-y-1.5 text-xs font-bold text-[#334155]">
                         {stage.operations.map((op, idx) => (
