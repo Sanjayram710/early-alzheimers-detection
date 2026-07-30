@@ -47,8 +47,12 @@ class InferenceService:
         predictor = get_predictor()
         res = predictor.predict(file_bytes, generate_gradcam=True)
 
-        # 3. Save Heatmap and Overlay images if present
-        heatmap_path_str, overlay_path_str = None, None
+        # 3. Save Processed, Heatmap and Overlay images if present
+        processed_path_str, heatmap_path_str, overlay_path_str = None, None, None
+        if res.get("processed_base64"):
+            _, proc_path = storage_service.save_base64_image(res["processed_base64"], prefix="processed")
+            processed_path_str = str(proc_path)
+
         if res.get("heatmap_base64"):
             _, hm_path = storage_service.save_base64_image(res["heatmap_base64"], prefix="heatmap")
             heatmap_path_str = str(hm_path)
@@ -66,8 +70,10 @@ class InferenceService:
             symptoms=symptoms,
             user_id=current_user.id if current_user else None,
             original_image_path=str(orig_path),
+            processed_image_path=processed_path_str,
             heatmap_path=heatmap_path_str,
             overlay_path=overlay_path_str,
+            preprocessing_metadata=res.get("preprocessing_metadata"),
             predicted_class=res["predicted_class"],
             confidence=res["confidence"],
             class_probabilities=res["class_probabilities"],
@@ -79,11 +85,15 @@ class InferenceService:
         await db.commit()
         await db.refresh(prediction_record)
 
-        # Attach transient base64 fields for immediate API response
+        # Attach transient base64 fields & URLs for immediate API response
         prediction_record.original_base64 = res.get("original_base64")
+        prediction_record.processed_base64 = res.get("processed_base64")
         prediction_record.heatmap_base64 = res.get("heatmap_base64")
         prediction_record.overlay_base64 = res.get("overlay_base64")
         prediction_record.original_image_url = f"/uploads/{Path(orig_path).name}"
+        if processed_path_str:
+            prediction_record.processed_image_url = f"/uploads/{Path(processed_path_str).name}"
+        prediction_record.preprocessing_metadata = res.get("preprocessing_metadata")
         prediction_record.medical_disclaimer = res["medical_disclaimer"]
 
         return prediction_record

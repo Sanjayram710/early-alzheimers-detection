@@ -1,6 +1,7 @@
 import logging
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base
+from sqlalchemy import text
 
 from backend.utils.config import settings
 
@@ -33,9 +34,6 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 
-from sqlalchemy import text
-
-
 async def init_db():
     """Creates database tables on startup if they do not exist and updates schema if needed."""
     async with engine.begin() as conn:
@@ -52,6 +50,8 @@ async def init_db():
                         ("patient_age", "INTEGER"),
                         ("blood_group", "VARCHAR(10)"),
                         ("symptoms", "JSON"),
+                        ("processed_image_path", "VARCHAR(500)"),
+                        ("preprocessing_metadata", "JSON"),
                     ]
                     for col_name, col_type in col_defs:
                         if col_name not in existing_cols:
@@ -62,4 +62,3 @@ async def init_db():
 
         await conn.run_sync(migrate_schema)
     logger.info("Database tables initialized successfully.")
-

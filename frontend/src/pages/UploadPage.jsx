@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, FileImage, AlertCircle, ArrowRight, Loader2, User, Calendar, Droplet, Activity, CheckSquare, Square, FileText, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Upload, FileImage, AlertCircle, ArrowRight, Loader2, User, Calendar, Droplet, Activity, CheckSquare, Square, FileText, Sparkles, Sliders, CheckCircle2, ShieldCheck, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '../services/api';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
@@ -34,9 +34,9 @@ export const UploadPage = () => {
   const [patientId, setPatientId] = useState('');
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [customSymptom, setCustomSymptom] = useState('');
-  const [demoLoadedBanner, setDemoLoadedBanner] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [previewTab, setPreviewTab] = useState('original'); // 'original' or 'dip'
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -64,7 +64,6 @@ export const UploadPage = () => {
     setPatientId(demoObj.patientId);
     setSelectedSymptoms(demoObj.symptoms || []);
     setCustomSymptom(demoObj.notes || '');
-    setDemoLoadedBanner(`Auto-filled: ${demoObj.name} (${demoObj.patientId}) - ${demoObj.age} yrs, ${demoObj.bloodGroup}`);
   };
 
   const handleRandomDemo = () => {
@@ -132,32 +131,12 @@ export const UploadPage = () => {
         <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-[#0F172A] tracking-tight">
           Patient Intake & Brain MRI Upload
         </h1>
-        <p className="text-[#475569] text-sm sm:text-base font-semibold">
+        <p className="text-[#334155] text-sm sm:text-base font-bold">
           Enter patient details, select observed symptoms, and upload MRI scan for AI analysis
         </p>
       </div>
 
       <DisclaimerBanner />
-
-      {demoLoadedBanner && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="p-4 rounded-[20px] bg-[#DCFCE7] border border-[#86EFAC] text-[#15803D] text-xs font-bold flex items-center justify-between shadow-sm"
-        >
-          <div className="flex items-center space-x-2">
-            <CheckCircle2 className="w-4 h-4 text-[#22C55E]" />
-            <span>{demoLoadedBanner}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setDemoLoadedBanner(null)}
-            className="text-xs text-[#15803D] underline ml-4 hover:opacity-80 font-bold cursor-pointer"
-          >
-            Dismiss
-          </button>
-        </motion.div>
-      )}
 
       {error && (
         <div className="p-4 rounded-[22px] bg-[#FEE2E2] border border-[#FCA5A5] text-[#B91C1C] text-sm flex items-center space-x-3 shadow-md">
@@ -167,7 +146,7 @@ export const UploadPage = () => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
-
+        
         {/* Section 1: Patient General Demographics */}
         <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
@@ -268,10 +247,11 @@ export const UploadPage = () => {
                   key={symptom}
                   type="button"
                   onClick={() => toggleSymptom(symptom)}
-                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border cursor-pointer ${isChecked
+                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border cursor-pointer ${
+                    isChecked
                       ? 'bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] border-[#3B82F6] text-[#1D4ED8] font-extrabold shadow-[inset_0_2px_3px_rgba(255,255,255,1),0_4px_12px_rgba(59,130,246,0.15)]'
                       : 'bg-white/90 backdrop-blur-[15px] border-slate-200 text-[#0F172A] font-bold shadow-[0_4px_12px_rgba(0,0,0,0.02),inset_0_1.5px_2px_rgba(255,255,255,0.9)] hover:bg-[#EFF6FF] hover:border-[#3B82F6]/50'
-                    }`}
+                  }`}
                 >
                   {isChecked ? (
                     <CheckSquare className="w-5 h-5 text-[#3B82F6] flex-shrink-0 mt-0.5" />
@@ -299,7 +279,7 @@ export const UploadPage = () => {
           </div>
         </GlassCard>
 
-        {/* Section 3: MRI Scan Upload */}
+        {/* Section 3: MRI Scan Upload & DIP Preprocessing */}
         <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
           <div className="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
             <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow-[0_6px_16px_rgba(59,130,246,0.18),inset_0_2px_3px_rgba(255,255,255,1)] border border-white flex items-center justify-center">
@@ -323,9 +303,15 @@ export const UploadPage = () => {
             />
 
             {preview ? (
-              <div className="relative z-10 space-y-3">
-                <img src={preview} alt="MRI Preview" className="max-h-56 mx-auto rounded-[24px] border border-white object-contain shadow-lg" />
-                <p className="text-xs font-extrabold text-[#3B82F6]">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>
+              <div className="relative z-10 space-y-4">
+                <img src={preview} alt="MRI Preview" className="max-h-56 mx-auto rounded-[24px] border-2 border-[#3B82F6]/40 object-contain shadow-lg" />
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#DCFCE7] border border-[#86EFAC] text-[#15803D] text-xs font-extrabold">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>File Validated & DIP Ready</span>
+                  </div>
+                  <span className="text-xs font-mono font-bold text-[#0F172A]">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                </div>
               </div>
             ) : (
               <div className="relative z-10 space-y-4">
@@ -336,14 +322,40 @@ export const UploadPage = () => {
                   <span className="block text-base font-extrabold text-[#0F172A]">Click or drag brain MRI scan here</span>
                   <span className="block text-xs text-[#475569] font-semibold mt-1">DICOM, NIfTI, PNG or JPG files up to 25MB</span>
                 </div>
-                {file && (
-                  <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#DBEAFE] border border-white text-[#1D4ED8] text-xs font-mono font-bold shadow-sm">
-                    <FileImage className="w-4 h-4 text-[#3B82F6]" />
-                    <span>{file.name}</span>
-                  </div>
-                )}
               </div>
             )}
+          </div>
+
+          {/* Digital Image Processing (DIP) Pipeline Features Summary */}
+          <div className="mt-6 p-4 rounded-[24px] bg-[#F8FAFC] border border-slate-200/80 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider flex items-center gap-1.5">
+                <Sliders className="w-4 h-4 text-[#3B82F6]" />
+                <span>Automated DIP Preprocessing Stages</span>
+              </span>
+              <span className="text-[11px] font-bold text-[#2563EB] bg-[#DBEAFE] px-2.5 py-0.5 rounded-full border border-[#BFDBFE]">
+                Active Pipeline
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold text-[#334155]">
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#22C55E]" />
+                <span>Quality Metric Assessment</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#3B82F6]" />
+                <span>Gaussian Denoising</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#8B5CF6]" />
+                <span>CLAHE Enhancement</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#F59E0B]" />
+                <span>Brain ROI Bounding Crop</span>
+              </div>
+            </div>
           </div>
         </GlassCard>
 
@@ -358,11 +370,11 @@ export const UploadPage = () => {
           {loading ? (
             <div className="flex items-center space-x-2">
               <Loader2 className="w-5 h-5 animate-spin text-white" />
-              <span>Processing Patient Data & Analyzing MRI...</span>
+              <span>Executing DIP Pipeline & NeuroDxNet Inference...</span>
             </div>
           ) : (
             <div className="flex items-center space-x-2">
-              <span>Run AI Prediction & Grad-CAM Analysis</span>
+              <span>Run DIP Preprocessing & AI Analysis</span>
               <ArrowRight className="w-5 h-5 text-white" />
             </div>
           )}

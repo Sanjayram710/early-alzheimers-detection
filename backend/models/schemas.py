@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -55,9 +55,12 @@ class PredictionResponse(BaseModel):
     heatmap_base64: Optional[str] = None
     overlay_base64: Optional[str] = None
     original_base64: Optional[str] = None
+    processed_base64: Optional[str] = None
     original_image_url: Optional[str] = None
+    processed_image_url: Optional[str] = None
     heatmap_url: Optional[str] = None
     overlay_url: Optional[str] = None
+    preprocessing_metadata: Optional[Dict[str, Any]] = None
     medical_disclaimer: str
     created_at: datetime
 
@@ -74,6 +77,7 @@ class PredictionHistoryItem(BaseModel):
     predicted_class: str
     confidence: float
     model_version: str
+    preprocessing_metadata: Optional[Dict[str, Any]] = None
     created_at: datetime
 
     class Config:
@@ -131,3 +135,4 @@ class DashboardStatsResponse(BaseModel):
     average_confidence: float
     recent_predictions: List[PredictionHistoryItem]
     accuracy_metrics: Dict[str, float]
+    dip_summary: Optional[Dict[str, Any]] = None

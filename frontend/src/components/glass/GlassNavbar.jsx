@@ -24,9 +24,9 @@ export const GlassNavbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="sticky top-4 z-50 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-4 z-50 max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
       {/* Inflated Claymorphism Capsule Outer Shell */}
-      <div className="bg-white/94 backdrop-blur-[25px] -webkit-backdrop-blur-[25px] border-2 border-[#3B82F6] rounded-full px-4 sm:px-6 py-2.5 shadow-[0_16px_36px_rgba(59,130,246,0.18),0_4px_12px_rgba(0,0,0,0.03),inset_0_2.5px_3px_0_rgba(255,255,255,1),inset_0_-3px_6px_0_rgba(219,234,254,0.7)] flex items-center justify-between relative overflow-hidden">
+      <div className="bg-white/94 backdrop-blur-[25px] -webkit-backdrop-blur-[25px] border-2 border-[#3B82F6] rounded-full px-3 sm:px-4 lg:px-6 py-2.5 shadow-[0_16px_36px_rgba(59,130,246,0.18),0_4px_12px_rgba(0,0,0,0.03),inset_0_2.5px_3px_0_rgba(255,255,255,1),inset_0_-3px_6px_0_rgba(219,234,254,0.7)] flex items-center justify-between relative overflow-hidden">
         
         {/* Top Glare Reflection */}
         <div 
@@ -36,28 +36,28 @@ export const GlassNavbar = () => {
           }}
         />
 
-        {/* Brand Logo Left */}
-        <Link to="/" className="relative z-10 flex items-center space-x-3 group flex-shrink-0">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#3B82F6] to-[#60A5FA] border border-white p-0.5 shadow-[0_6px_16px_rgba(59,130,246,0.30),inset_0_1.5px_2px_rgba(255,255,255,0.8)] group-hover:scale-105 transition-transform flex items-center justify-center">
-            <Brain className="w-5 h-5 text-white" />
+        {/* Brand Logo & Project Name Left */}
+        <Link to="/" className="relative z-10 flex items-center space-x-2 group flex-shrink-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full bg-gradient-to-tr from-[#3B82F6] to-[#60A5FA] border border-white p-0.5 shadow-[0_6px_16px_rgba(59,130,246,0.30),inset_0_1.5px_2px_rgba(255,255,255,0.8)] group-hover:scale-105 transition-transform flex items-center justify-center">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
-          <div className="hidden sm:block">
-            <span className="font-display font-extrabold text-base text-[#0F172A] tracking-tight uppercase flex items-center gap-1">
+          <div className="flex flex-col justify-center">
+            <span className="font-display font-extrabold text-xs sm:text-sm lg:text-base text-[#0F172A] tracking-tight uppercase flex items-center gap-1 leading-none">
               Alzheimer's <span className="text-[#3B82F6]">AI</span>
             </span>
-            <span className="block text-[8px] font-extrabold text-[#64748B] tracking-wider uppercase">Neuro-Diagnostic Medical System</span>
+            <span className="hidden md:block text-[8px] font-extrabold text-[#64748B] tracking-wider uppercase mt-0.5">Neuro-Diagnostic System</span>
           </div>
         </Link>
 
-        {/* Claymorphism Navigation Segment Control - Curved Rectangle with Blue Layout Line */}
-        <nav className="relative z-10 hidden xl:flex items-center bg-[#F1F5F9]/90 border-2 border-[#3B82F6] rounded-full p-1.5 shadow-[0_0_14px_rgba(59,130,246,0.25),inset_0_1.5px_2px_rgba(255,255,255,0.9)]">
+        {/* Claymorphism Navigation Segment Control - Visible on lg screens (1024px+) for Edge, Chrome, Brave */}
+        <nav className="relative z-10 hidden lg:flex items-center bg-[#F1F5F9]/90 border-2 border-[#3B82F6] rounded-full p-1 shadow-[0_0_14px_rgba(59,130,246,0.25),inset_0_1.5px_2px_rgba(255,255,255,0.9)]">
           {navLinks.map((link) => {
             const active = isActive(link.path);
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className="relative px-4 py-2 rounded-full text-xs font-extrabold transition-all duration-200 select-none flex-shrink-0"
+                className="relative px-2.5 lg:px-3 py-1.5 rounded-full text-[11px] lg:text-xs font-extrabold transition-all duration-200 select-none flex-shrink-0"
               >
                 {active && (
                   <motion.div
@@ -75,13 +75,13 @@ export const GlassNavbar = () => {
         </nav>
 
         {/* Right Section: Notification, Dark Mode Toggle & Profile */}
-        <div className="relative z-10 hidden lg:flex items-center space-x-2.5 flex-shrink-0">
+        <div className="relative z-10 hidden sm:flex items-center space-x-1.5 lg:space-x-2 flex-shrink-0">
           
           {/* Notification Icon */}
           <button
             type="button"
             title="Notifications"
-            className="w-9 h-9 rounded-full bg-[#F1F5F9]/90 border border-white flex items-center justify-center text-[#475569] hover:bg-white hover:text-[#3B82F6] transition-all shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)] relative cursor-pointer"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#F1F5F9]/90 border border-white flex items-center justify-center text-[#475569] hover:bg-white hover:text-[#3B82F6] transition-all shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)] relative cursor-pointer"
           >
             <Bell className="w-4 h-4 text-[#475569]" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#EF4444] animate-pulse" />
@@ -92,22 +92,22 @@ export const GlassNavbar = () => {
             type="button"
             onClick={() => setIsDarkMode(!isDarkMode)}
             title="Toggle Theme"
-            className="w-9 h-9 rounded-full bg-[#F1F5F9]/90 border border-white flex items-center justify-center text-[#475569] hover:bg-white hover:text-[#8B5CF6] transition-all shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)] cursor-pointer"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#F1F5F9]/90 border border-white flex items-center justify-center text-[#475569] hover:bg-white hover:text-[#8B5CF6] transition-all shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)] cursor-pointer"
           >
             {isDarkMode ? <Sun className="w-4 h-4 text-[#F59E0B]" /> : <Moon className="w-4 h-4 text-[#475569]" />}
           </button>
 
           {/* User Status Pill */}
-          <div className="bg-[#F1F5F9]/90 border border-white rounded-full px-3.5 py-1.5 flex items-center space-x-2 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)]">
+          <div className="bg-[#F1F5F9]/90 border border-white rounded-full px-2.5 sm:px-3.5 py-1.5 flex items-center space-x-1.5 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)]">
             <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E] animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
-            <span className="text-xs font-extrabold text-[#0F172A] tracking-wide">
+            <span className="text-[11px] sm:text-xs font-extrabold text-[#0F172A] tracking-wide max-w-[120px] sm:max-w-[140px] truncate">
               {user ? user.full_name : 'System Administrator'}
             </span>
           </div>
         </div>
 
-        {/* Mobile Menu Toggle Button */}
-        <div className="relative z-10 xl:hidden">
+        {/* Mobile / Tablet Menu Toggle Button */}
+        <div className="relative z-10 lg:hidden">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-full bg-[#F1F5F9]/90 border border-white text-[#0F172A] shadow-sm cursor-pointer"
@@ -124,7 +124,7 @@ export const GlassNavbar = () => {
           initial={{ opacity: 0, y: -10, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.98 }}
-          className="xl:hidden mt-3 bg-white/95 backdrop-blur-[20px] rounded-[28px] p-4 space-y-1.5 border border-white shadow-[0_16px_36px_rgba(59,130,246,0.14)]"
+          className="lg:hidden mt-3 bg-white/95 backdrop-blur-[20px] rounded-[28px] p-4 space-y-1.5 border-2 border-[#3B82F6] shadow-[0_16px_36px_rgba(59,130,246,0.18)]"
         >
           {navLinks.map((link) => (
             <Link
