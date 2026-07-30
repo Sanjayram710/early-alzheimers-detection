@@ -249,40 +249,7 @@ The `scripts/seed_db.py` command populates the system with initial demo accounts
 
 ---
 
-## ⚙️ Environment Configuration (`.env`)
 
-Configuration key overview in `.env`:
-
-```env
-# Application Settings
-APP_NAME="Alzheimer's Disease Early Detection AI"
-APP_ENV=development
-DEBUG=True
-PORT=8000
-HOST=0.0.0.0
-
-# Database Configuration (SQLite default for zero-config local dev)
-DATABASE_URL=sqlite+aiosqlite:///./alzheimers_ai.db
-
-# Authentication & JWT Security
-SECRET_KEY=supersecretjwtkey_change_in_production_32bytes_min
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=1440
-
-# Storage Directories & Upload Limits
-UPLOAD_DIR=./uploads
-REPORTS_DIR=./uploads/reports
-MAX_UPLOAD_SIZE_MB=25
-
-# ML Model Settings
-DEFAULT_MODEL_NAME=custom_cnn
-MODEL_WEIGHTS_DIR=./ml/saved_models
-IMAGE_SIZE=224
-CLASS_NAMES=["Non Demented", "Very Mild Demented", "Mild Demented", "Moderate Demented"]
-
-# CORS Allowed Origins
-CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://127.0.0.1:5173
-```
 
 ---
 
