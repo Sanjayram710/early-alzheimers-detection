@@ -30,10 +30,10 @@ export const DashboardPage = () => {
   if (loading && !stats) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-4">
-        <div className="w-16 h-16 rounded-full bg-white/60 backdrop-blur-[20px] border border-white/60 p-2 shadow-[0_10px_30px_rgba(109,94,245,0.2)] flex items-center justify-center animate-bounce">
-          <Brain className="w-8 h-8 text-[#6D5EF5]" />
+        <div className="w-16 h-16 rounded-full bg-white p-2 shadow-[0_10px_30px_rgba(59,130,246,0.2),inset_0_2px_4px_rgba(255,255,255,1)] flex items-center justify-center animate-bounce border border-white">
+          <Brain className="w-8 h-8 text-[#3B82F6]" />
         </div>
-        <p className="text-sm font-bold text-[#6B7280]">Loading Glassmorphism Medical Telemetry...</p>
+        <p className="text-sm font-bold text-[#475569]">Loading Claymorphism Medical Telemetry...</p>
       </div>
     );
   }
@@ -41,8 +41,8 @@ export const DashboardPage = () => {
   const classDist = stats?.class_distribution || {};
   const chartData = Object.entries(classDist).map(([name, count]) => ({ name, count }));
   
-  // High contrast vibrant glass colors
-  const COLORS = ['#22C55E', '#6D5EF5', '#8B5CF6', '#F59E0B'];
+  // Vibrant Clay Palette Colors matching user sample image
+  const COLORS = ['#60A5FA', '#818CF8', '#38BDF8', '#4ADE80'];
 
   return (
     <motion.div
@@ -51,17 +51,17 @@ export const DashboardPage = () => {
       transition={{ duration: 0.5 }}
       className="max-w-[1440px] mx-auto px-4 sm:px-8 py-8 space-y-8"
     >
-      {/* Hero Glass Banner Container */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/55 backdrop-blur-[28px] -webkit-backdrop-blur-[28px] p-8 sm:p-10 rounded-[32px] border border-white/45 shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
+      {/* Hero Inflated Clay Container Banner */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/92 backdrop-blur-[20px] p-8 sm:p-10 rounded-[32px] border border-white shadow-[0_20px_40px_rgba(59,130,246,0.10),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]">
         <div>
-          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#EEF4FF]/90 border border-white/60 text-[#6D5EF5] text-xs font-extrabold uppercase tracking-wider mb-3.5 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-[#6D5EF5]" />
+          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-extrabold uppercase tracking-wider mb-3.5 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8]" />
             <span>Apple VisionOS Inspired Medical AI Dashboard</span>
           </div>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-[48px] font-extrabold text-[#111827] tracking-tight leading-tight">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-[44px] font-extrabold text-[#0F172A] tracking-tight leading-tight">
             System Analytics Dashboard
           </h1>
-          <p className="text-[#6B7280] text-base font-semibold mt-1.5">
+          <p className="text-[#475569] text-base font-semibold mt-1.5 max-w-2xl">
             Real-time MRI process telemetry, deep CNN model metrics, and disease stage distributions.
           </p>
         </div>
@@ -71,7 +71,7 @@ export const DashboardPage = () => {
         </GlassButton>
       </div>
 
-      {/* 12-Column Responsive Grid for Glass Stat Cards */}
+      {/* 12-Column Responsive Grid for Clay Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <GlassStatCard
           title="Total MRIs Analyzed"
@@ -80,16 +80,16 @@ export const DashboardPage = () => {
           icon={Upload}
           trend="↑ +12.4%"
           trendPositive={true}
-          color="blue"
+          color="purple"
         />
         <GlassStatCard
           title="Active Model Version"
-          value={stats?.active_model_version || 'NeuroDxNet'}
-          subtitle="Convolutional Backbone"
+          value={stats?.active_model_version || 'NeuroD...'}
+          subtitle="Convolutional Bac..."
           icon={Brain}
           trend="Production v1.4"
-          trendPositive={true}
-          color="purple"
+          trendPositive={false}
+          color="blue"
         />
         <GlassStatCard
           title="Mean Confidence"
@@ -106,15 +106,15 @@ export const DashboardPage = () => {
           subtitle="Benchmark validation"
           icon={CheckCircle}
           trend="High Precision"
-          trendPositive={true}
+          trendPositive={false}
           color="amber"
         />
       </div>
 
-      {/* 12-Column Grid for Glass Chart Cards */}
+      {/* 12-Column Grid for Clay Chart Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Class Distribution Bar Chart (Col span 7) */}
+        {/* Class Distribution Bar Chart */}
         <div className="lg:col-span-7">
           <GlassChartCard
             title="Disease Stage Class Distribution"
@@ -125,39 +125,38 @@ export const DashboardPage = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="glassBarGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#6D5EF5" stopOpacity={0.9} />
-                      <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.6} />
+                    <linearGradient id="clayBarGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.9} />
+                      <stop offset="100%" stopColor="#60A5FA" stopOpacity={0.6} />
                     </linearGradient>
                   </defs>
                   <XAxis
                     dataKey="name"
-                    stroke="#6B7280"
+                    stroke="#64748B"
                     fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: '#E2E8F0' }}
+                    axisLine={{ stroke: '#CBD5E1' }}
                     fontFamily="Plus Jakarta Sans"
                   />
                   <YAxis
-                    stroke="#6B7280"
+                    stroke="#64748B"
                     fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: '#E2E8F0' }}
+                    axisLine={{ stroke: '#CBD5E1' }}
                     fontFamily="Plus Jakarta Sans"
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.88)',
-                      backdropFilter: 'blur(20px)',
-                      borderColor: 'rgba(255,255,255,0.7)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      borderColor: 'rgba(255, 255, 255, 1)',
                       borderRadius: '20px',
-                      boxShadow: '0 10px 30px rgba(17,24,39,0.1)',
-                      color: '#111827',
+                      boxShadow: '0 10px 30px rgba(59, 130, 246, 0.15)',
+                      color: '#0F172A',
                       fontWeight: 700,
                     }}
-                    cursor={{ fill: 'rgba(109, 94, 245, 0.08)' }}
+                    cursor={{ fill: 'rgba(59, 130, 246, 0.06)' }}
                   />
-                  <Bar dataKey="count" radius={[14, 14, 4, 4]} fill="url(#glassBarGradient)">
+                  <Bar dataKey="count" radius={[18, 18, 6, 6]} fill="url(#clayBarGradient)">
                     {chartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
@@ -168,7 +167,7 @@ export const DashboardPage = () => {
           </GlassChartCard>
         </div>
 
-        {/* Proportional Distribution Pie Chart (Col span 5) */}
+        {/* Proportional Distribution Pie Chart */}
         <div className="lg:col-span-5">
           <GlassChartCard
             title="Category Ratio Analysis"
@@ -187,20 +186,19 @@ export const DashboardPage = () => {
                     innerRadius={55}
                     outerRadius={90}
                     paddingAngle={6}
-                    label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                    label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
                   >
                     {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#FFFFFF" strokeWidth={3} />
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#FFFFFF" strokeWidth={4} />
                     ))}
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.88)',
-                      backdropFilter: 'blur(20px)',
-                      borderColor: 'rgba(255,255,255,0.7)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      borderColor: 'rgba(255, 255, 255, 1)',
                       borderRadius: '20px',
-                      boxShadow: '0 10px 30px rgba(17,24,39,0.1)',
-                      color: '#111827',
+                      boxShadow: '0 10px 30px rgba(59, 130, 246, 0.15)',
+                      color: '#0F172A',
                       fontWeight: 700,
                     }}
                   />

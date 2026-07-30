@@ -7,11 +7,11 @@ export const GlassTable = ({
 }) => {
   return (
     <div className={`w-full overflow-x-auto ${className}`}>
-      <table className="w-full text-left border-separate border-spacing-y-2.5">
+      <table className="w-full text-left border-separate border-spacing-y-3">
         <thead>
-          <tr className="text-xs font-extrabold text-[#6B7280] uppercase tracking-wider">
+          <tr className="text-xs font-bold text-[#475569] uppercase tracking-[0.05em]">
             {headers.map((header, idx) => (
-              <th key={idx} className="px-5 py-3">
+              <th key={idx} className="px-5 py-3.5 text-[#475569] font-bold tracking-[0.05em] uppercase">
                 {header}
               </th>
             ))}
@@ -31,11 +31,11 @@ export const GlassTableRow = ({ children, className = '', onClick }) => {
       onClick={onClick}
       className={`
         relative overflow-hidden
-        bg-white/45 backdrop-blur-[25px] -webkit-backdrop-blur-[25px]
-        border border-white/65
-        shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.8),0_4px_16px_rgba(0,0,0,0.04)]
-        hover:bg-white/60 hover:border-white/80
-        hover:shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.9),0_8px_24px_rgba(94,162,255,0.18)]
+        bg-white/90 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
+        border border-white
+        shadow-[0_8px_20px_rgba(59,130,246,0.08),inset_0_1.5px_2px_0_rgba(255,255,255,1),inset_0_-2px_4px_0_rgba(219,234,254,0.6)]
+        hover:bg-white hover:border-white
+        hover:shadow-[0_16px_32px_rgba(59,130,246,0.14),inset_0_2px_3px_0_rgba(255,255,255,1),inset_0_-3px_6px_0_rgba(219,234,254,0.8)]
         hover:-translate-y-0.5
         transition-all duration-200
         rounded-[20px]

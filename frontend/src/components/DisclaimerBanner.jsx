@@ -8,15 +8,15 @@ export const DisclaimerBanner = ({ text }) => {
   );
 
   return (
-    <div className="bg-[rgba(255,243,205,0.55)] backdrop-blur-[20px] -webkit-backdrop-blur-[20px] border border-white/80 rounded-[24px] p-5 flex items-start space-x-4 text-[#7A4B00] text-xs sm:text-sm leading-relaxed shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.9),0_12px_32px_rgba(245,158,11,0.12)] my-4">
-      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#F59E0B] to-[#FBBF24] text-white flex items-center justify-center flex-shrink-0 shadow-md mt-0.5 border border-white/60">
-        <AlertTriangle className="w-5 h-5" />
+    <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-[28px] p-5 flex items-start space-x-4 text-[#B45309] text-xs sm:text-sm leading-relaxed shadow-[0_10px_25px_rgba(245,158,11,0.12),inset_0_1.5px_2px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(254,243,199,0.8)] my-4">
+      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#F59E0B] to-[#FBBF24] text-white flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(245,158,11,0.3),inset_0_1.5px_2px_rgba(255,255,255,0.7)] mt-0.5 border border-white/60">
+        <AlertTriangle className="w-5 h-5 text-white" />
       </div>
       <div>
-        <span className="font-extrabold text-[#7A4B00] uppercase tracking-wider block mb-0.5">
+        <span className="font-extrabold text-[#92400E] uppercase tracking-wider block mb-0.5">
           Medical & Educational Use Disclaimer
         </span>
-        <p className="font-semibold text-[#7A4B00]">{message}</p>
+        <p className="font-semibold text-[#B45309]">{message}</p>
       </div>
     </div>
   );
