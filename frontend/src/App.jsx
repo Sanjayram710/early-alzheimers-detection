@@ -18,26 +18,36 @@ export function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/login" element={<Navigate to="/" replace />} />
-              <Route path="/register" element={<Navigate to="/" replace />} />
+        <div className="relative flex flex-col min-h-screen">
+          {/* Apple Liquid Glass Layered Background Gradient & Animated Blobs */}
+          <div className="bg-glass-orbs">
+            <div className="bg-glass-orb-1" />
+            <div className="bg-glass-orb-2" />
+            <div className="bg-glass-orb-3" />
+            <div className="bg-glass-orb-4" />
+          </div>
 
-              {/* Direct Access Routes */}
-              <Route path="/upload" element={<UploadPage />} />
-              <Route path="/prediction" element={<PredictionPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/history" element={<HistoryPage />} />
-              <Route path="/reports" element={<ReportsPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-            </Routes>
-          </main>
-          <Footer />
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow pt-6 sm:pt-10 pb-16">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/login" element={<Navigate to="/" replace />} />
+                <Route path="/register" element={<Navigate to="/" replace />} />
+
+                {/* Direct Access Routes */}
+                <Route path="/upload" element={<UploadPage />} />
+                <Route path="/prediction" element={<PredictionPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/reports" element={<ReportsPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
         </div>
       </BrowserRouter>
     </AuthProvider>

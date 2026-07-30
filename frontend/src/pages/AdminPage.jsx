@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Users, Brain, Activity, CheckCircle, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '../services/api';
-import { ClayCard } from '../components/clay/ClayCard';
-import { ClayButton } from '../components/clay/ClayButton';
+import { GlassCard } from '../components/glass/GlassCard';
+import { GlassButton } from '../components/glass/GlassButton';
+import { GlassTable, GlassTableRow } from '../components/glass/GlassTable';
+import { GlassBadge } from '../components/glass/GlassBadge';
 
 export const AdminPage = () => {
   const [users, setUsers] = useState([]);
@@ -50,29 +52,29 @@ export const AdminPage = () => {
       className="max-w-7xl mx-auto px-4 py-8 space-y-8"
     >
       <div className="flex items-center space-x-3.5">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-1 shadow-[6px_6px_14px_rgba(163,177,198,0.3)] flex items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white">
+        <div className="w-12 h-12 rounded-full bg-white/60 backdrop-blur-[15px] border border-white/60 p-1 shadow-md flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8B5CF6] flex items-center justify-center text-white shadow-inner">
             <Shield className="w-5 h-5" />
           </div>
         </div>
         <div>
-          <h1 className="font-display text-3xl sm:text-[42px] leading-tight font-extrabold text-[#1F2937] tracking-tight">
+          <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-[#111827] tracking-tight">
             System Administration Panel
           </h1>
-          <p className="text-[#6B7280] text-sm sm:text-base font-medium">
+          <p className="text-[#6B7280] text-sm sm:text-base font-semibold">
             Model registry controls, user role management, and security audit logs
           </p>
         </div>
       </div>
 
-      {/* Clay Pill Tabs */}
-      <div className="flex items-center space-x-3 bg-gradient-to-br from-white to-[#EEF2FF] p-2 rounded-full border border-white/80 shadow-[10px_10px_24px_rgba(163,177,198,0.3)] max-w-max">
+      {/* Glass Pill Tabs */}
+      <div className="flex items-center space-x-2 bg-white/60 backdrop-blur-[20px] p-2 rounded-full border border-white/60 shadow-sm max-w-max">
         <button
           onClick={() => setActiveTab('models')}
-          className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center space-x-2 ${
+          className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             activeTab === 'models'
-              ? 'bg-[#6D5EF5] text-white shadow-md'
-              : 'text-[#6B7280] hover:text-[#1F2937]'
+              ? 'bg-gradient-to-r from-[#6D5EF5] to-[#8B5CF6] text-white shadow-md'
+              : 'text-[#6B7280] hover:text-[#111827]'
           }`}
         >
           <Brain className="w-4 h-4" />
@@ -81,10 +83,10 @@ export const AdminPage = () => {
 
         <button
           onClick={() => setActiveTab('users')}
-          className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center space-x-2 ${
+          className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             activeTab === 'users'
-              ? 'bg-[#6D5EF5] text-white shadow-md'
-              : 'text-[#6B7280] hover:text-[#1F2937]'
+              ? 'bg-gradient-to-r from-[#6D5EF5] to-[#8B5CF6] text-white shadow-md'
+              : 'text-[#6B7280] hover:text-[#111827]'
           }`}
         >
           <Users className="w-4 h-4" />
@@ -93,105 +95,123 @@ export const AdminPage = () => {
 
         <button
           onClick={() => setActiveTab('audit')}
-          className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center space-x-2 ${
+          className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer ${
             activeTab === 'audit'
-              ? 'bg-[#6D5EF5] text-white shadow-md'
-              : 'text-[#6B7280] hover:text-[#1F2937]'
+              ? 'bg-gradient-to-r from-[#6D5EF5] to-[#8B5CF6] text-white shadow-md'
+              : 'text-[#6B7280] hover:text-[#111827]'
           }`}
         >
           <Clock className="w-4 h-4" />
-          <span>Security Audit Logs</span>
+          <span>Audit Logs ({auditLogs.length})</span>
         </button>
       </div>
 
-      {/* Tab Contents */}
       {loading ? (
         <div className="py-20 text-center space-y-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-2 shadow-[8px_8px_20px_rgba(163,177,198,0.35)] flex items-center justify-center mx-auto animate-bounce">
-            <Brain className="w-6 h-6 text-[#6D5EF5]" />
+          <div className="w-12 h-12 rounded-full bg-white/60 backdrop-blur-[15px] border border-white/60 p-2 shadow-md flex items-center justify-center mx-auto animate-bounce">
+            <Shield className="w-6 h-6 text-[#6D5EF5]" />
           </div>
-          <p className="text-xs font-bold text-[#6B7280]">Loading Administration Telemetry...</p>
-        </div>
-      ) : activeTab === 'models' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {models.map((mod) => (
-            <ClayCard key={mod.id} padding="p-6" className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-mono font-extrabold text-[#1F2937] uppercase text-base">{mod.version_name}</span>
-                {mod.is_active ? (
-                  <span className="px-3 py-1 rounded-full bg-[#DCFCE7] text-[#15803D] text-xs font-bold flex items-center space-x-1 shadow-sm">
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    <span>ACTIVE</span>
-                  </span>
-                ) : (
-                  <span className="text-xs text-[#9CA3AF] font-mono font-semibold">INACTIVE</span>
-                )}
-              </div>
-
-              <div className="space-y-1.5 text-xs text-[#6B7280] font-medium">
-                <div className="flex justify-between"><span>Architecture:</span><span className="text-[#1F2937] font-mono font-bold">{mod.architecture}</span></div>
-                <div className="flex justify-between"><span>Validation Acc:</span><span className="text-[#22C55E] font-mono font-bold">{mod.val_accuracy ? `${(mod.val_accuracy * 100).toFixed(1)}%` : 'N/A'}</span></div>
-              </div>
-
-              {!mod.is_active && (
-                <ClayButton
-                  variant="secondary"
-                  size="sm"
-                  className="w-full"
-                  onClick={() => handleActivateModel(mod.version_name)}
-                >
-                  Set as Active Model
-                </ClayButton>
-              )}
-            </ClayCard>
-          ))}
-        </div>
-      ) : activeTab === 'users' ? (
-        <div className="bg-gradient-to-br from-white via-[#F8FAFC] to-[#EEF2FF] rounded-[28px] border border-white/80 overflow-hidden shadow-[12px_12px_28px_rgba(163,177,198,0.35),-10px_-10px_24px_rgba(255,255,255,0.95)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[#EEF2FF] text-[#1F2937] font-extrabold uppercase tracking-wider border-b border-white/80">
-              <tr>
-                <th className="p-4">Name</th>
-                <th className="p-4">Email</th>
-                <th className="p-4">Role</th>
-                <th className="p-4">Registered Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200/60 text-[#1F2937] font-medium">
-              {users.map((u) => (
-                <tr key={u.id} className="hover:bg-white/70 transition-colors">
-                  <td className="p-4 font-bold text-[#1F2937]">{u.full_name}</td>
-                  <td className="p-4">{u.email}</td>
-                  <td className="p-4 uppercase font-bold text-[#6D5EF5]">{u.role}</td>
-                  <td className="p-4 text-[#6B7280]">{new Date(u.created_at).toLocaleDateString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <p className="text-xs font-bold text-[#6B7280]">Loading Admin Dashboard...</p>
         </div>
       ) : (
-        <div className="bg-gradient-to-br from-white via-[#F8FAFC] to-[#EEF2FF] rounded-[28px] border border-white/80 overflow-hidden shadow-[12px_12px_28px_rgba(163,177,198,0.35),-10px_-10px_24px_rgba(255,255,255,0.95)]">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[#EEF2FF] text-[#1F2937] font-extrabold uppercase tracking-wider border-b border-white/80">
-              <tr>
-                <th className="p-4">Action</th>
-                <th className="p-4">Resource</th>
-                <th className="p-4">User ID</th>
-                <th className="p-4">Timestamp</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200/60 text-[#1F2937] font-mono font-medium">
-              {auditLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-white/70 transition-colors">
-                  <td className="p-4 font-bold text-[#6D5EF5]">{log.action}</td>
-                  <td className="p-4">{log.resource}</td>
-                  <td className="p-4 text-[#6B7280]">{log.user_id || 'System'}</td>
-                  <td className="p-4 text-[#6B7280]">{new Date(log.timestamp).toLocaleString()}</td>
-                </tr>
+        <>
+          {/* Tab 1: Model Registry Controls */}
+          {activeTab === 'models' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {models.map((m) => (
+                <GlassCard key={m.id} padding="p-6" className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <h3 className="font-display font-extrabold text-lg text-[#111827]">
+                          {m.version_name}
+                        </h3>
+                        {m.is_active && (
+                          <GlassBadge variant="success" icon={CheckCircle}>
+                            Active Engine
+                          </GlassBadge>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#6B7280] font-semibold mt-1">{m.architecture}</p>
+                    </div>
+
+                    {!m.is_active && (
+                      <GlassButton
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => handleActivateModel(m.version_name)}
+                      >
+                        Set Active
+                      </GlassButton>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-200/50 text-xs">
+                    <div>
+                      <span className="text-[#6B7280] font-semibold">Validation Accuracy</span>
+                      <p className="font-mono font-extrabold text-[#22C55E] text-base">
+                        {(m.val_accuracy * 100).toFixed(1)}%
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-[#6B7280] font-semibold">Validation F1 Score</span>
+                      <p className="font-mono font-extrabold text-[#6D5EF5] text-base">
+                        {(m.val_f1 * 100).toFixed(1)}%
+                      </p>
+                    </div>
+                  </div>
+                </GlassCard>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </div>
+          )}
+
+          {/* Tab 2: User Accounts Glass Table */}
+          {activeTab === 'users' && (
+            <GlassCard padding="p-6">
+              <GlassTable headers={['User Name', 'Email Address', 'Role', 'Status', 'Registered Date']}>
+                {users.map((u) => (
+                  <GlassTableRow key={u.id}>
+                    <td className="p-4 font-bold text-[#111827]">{u.full_name}</td>
+                    <td className="p-4 text-[#6B7280] font-semibold">{u.email}</td>
+                    <td className="p-4">
+                      <GlassBadge variant={u.role === 'admin' ? 'info' : 'neutral'}>
+                        {u.role.toUpperCase()}
+                      </GlassBadge>
+                    </td>
+                    <td className="p-4">
+                      <GlassBadge variant={u.is_active ? 'success' : 'danger'}>
+                        {u.is_active ? 'Active' : 'Disabled'}
+                      </GlassBadge>
+                    </td>
+                    <td className="p-4 font-medium text-[#6B7280]">
+                      {new Date(u.created_at).toLocaleDateString()}
+                    </td>
+                  </GlassTableRow>
+                ))}
+              </GlassTable>
+            </GlassCard>
+          )}
+
+          {/* Tab 3: Security Audit Glass Table */}
+          {activeTab === 'audit' && (
+            <GlassCard padding="p-6">
+              <GlassTable headers={['User ID / System', 'Action Executed', 'IP Address', 'Timestamp']}>
+                {auditLogs.map((log) => (
+                  <GlassTableRow key={log.id}>
+                    <td className="p-4 font-mono font-bold text-[#6D5EF5]">
+                      {log.user_id ? log.user_id.slice(0, 8) : 'System Worker'}
+                    </td>
+                    <td className="p-4 font-semibold text-[#111827]">{log.action}</td>
+                    <td className="p-4 font-mono text-[#6B7280]">{log.ip_address || '127.0.0.1'}</td>
+                    <td className="p-4 font-medium text-[#6B7280]">
+                      {new Date(log.timestamp).toLocaleString()}
+                    </td>
+                  </GlassTableRow>
+                ))}
+              </GlassTable>
+            </GlassCard>
+          )}
+        </>
       )}
     </motion.div>
   );

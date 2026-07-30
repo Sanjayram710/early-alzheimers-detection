@@ -1,6 +1,6 @@
 import React from 'react';
-import { ClayNavbar } from './clay/ClayNavbar';
+import { GlassNavbar } from './glass/GlassNavbar';
 
 export const Navbar = () => {
-  return <ClayNavbar />;
+  return <GlassNavbar />;
 };

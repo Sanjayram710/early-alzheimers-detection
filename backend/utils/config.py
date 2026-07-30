@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 25
 
     # ML Model Configuration
-    DEFAULT_MODEL_NAME: str = "custom_cnn"
+    DEFAULT_MODEL_NAME: str = "NeuroDxNet"
     MODEL_WEIGHTS_DIR: str = "./ml/saved_models"
     IMAGE_SIZE: int = 224
     CLASS_NAMES: List[str] = ["Non Demented", "Very Mild Demented", "Mild Demented", "Moderate Demented"]

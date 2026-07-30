@@ -71,7 +71,7 @@ async def seed():
 
         # 3. Seed Model Versions
         models = [
-            ("custom_cnn", "Custom Baseline CNN", 0.945, 0.941, True),
+            ("NeuroDxNet", "NeuroDxNet Deep CNN Backbone", 0.945, 0.941, True),
             ("transfer_resnet50", "ResNet50 Transfer Backbone", 0.932, 0.928, False),
             ("transfer_efficientnetb0", "EfficientNetB0 Backbone", 0.925, 0.921, False),
             ("vit", "Vision Transformer Encoder", 0.915, 0.910, False)

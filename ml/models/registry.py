@@ -12,6 +12,7 @@ class ModelRegistry:
     """
 
     _registry: Dict[str, Type[BaseAlzheimerModel]] = {
+        "neurodxnet": CustomCNNModel,
         "custom_cnn": CustomCNNModel,
         "vit": VisionTransformerModel
     }

@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Brain, LogIn, Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
-import { ClayCard } from '../components/clay/ClayCard';
-import { ClayInput } from '../components/clay/ClayInput';
-import { ClayButton } from '../components/clay/ClayButton';
+import { GlassCard } from '../components/glass/GlassCard';
+import { GlassInput } from '../components/glass/GlassInput';
+import { GlassButton } from '../components/glass/GlassButton';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -38,30 +38,30 @@ export const LoginPage = () => {
       transition={{ duration: 0.5 }}
       className="min-h-[80vh] flex items-center justify-center px-4 py-8"
     >
-      <ClayCard padding="p-8 sm:p-10" className="w-full max-w-md space-y-7" hoverEffect={false}>
+      <GlassCard padding="p-8 sm:p-10" className="w-full max-w-md space-y-7" hoverEffect={false}>
         <div className="text-center space-y-3">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-1 shadow-[6px_6px_14px_rgba(163,177,198,0.3),-4px_-4px_10px_rgba(255,255,255,0.95)] flex items-center justify-center mx-auto">
-            <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white shadow-inner">
+          <div className="w-14 h-14 rounded-full bg-white/60 backdrop-blur-[15px] border border-white/60 p-1 shadow-md flex items-center justify-center mx-auto">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8B5CF6] flex items-center justify-center text-white shadow-inner">
               <Brain className="w-6 h-6" />
             </div>
           </div>
-          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-[#1F2937] tracking-tight">
+          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
             Sign In to Alzheimer's AI
           </h2>
-          <p className="text-xs font-medium text-[#6B7280]">
+          <p className="text-xs font-semibold text-[#6B7280]">
             Access decision support platform, MRI history, and reports
           </p>
         </div>
 
         {error && (
-          <div className="p-3.5 rounded-[18px] bg-[#FEE2E2] border border-[#FCA5A5] text-[#991B1B] text-xs font-bold flex items-center space-x-2 shadow-sm">
+          <div className="p-3.5 rounded-[18px] bg-[#FEE2E2]/80 backdrop-blur-[15px] border border-[#FCA5A5] text-[#991B1B] text-xs font-bold flex items-center space-x-2 shadow-sm">
             <AlertCircle className="w-4 h-4 text-[#EF4444] flex-shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <ClayInput
+          <GlassInput
             label="Email Address"
             icon={Mail}
             type="email"
@@ -71,7 +71,7 @@ export const LoginPage = () => {
             placeholder="doctor@hospital.org"
           />
 
-          <ClayInput
+          <GlassInput
             label="Password"
             icon={Lock}
             type="password"
@@ -81,7 +81,7 @@ export const LoginPage = () => {
             placeholder="••••••••"
           />
 
-          <ClayButton
+          <GlassButton
             type="submit"
             variant="primary"
             disabled={loading}
@@ -96,7 +96,7 @@ export const LoginPage = () => {
             ) : (
               'Sign In'
             )}
-          </ClayButton>
+          </GlassButton>
         </form>
 
         <div className="text-center text-xs font-semibold text-[#6B7280]">
@@ -105,7 +105,7 @@ export const LoginPage = () => {
             Register here
           </Link>
         </div>
-      </ClayCard>
+      </GlassCard>
     </motion.div>
   );
 };
