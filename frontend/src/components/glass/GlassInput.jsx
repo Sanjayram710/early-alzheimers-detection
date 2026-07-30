@@ -15,14 +15,14 @@ export const GlassInput = ({
   return (
     <div className="space-y-1.5 w-full">
       {label && (
-        <label className="block text-xs font-bold text-[#111827] ml-1 tracking-wide">
+        <label className="block text-xs font-bold text-[#1D1D1F] ml-1 tracking-wide">
           {label} {required && <span className="text-[#EF4444]">*</span>}
         </label>
       )}
 
       <div className="relative flex items-center">
         {Icon && (
-          <div className="absolute left-4 text-[#6D5EF5] pointer-events-none z-10">
+          <div className="absolute left-4 text-[#5EA2FF] pointer-events-none z-10">
             <Icon className="w-4 h-4" />
           </div>
         )}
@@ -36,11 +36,11 @@ export const GlassInput = ({
           className={`
             w-full py-3.5 rounded-[20px]
             ${Icon ? 'pl-11 pr-4' : 'px-5'}
-            bg-white/12 backdrop-blur-[18px] -webkit-backdrop-blur-[18px]
-            text-sm text-[#111827] placeholder-[#6B7280]/70 font-semibold
-            shadow-inner
-            border border-white/28
-            focus:outline-none focus:border-[#6D5EF5] focus:bg-white/25 focus:ring-4 focus:ring-[#6D5EF5]/25
+            bg-white/55 backdrop-blur-[15px] -webkit-backdrop-blur-[15px]
+            text-sm text-[#1D1D1F] placeholder-[#6B7280]/70 font-semibold
+            shadow-[inset_0_2px_4px_rgba(0,0,0,0.03),inset_0_1px_1px_0_rgba(255,255,255,0.8)]
+            border border-white/70
+            focus:outline-none focus:border-[#5EA2FF] focus:bg-white/75 focus:shadow-[0_0_12px_rgba(94,162,255,0.50)]
             transition-all duration-200
             ${className}
           `}

@@ -20,39 +20,38 @@ export const GlassButton = ({
 
   const variantClasses = {
     normal: `
-      bg-white/20 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
-      text-[#111827]
-      border border-white/40
-      shadow-[0_4px_16px_rgba(31,38,135,0.08)]
-      hover:bg-white/35 hover:shadow-[0_8px_24px_rgba(79,142,247,0.20)]
-      hover:border-white/60
+      bg-white/40 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
+      text-[#1D1D1F]
+      border border-white
+      shadow-[0_4px_16px_rgba(31,38,135,0.06)]
+      hover:bg-white/55 hover:shadow-[0_8px_24px_rgba(94,162,255,0.20)]
     `,
     primary: `
-      bg-gradient-to-r from-[#4F8EF7] to-[#6D5EF5]
+      bg-gradient-to-r from-[#5EA2FF] to-[#7C6CFF]
       text-white font-extrabold
-      border border-white/40
-      shadow-[0_6px_22px_rgba(79,142,247,0.38)]
-      hover:shadow-[0_12px_30px_rgba(79,142,247,0.50)]
-      hover:from-[#3B7DE8] hover:to-[#5B4CE5]
+      border border-white/50
+      shadow-[0_6px_22px_rgba(94,162,255,0.38)]
+      hover:shadow-[0_10px_28px_rgba(94,162,255,0.45)]
+      hover:from-[#4B93FF] hover:to-[#6C5BFF]
     `,
     secondary: `
-      bg-white/22 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
-      text-[#4F8EF7] font-extrabold
-      border border-white/50
-      shadow-[0_4px_16px_rgba(79,142,247,0.15)]
-      hover:bg-white/40 hover:shadow-[0_8px_24px_rgba(79,142,247,0.25)]
+      bg-white/40 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
+      text-[#5EA2FF] font-extrabold
+      border border-white
+      shadow-[0_4px_16px_rgba(94,162,255,0.12)]
+      hover:bg-white/60 hover:shadow-[0_8px_24px_rgba(94,162,255,0.22)]
     `,
     accent: `
-      bg-gradient-to-r from-[#6D5EF5] to-[#7C6CFF]
+      bg-gradient-to-r from-[#7C6CFF] to-[#5EA2FF]
       text-white font-extrabold
-      border border-white/40
-      shadow-[0_6px_22px_rgba(109,94,245,0.38)]
-      hover:shadow-[0_12px_30px_rgba(109,94,245,0.50)]
+      border border-white/50
+      shadow-[0_6px_22px_rgba(124,108,255,0.38)]
+      hover:shadow-[0_10px_28px_rgba(124,108,255,0.45)]
     `,
     danger: `
       bg-gradient-to-r from-[#EF4444] to-[#F87171]
       text-white font-extrabold
-      border border-white/40
+      border border-white/50
       shadow-[0_6px_22px_rgba(239,68,68,0.35)]
     `,
   };
@@ -62,8 +61,8 @@ export const GlassButton = ({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      whileHover={!disabled ? { scale: 1.03, y: -2 } : {}}
-      whileTap={!disabled ? { scale: 0.97, y: 1 } : {}}
+      whileHover={!disabled ? { scale: 1.02, y: -1 } : {}}
+      whileTap={!disabled ? { scale: 0.98, y: 1 } : {}}
       className={`
         relative overflow-hidden inline-flex items-center justify-center
         transition-all duration-200 cursor-pointer
@@ -74,7 +73,7 @@ export const GlassButton = ({
       `}
       {...props}
     >
-      {/* Specular Glass Light Reflection */}
+      {/* Specular Frosted Glass Overlay */}
       <div 
         className="absolute inset-0 pointer-events-none rounded-[inherit] z-0 opacity-50"
         style={{

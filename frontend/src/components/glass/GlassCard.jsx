@@ -5,7 +5,7 @@ export const GlassCard = ({
   children,
   className = '',
   hoverEffect = true,
-  radius = 'rounded-[28px]',
+  radius = 'rounded-[24px]',
   padding = 'p-6',
   ...props
 }) => {
@@ -17,19 +17,19 @@ export const GlassCard = ({
       whileHover={hoverEffect ? { y: -4, scale: 1.005 } : {}}
       className={`
         relative overflow-hidden
-        bg-white/18 backdrop-blur-[30px] -webkit-backdrop-blur-[30px]
+        bg-white/45 backdrop-blur-[30px] -webkit-backdrop-blur-[30px]
         ${radius}
         ${padding}
-        border border-white/35
-        shadow-[0_8px_32px_rgba(31,38,135,0.10),0_20px_60px_rgba(0,0,0,0.05)]
-        hover:shadow-[0_20px_50px_rgba(109,94,245,0.18),0_25px_70px_rgba(0,0,0,0.08)]
-        hover:bg-white/28 hover:border-white/50
+        border border-white/65
+        shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.8),0_20px_40px_rgba(0,0,0,0.06)]
+        hover:shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.9),0_25px_50px_rgba(94,162,255,0.20)]
+        hover:bg-white/55 hover:border-white/80
         transition-all duration-300
         ${className}
       `}
       {...props}
     >
-      {/* Apple Glass Reflection Sheen */}
+      {/* Inner Reflection Layer */}
       <div 
         className="absolute inset-0 pointer-events-none rounded-[inherit] z-0"
         style={{

@@ -3,20 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.18);
-  --glass-bg-hover: rgba(255, 255, 255, 0.28);
-  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-bg-hover: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.65);
   --glass-blur: 30px;
   --glass-reflection: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 100%);
-  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.10), 0 20px 60px rgba(0, 0, 0, 0.05);
-  --glass-shadow-hover: 0 20px 50px rgba(79, 142, 247, 0.20), 0 25px 70px rgba(0, 0, 0, 0.08);
+  --glass-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), 0 20px 40px rgba(0, 0, 0, 0.06);
+  --glass-shadow-hover: inset 0 1px 2px 0 rgba(255, 255, 255, 0.9), 0 25px 50px rgba(94, 162, 255, 0.20);
 }
 
 @layer base {
   body {
     background: linear-gradient(135deg, #DCEBFF 0%, #EAF3FF 45%, #F8FBFF 100%);
     background-attachment: fixed;
-    color: #111827;
+    color: #1D1D1F;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
@@ -32,7 +32,7 @@
   overflow: hidden;
 }
 
-/* Blob 1: Blue Glow (Top Left) */
+/* Blob 1: Blue Glow (#5EA2FF) */
 .bg-glass-orb-1 {
   position: absolute;
   top: -10%;
@@ -41,11 +41,11 @@
   height: 750px;
   border-radius: 9999px;
   background: rgba(94, 162, 255, 0.18);
-  filter: blur(180px);
+  filter: blur(140px);
   animation: floatSlow 24s ease-in-out infinite;
 }
 
-/* Blob 2: Purple Glow (Top Right) */
+/* Blob 2: Purple Glow (#7C6CFF) */
 .bg-glass-orb-2 {
   position: absolute;
   top: 10%;
@@ -54,11 +54,11 @@
   height: 800px;
   border-radius: 9999px;
   background: rgba(124, 108, 255, 0.15);
-  filter: blur(160px);
+  filter: blur(140px);
   animation: floatReverse 28s ease-in-out infinite;
 }
 
-/* Blob 3: Cyan Glow (Bottom Left) */
+/* Blob 3: Cyan Glow (#7DD3FC) */
 .bg-glass-orb-3 {
   position: absolute;
   bottom: -15%;
@@ -67,11 +67,11 @@
   height: 700px;
   border-radius: 9999px;
   background: rgba(125, 211, 252, 0.14);
-  filter: blur(200px);
+  filter: blur(160px);
   animation: floatSlow 26s ease-in-out infinite;
 }
 
-/* Blob 4: White Glow (Center) */
+/* Blob 4: White Glow (#FFFFFF) */
 .bg-glass-orb-4 {
   position: absolute;
   top: 40%;
@@ -80,7 +80,7 @@
   height: 650px;
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.45);
-  filter: blur(240px);
+  filter: blur(180px);
   animation: floatReverse 30s ease-in-out infinite;
 }
 
@@ -97,71 +97,44 @@
 /* Liquid Glass Motion Segment Control Styles */
 .liquid-glass-container {
   position: relative;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(30px) saturate(190%);
   -webkit-backdrop-filter: blur(30px) saturate(190%);
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.65);
   box-shadow: 
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.8),
-    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.05),
-    0 12px 40px rgba(31, 38, 135, 0.12);
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
+    0 20px 40px rgba(0, 0, 0, 0.06);
   border-radius: 9999px;
   overflow: hidden;
-}
-
-.liquid-glass-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
-  pointer-events: none;
 }
 
 /* Apple VisionOS Liquid Glass Component Utilities */
 .apple-glass-panel {
   position: relative;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(30px) saturate(190%);
   -webkit-backdrop-filter: blur(30px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.10), 0 20px 60px rgba(0, 0, 0, 0.05);
-  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), 0 20px 40px rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.apple-glass-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 100%);
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: 1;
-}
-
-.apple-glass-panel-hover:hover {
-  background: rgba(255, 255, 255, 0.28);
-  border-color: rgba(255, 255, 255, 0.50);
-  box-shadow: 0 20px 50px rgba(79, 142, 247, 0.20), 0 25px 70px rgba(0, 0, 0, 0.08);
-  transform: translateY(-4px);
-}
-
 /* Glass Inputs */
 .apple-glass-input {
-  background: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.30);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.70);
   border-radius: 20px;
   transition: all 0.2s ease;
 }
 
 .apple-glass-input:focus-within, .apple-glass-input:focus {
-  border-color: #4F8EF7;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 0 4px rgba(79, 142, 247, 0.25);
+  border-color: #5EA2FF;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 12px rgba(94, 162, 255, 0.50);
 }
 
 /* Smooth custom scrollbars */
@@ -173,10 +146,10 @@
   background: rgba(220, 235, 255, 0.4);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(79, 142, 247, 0.35);
+  background: rgba(94, 162, 255, 0.35);
   border-radius: 9999px;
   border: 2px solid rgba(255, 255, 255, 0.4);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(79, 142, 247, 0.7);
+  background: rgba(94, 162, 255, 0.7);
 }

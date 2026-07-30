@@ -31,11 +31,11 @@ export const GlassTableRow = ({ children, className = '', onClick }) => {
       onClick={onClick}
       className={`
         relative overflow-hidden
-        bg-white/20 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
-        border border-white/35
-        shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5),0_4px_16px_rgba(31,38,135,0.06)]
-        hover:bg-white/35 hover:border-white/50
-        hover:shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.7),0_8px_24px_rgba(109,94,245,0.15)]
+        bg-white/45 backdrop-blur-[25px] -webkit-backdrop-blur-[25px]
+        border border-white/65
+        shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.8),0_4px_16px_rgba(0,0,0,0.04)]
+        hover:bg-white/60 hover:border-white/80
+        hover:shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.9),0_8px_24px_rgba(94,162,255,0.18)]
         hover:-translate-y-0.5
         transition-all duration-200
         rounded-[20px]
