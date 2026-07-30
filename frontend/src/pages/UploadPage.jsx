@@ -127,10 +127,10 @@ export const UploadPage = () => {
       className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8"
     >
       <div className="text-center space-y-2">
-        <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-white drop-shadow-md tracking-tight">
+        <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-[#0F172A] tracking-tight">
           Patient Intake & Brain MRI Upload
         </h1>
-        <p className="text-blue-100 text-sm sm:text-base font-semibold">
+        <p className="text-[#334155] text-sm sm:text-base font-bold">
           Enter patient details, select observed symptoms, and upload MRI scan for AI analysis
         </p>
       </div>

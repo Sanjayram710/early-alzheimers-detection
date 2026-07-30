@@ -100,14 +100,14 @@ export const PredictionPage = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
         <div>
-          <Link to="/upload" className="inline-flex items-center space-x-1.5 text-xs font-bold text-[#6D5EF5] hover:underline mb-2">
+          <Link to="/upload" className="inline-flex items-center space-x-1.5 text-xs font-bold text-[#2563EB] hover:underline mb-2">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Upload Another MRI</span>
           </Link>
-          <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
+          <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight">
             Prediction Analysis Results
           </h1>
-          <span className="text-xs font-mono font-semibold text-[#6B7280]">
+          <span className="text-xs font-mono font-bold text-[#475569]">
             ID: {id} | Patient: {patient_name ? `${patient_name} (${patient_id || 'N/A'})` : (patient_id || 'N/A')}
           </span>
         </div>
