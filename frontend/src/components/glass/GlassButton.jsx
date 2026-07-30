@@ -20,40 +20,40 @@ export const GlassButton = ({
 
   const variantClasses = {
     normal: `
-      bg-white/30 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
+      bg-white/20 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
       text-[#111827]
-      border border-white/50
+      border border-white/40
       shadow-[0_4px_16px_rgba(31,38,135,0.08)]
-      hover:bg-white/50 hover:shadow-[0_8px_24px_rgba(109,94,245,0.20)]
-      hover:border-white/70
+      hover:bg-white/35 hover:shadow-[0_8px_24px_rgba(79,142,247,0.20)]
+      hover:border-white/60
     `,
     primary: `
-      bg-gradient-to-r from-[#6D5EF5] to-[#8B5CF6]
+      bg-gradient-to-r from-[#4F8EF7] to-[#6D5EF5]
       text-white font-extrabold
       border border-white/40
-      shadow-[0_6px_20px_rgba(109,94,245,0.35)]
-      hover:shadow-[0_10px_28px_rgba(109,94,245,0.50)]
-      hover:from-[#5B4CE5] hover:to-[#7C4DFF]
+      shadow-[0_6px_22px_rgba(79,142,247,0.38)]
+      hover:shadow-[0_12px_30px_rgba(79,142,247,0.50)]
+      hover:from-[#3B7DE8] hover:to-[#5B4CE5]
     `,
     secondary: `
-      bg-[#EEF4FF] backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
-      text-[#6D5EF5] font-extrabold
-      border border-[#6D5EF5]/30
-      shadow-[0_4px_16px_rgba(109,94,245,0.15)]
-      hover:bg-white hover:shadow-[0_8px_24px_rgba(109,94,245,0.25)]
+      bg-white/22 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
+      text-[#4F8EF7] font-extrabold
+      border border-white/50
+      shadow-[0_4px_16px_rgba(79,142,247,0.15)]
+      hover:bg-white/40 hover:shadow-[0_8px_24px_rgba(79,142,247,0.25)]
     `,
     accent: `
-      bg-gradient-to-r from-[#8B5CF6] to-[#6D5EF5]
+      bg-gradient-to-r from-[#6D5EF5] to-[#7C6CFF]
       text-white font-extrabold
       border border-white/40
-      shadow-[0_6px_20px_rgba(139,92,246,0.35)]
-      hover:shadow-[0_10px_28px_rgba(139,92,246,0.50)]
+      shadow-[0_6px_22px_rgba(109,94,245,0.38)]
+      hover:shadow-[0_12px_30px_rgba(109,94,245,0.50)]
     `,
     danger: `
       bg-gradient-to-r from-[#EF4444] to-[#F87171]
       text-white font-extrabold
       border border-white/40
-      shadow-[0_6px_20px_rgba(239,68,68,0.35)]
+      shadow-[0_6px_22px_rgba(239,68,68,0.35)]
     `,
   };
 
@@ -74,11 +74,11 @@ export const GlassButton = ({
       `}
       {...props}
     >
-      {/* Subtle Specular Light Reflection */}
+      {/* Specular Glass Light Reflection */}
       <div 
-        className="absolute inset-0 pointer-events-none rounded-[inherit] z-0 opacity-40"
+        className="absolute inset-0 pointer-events-none rounded-[inherit] z-0 opacity-50"
         style={{
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0) 100%)'
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%)'
         }}
       />
       <span className="relative z-10 flex items-center gap-2">

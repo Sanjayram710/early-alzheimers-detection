@@ -19,12 +19,12 @@ export function App() {
     <AuthProvider>
       <BrowserRouter>
         <div className="relative flex flex-col min-h-screen">
-          {/* Apple VisionOS Atmospheric Ambient Background Color Blobs */}
+          {/* Apple Liquid Glass Layered Background Gradient & Animated Blobs */}
           <div className="bg-glass-orbs">
-            <div className="bg-glass-orb-purple" />
-            <div className="bg-glass-orb-blue" />
-            <div className="bg-glass-orb-cyan" />
-            <div className="bg-glass-orb-white" />
+            <div className="bg-glass-orb-1" />
+            <div className="bg-glass-orb-2" />
+            <div className="bg-glass-orb-3" />
+            <div className="bg-glass-orb-4" />
           </div>
 
           <div className="relative z-10 flex flex-col min-h-screen">

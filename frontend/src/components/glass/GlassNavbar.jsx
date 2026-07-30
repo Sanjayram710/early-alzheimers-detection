@@ -26,7 +26,7 @@ export const GlassNavbar = () => {
   return (
     <header className="sticky top-4 z-50 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Floating Translucent Liquid Glass Outer Shell */}
-      <div className="bg-white/28 backdrop-blur-[35px] -webkit-backdrop-blur-[35px] border border-white/50 rounded-full px-4 sm:px-6 py-2.5 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.8),0_15px_40px_rgba(31,38,135,0.14)] flex items-center justify-between relative overflow-hidden">
+      <div className="bg-white/22 backdrop-blur-[30px] -webkit-backdrop-blur-[30px] border border-white/50 rounded-full px-4 sm:px-6 py-2.5 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.8),0_15px_40px_rgba(31,38,135,0.12)] flex items-center justify-between relative overflow-hidden">
         
         {/* Top Specular Light Reflection Layer */}
         <div 
@@ -38,19 +38,19 @@ export const GlassNavbar = () => {
 
         {/* Brand Logo Left */}
         <Link to="/" className="relative z-10 flex items-center space-x-3 group flex-shrink-0">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#6D5EF5] via-[#8B5CF6] to-[#60A5FA] border border-white/60 p-0.5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_6px_16px_rgba(109,94,245,0.35)] group-hover:scale-105 transition-transform flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#4F8EF7] via-[#5EA2FF] to-[#6D5EF5] border border-white/60 p-0.5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_6px_16px_rgba(79,142,247,0.35)] group-hover:scale-105 transition-transform flex items-center justify-center">
             <Brain className="w-5 h-5 text-white" />
           </div>
           <div className="hidden sm:block">
             <span className="font-display font-extrabold text-base text-[#111827] tracking-tight uppercase flex items-center gap-1">
-              Alzheimer's <span className="text-[#6D5EF5]">AI</span>
+              Alzheimer's <span className="text-[#4F8EF7]">AI</span>
             </span>
-            <span className="block text-[8px] font-extrabold text-[#6B7280] tracking-wider uppercase">Liquid Glass Diagnostics</span>
+            <span className="block text-[8px] font-extrabold text-[#6B7280] tracking-wider uppercase">Apple Liquid Diagnostics</span>
           </div>
         </Link>
 
         {/* Center Liquid Glass Motion Design Pill Segment Control */}
-        <nav className="relative z-10 hidden xl:flex items-center bg-white/20 backdrop-blur-[25px] border border-white/40 rounded-full p-1.5 shadow-[inset_0_1px_2px_rgba(0,0,0,0.06),0_4px_16px_rgba(31,38,135,0.08)]">
+        <nav className="relative z-10 hidden xl:flex items-center bg-white/18 backdrop-blur-[25px] border border-white/40 rounded-full p-1.5 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05),0_4px_16px_rgba(31,38,135,0.08)]">
           {navLinks.map((link) => {
             const active = isActive(link.path);
             return (
@@ -62,7 +62,7 @@ export const GlassNavbar = () => {
                 {active && (
                   <motion.div
                     layoutId="activeGlassPill"
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[#6D5EF5] via-[#8B5CF6] to-[#6D5EF5] border border-white/50 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.7),0_8px_24px_rgba(109,94,245,0.45)]"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[#4F8EF7] to-[#6D5EF5] border border-white/50 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.7),0_8px_24px_rgba(79,142,247,0.45)]"
                     transition={{ type: 'spring', stiffness: 420, damping: 28 }}
                   >
                     {/* Liquid Glass Top Light Specular Sheen */}
@@ -89,7 +89,7 @@ export const GlassNavbar = () => {
           <button
             type="button"
             title="Notifications"
-            className="w-9 h-9 rounded-full bg-white/28 backdrop-blur-[15px] border border-white/50 flex items-center justify-center text-[#111827] hover:bg-white/45 hover:text-[#6D5EF5] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] relative cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white/28 backdrop-blur-[15px] border border-white/50 flex items-center justify-center text-[#111827] hover:bg-white/45 hover:text-[#4F8EF7] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] relative cursor-pointer"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#EF4444] animate-pulse" />
@@ -100,7 +100,7 @@ export const GlassNavbar = () => {
             type="button"
             onClick={() => setIsDarkMode(!isDarkMode)}
             title="Toggle Theme"
-            className="w-9 h-9 rounded-full bg-white/28 backdrop-blur-[15px] border border-white/50 flex items-center justify-center text-[#111827] hover:bg-white/45 hover:text-[#8B5CF6] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white/28 backdrop-blur-[15px] border border-white/50 flex items-center justify-center text-[#111827] hover:bg-white/45 hover:text-[#6D5EF5] transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] cursor-pointer"
           >
             {isDarkMode ? <Sun className="w-4 h-4 text-[#F59E0B]" /> : <Moon className="w-4 h-4 text-[#6B7280]" />}
           </button>
@@ -141,7 +141,7 @@ export const GlassNavbar = () => {
               onClick={() => setMobileMenuOpen(false)}
               className={`block px-4 py-2.5 rounded-full text-sm font-bold transition-all ${
                 isActive(link.path)
-                  ? 'bg-gradient-to-r from-[#6D5EF5] to-[#8B5CF6] text-white shadow-md border border-white/40'
+                  ? 'bg-gradient-to-r from-[#4F8EF7] to-[#6D5EF5] text-white shadow-md border border-white/40'
                   : 'text-[#6B7280] hover:bg-white/30 hover:text-[#111827]'
               }`}
             >
