@@ -17,12 +17,13 @@ export const GlassCard = ({
       whileHover={hoverEffect ? { y: -4, scale: 1.005 } : {}}
       className={`
         relative overflow-hidden
-        bg-white/92 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
+        bg-white/94 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
         ${radius}
         ${padding}
-        border border-white
-        shadow-[0_20px_40px_rgba(59,130,246,0.10),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]
-        hover:shadow-[0_28px_50px_rgba(59,130,246,0.16),0_12px_24px_rgba(0,0,0,0.05),inset_0_2px_5px_0_rgba(255,255,255,1),inset_0_-5px_10px_0_rgba(219,234,254,0.8)]
+        border-2 border-[#3B82F6]
+        shadow-[0_20px_40px_rgba(59,130,246,0.14),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]
+        hover:border-[#3B82F6]
+        hover:shadow-[0_28px_50px_rgba(59,130,246,0.22),0_12px_24px_rgba(0,0,0,0.05),inset_0_2px_5px_0_rgba(255,255,255,1),inset_0_-5px_10px_0_rgba(219,234,254,0.8)]
         transition-all duration-300
         ${className}
       `}

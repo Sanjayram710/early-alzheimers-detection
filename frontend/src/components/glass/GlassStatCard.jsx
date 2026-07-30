@@ -26,11 +26,11 @@ export const GlassStatCard = ({
       transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
       className="
         relative overflow-hidden
-        bg-white/92 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
+        bg-white/94 backdrop-blur-[20px] -webkit-backdrop-blur-[20px]
         rounded-[32px] p-6 sm:p-7
-        border border-white
-        shadow-[0_20px_40px_rgba(59,130,246,0.10),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]
-        hover:shadow-[0_28px_50px_rgba(59,130,246,0.16),0_12px_24px_rgba(0,0,0,0.05),inset_0_2px_5px_0_rgba(255,255,255,1),inset_0_-5px_10px_0_rgba(219,234,254,0.8)]
+        border-2 border-[#3B82F6]
+        shadow-[0_20px_40px_rgba(59,130,246,0.18),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]
+        hover:shadow-[0_28px_50px_rgba(59,130,246,0.25),0_12px_24px_rgba(0,0,0,0.05),inset_0_2px_5px_0_rgba(255,255,255,1),inset_0_-5px_10px_0_rgba(219,234,254,0.8)]
         transition-all duration-300 min-w-0
       "
     >
@@ -57,7 +57,7 @@ export const GlassStatCard = ({
 
         {/* 3D Inflated Clay Sphere Icon Badge */}
         {Icon && (
-          <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-white p-0.5 shadow-[0_8px_20px_rgba(59,130,246,0.20),inset_0_2px_3px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(0,0,0,0.05)] flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-white p-0.5 shadow-[0_8px_20px_rgba(59,130,246,0.20),inset_0_2px_3px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(0,0,0,0.05)] border border-[#3B82F6]/30 flex items-center justify-center flex-shrink-0">
             <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr ${iconGradients[color] || iconGradients.purple} flex items-center justify-center text-white shadow-[inset_0_2px_4px_rgba(255,255,255,0.7),inset_0_-3px_6px_rgba(0,0,0,0.15)]`}>
               <Icon className="w-5 h-5 text-white drop-shadow-sm" />
             </div>
@@ -73,7 +73,7 @@ export const GlassStatCard = ({
             className={`
               inline-flex items-center px-3 py-1 rounded-full font-extrabold text-[11px] whitespace-nowrap flex-shrink-0
               shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.9)]
-              ${trendPositive ? 'bg-[#DCFCE7] text-[#15803D] border border-[#86EFAC]' : 'bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE]'}
+              ${trendPositive ? 'bg-[#DCFCE7] text-[#15803D] border border-[#86EFAC]' : 'bg-[#DBEAFE] text-[#1D4ED8] border border-[#3B82F6]/60'}
             `}
           >
             {trend}

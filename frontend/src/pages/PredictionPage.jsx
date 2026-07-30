@@ -126,18 +126,18 @@ export const PredictionPage = () => {
 
       {/* Main Results Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Left Column: Classification Summary & Patient Profile */}
         <div className="space-y-6">
-          
+
           {/* Classification Glass Card */}
           <div
             className={`
               rounded-[28px] p-6 border border-white/60 space-y-4
               backdrop-blur-[30px] -webkit-backdrop-blur-[30px]
               shadow-[0_10px_40px_rgba(0,0,0,0.08)]
-              ${isNonDemented 
-                ? 'bg-[#DCFCE7]/80 text-[#15803D]' 
+              ${isNonDemented
+                ? 'bg-[#DCFCE7]/80 text-[#15803D]'
                 : 'bg-[#FEE2E2]/80 text-[#B91C1C]'
               }
             `}
@@ -148,7 +148,7 @@ export const PredictionPage = () => {
             <div className="font-display text-3xl font-extrabold tracking-tight">
               {predicted_class}
             </div>
-            
+
             <GlassProgress value={confidence * 100} color={isNonDemented ? 'green' : 'red'} />
           </div>
 

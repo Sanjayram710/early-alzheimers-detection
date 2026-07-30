@@ -167,7 +167,7 @@ export const UploadPage = () => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        
+
         {/* Section 1: Patient General Demographics */}
         <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
@@ -268,11 +268,10 @@ export const UploadPage = () => {
                   key={symptom}
                   type="button"
                   onClick={() => toggleSymptom(symptom)}
-                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border cursor-pointer ${
-                    isChecked
+                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border cursor-pointer ${isChecked
                       ? 'bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] border-[#3B82F6] text-[#1D4ED8] font-extrabold shadow-[inset_0_2px_3px_rgba(255,255,255,1),0_4px_12px_rgba(59,130,246,0.15)]'
                       : 'bg-white/90 backdrop-blur-[15px] border-slate-200 text-[#0F172A] font-bold shadow-[0_4px_12px_rgba(0,0,0,0.02),inset_0_1.5px_2px_rgba(255,255,255,0.9)] hover:bg-[#EFF6FF] hover:border-[#3B82F6]/50'
-                  }`}
+                    }`}
                 >
                   {isChecked ? (
                     <CheckSquare className="w-5 h-5 text-[#3B82F6] flex-shrink-0 mt-0.5" />
