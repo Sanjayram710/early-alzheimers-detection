@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, FileImage, AlertCircle, ArrowRight, Loader2, User, Calendar, Droplet, Activity, CheckSquare, Square, FileText, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Upload, FileImage, AlertCircle, ArrowRight, Loader2, User, Calendar, Droplet, Activity, CheckSquare, Square, FileText, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '../services/api';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
@@ -34,7 +34,6 @@ export const UploadPage = () => {
   const [patientId, setPatientId] = useState('');
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [customSymptom, setCustomSymptom] = useState('');
-  const [demoLoadedBanner, setDemoLoadedBanner] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -64,7 +63,6 @@ export const UploadPage = () => {
     setPatientId(demoObj.patientId);
     setSelectedSymptoms(demoObj.symptoms || []);
     setCustomSymptom(demoObj.notes || '');
-    setDemoLoadedBanner(`Auto-filled: ${demoObj.name} (${demoObj.patientId}) - ${demoObj.age} yrs, ${demoObj.bloodGroup}`);
   };
 
   const handleRandomDemo = () => {
@@ -129,35 +127,15 @@ export const UploadPage = () => {
       className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8"
     >
       <div className="text-center space-y-2">
-        <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-[#0F172A] tracking-tight">
+        <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-white drop-shadow-md tracking-tight">
           Patient Intake & Brain MRI Upload
         </h1>
-        <p className="text-[#475569] text-sm sm:text-base font-semibold">
+        <p className="text-blue-100 text-sm sm:text-base font-semibold">
           Enter patient details, select observed symptoms, and upload MRI scan for AI analysis
         </p>
       </div>
 
       <DisclaimerBanner />
-
-      {demoLoadedBanner && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="p-4 rounded-[20px] bg-[#DCFCE7] border border-[#86EFAC] text-[#15803D] text-xs font-bold flex items-center justify-between shadow-sm"
-        >
-          <div className="flex items-center space-x-2">
-            <CheckCircle2 className="w-4 h-4 text-[#22C55E]" />
-            <span>{demoLoadedBanner}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setDemoLoadedBanner(null)}
-            className="text-xs text-[#15803D] underline ml-4 hover:opacity-80 font-bold cursor-pointer"
-          >
-            Dismiss
-          </button>
-        </motion.div>
-      )}
 
       {error && (
         <div className="p-4 rounded-[22px] bg-[#FEE2E2] border border-[#FCA5A5] text-[#B91C1C] text-sm flex items-center space-x-3 shadow-md">
@@ -167,7 +145,7 @@ export const UploadPage = () => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
-
+        
         {/* Section 1: Patient General Demographics */}
         <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
@@ -268,10 +246,11 @@ export const UploadPage = () => {
                   key={symptom}
                   type="button"
                   onClick={() => toggleSymptom(symptom)}
-                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border cursor-pointer ${isChecked
+                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border cursor-pointer ${
+                    isChecked
                       ? 'bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] border-[#3B82F6] text-[#1D4ED8] font-extrabold shadow-[inset_0_2px_3px_rgba(255,255,255,1),0_4px_12px_rgba(59,130,246,0.15)]'
                       : 'bg-white/90 backdrop-blur-[15px] border-slate-200 text-[#0F172A] font-bold shadow-[0_4px_12px_rgba(0,0,0,0.02),inset_0_1.5px_2px_rgba(255,255,255,0.9)] hover:bg-[#EFF6FF] hover:border-[#3B82F6]/50'
-                    }`}
+                  }`}
                 >
                   {isChecked ? (
                     <CheckSquare className="w-5 h-5 text-[#3B82F6] flex-shrink-0 mt-0.5" />
