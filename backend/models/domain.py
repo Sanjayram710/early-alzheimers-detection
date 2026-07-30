@@ -38,8 +38,10 @@ class Prediction(Base):
     user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
     
     original_image_path = Column(String(500), nullable=False)
+    processed_image_path = Column(String(500), nullable=True)
     heatmap_path = Column(String(500), nullable=True)
     overlay_path = Column(String(500), nullable=True)
+    preprocessing_metadata = Column(JSON, nullable=True)
 
     predicted_class = Column(String(100), nullable=False)
     confidence = Column(Float, nullable=False)

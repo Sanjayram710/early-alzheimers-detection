@@ -5,12 +5,11 @@ import cv2
 from typing import Dict, Any, Union, Optional
 from pathlib import Path
 import numpy as np
-import tensorflow as tf
 
 from ml.datasets.dicom_nifti import read_image_as_rgb
-from ml.preprocessing.normalization import preprocess_image_array
 from ml.models.registry import ModelRegistry
 from ml.explainability.gradcam import GradCAMGenerator
+from backend.preprocessing.pipeline import dip_pipeline
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +25,7 @@ DEFAULT_CLASSES = ["Non Demented", "Very Mild Demented", "Mild Demented", "Moder
 
 class MRIPredictor:
     """
-    Inference orchestrator that handles MRI file/bytes reading, preprocessing,
+    Inference orchestrator that handles MRI file reading, DIP preprocessing pipeline execution,
     model forward pass, prediction confidence formatting, Grad-CAM heatmap generation,
     and medical disclaimer embedding.
     """
@@ -73,28 +72,27 @@ class MRIPredictor:
         """
         Executes end-to-end inference on input MRI image.
         
-        Returns dictionary with keys:
-        - predicted_class: str
-        - confidence: float
-        - class_probabilities: Dict[str, float]
-        - inference_time_ms: float
-        - original_base64: str
-        - heatmap_base64: str (optional)
-        - overlay_base64: str (optional)
-        - medical_disclaimer: str
+        Steps:
+        1. Run Digital Image Processing (DIP) Preprocessing Pipeline (Quality assessment, Denoise, CLAHE, Normalization, ROI)
+        2. Execute CNN Model forward pass on preprocessed MRI image tensor
+        3. Generate Grad-CAM explainability heatmap from preprocessed image
+        4. Package structured prediction results, DIP metadata, and visual outputs
         """
         start_time = time.time()
 
-        # 1. Read & Preprocess Image
-        rgb_raw = read_image_as_rgb(image_input, target_size=(224, 224))
-        norm_img = preprocess_image_array(rgb_raw, target_size=(224, 224), normalize_pixels=True)
-        input_batch = np.expand_dims(norm_img, axis=0)
+        # 1. Execute Digital Image Processing (DIP) Pipeline
+        processed_rgb, processed_b64, dip_metadata = dip_pipeline.process(image_input)
+        input_batch = np.expand_dims(processed_rgb, axis=0)
 
-        # Convert rgb_raw to Base64 PNG URL for reliable frontend rendering
-        _, buffer = cv2.imencode(".png", cv2.cvtColor(rgb_raw, cv2.COLOR_RGB2BGR))
-        original_b64 = f"data:image/png;base64,{base64.b64encode(buffer).decode('utf-8')}"
+        # 2. Read Original MRI for frontend comparison
+        try:
+            raw_rgb = read_image_as_rgb(image_input, target_size=None)
+            _, buffer = cv2.imencode(".png", cv2.cvtColor(raw_rgb, cv2.COLOR_RGB2BGR))
+            original_b64 = f"data:image/png;base64,{base64.b64encode(buffer).decode('utf-8')}"
+        except Exception:
+            original_b64 = processed_b64
 
-        # 2. Forward Pass
+        # 3. Forward Pass through CNN Model
         probs = self.model_wrapper.model.predict(input_batch, verbose=0)[0]
         top_idx = int(np.argmax(probs))
         predicted_class = self.class_names[top_idx]
@@ -105,11 +103,13 @@ class MRIPredictor:
             for i in range(len(self.class_names))
         }
 
-        # 3. Grad-CAM visual explanation
+        # 4. Grad-CAM visual explanation
         heatmap_b64, overlay_b64 = None, None
         if generate_gradcam and self.gradcam:
             try:
-                cam_res = self.gradcam.generate_gradcam_response(rgb_raw, pred_index=top_idx)
+                # Pass uint8 RGB representation of preprocessed image to Grad-CAM
+                preprocessed_uint8 = (processed_rgb * 255.0).astype(np.uint8)
+                cam_res = self.gradcam.generate_gradcam_response(preprocessed_uint8, pred_index=top_idx)
                 heatmap_b64 = cam_res["heatmap_base64"]
                 overlay_b64 = cam_res["overlay_base64"]
             except Exception as e:
@@ -124,7 +124,9 @@ class MRIPredictor:
             "inference_time_ms": inference_time,
             "model_version": self.model_name,
             "original_base64": original_b64,
+            "processed_base64": processed_b64,
             "heatmap_base64": heatmap_b64,
             "overlay_base64": overlay_b64,
+            "preprocessing_metadata": dip_metadata.model_dump(),
             "medical_disclaimer": MEDICAL_DISCLAIMER
         }

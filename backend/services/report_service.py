@@ -1,3 +1,4 @@
+import os
 import base64
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -54,7 +55,9 @@ class ReportService:
             model_version=pred.model_version,
             inference_time_ms=pred.inference_time_ms,
             original_image_path=pred.original_image_path,
-            overlay_base64=overlay_b64
+            processed_image_path=pred.processed_image_path,
+            overlay_base64=overlay_b64,
+            preprocessing_metadata=pred.preprocessing_metadata
         )
 
         new_report = Report(
@@ -69,5 +72,4 @@ class ReportService:
         return new_report
 
 
-import os
 report_service = ReportService()
