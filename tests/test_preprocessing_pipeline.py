@@ -1,22 +1,19 @@
 import pytest
+import io
+import cv2
 import numpy as np
+from PIL import Image
 from backend.preprocessing.schemas import DIPConfig, PreprocessingMetadata
 from backend.preprocessing.pipeline import DIPPipeline
 from backend.preprocessing.quality import assess_image_quality
-from backend.preprocessing.denoise import apply_denoise
-from backend.preprocessing.clahe import apply_clahe
-from backend.preprocessing.roi import detect_and_crop_roi
-from backend.preprocessing.normalize import normalize_intensity
+from ml.datasets.dicom_nifti import read_image_as_rgb
 
 
 def create_synthetic_mri(width=256, height=256):
     """Generates synthetic brain slice image array for testing."""
     img = np.zeros((height, width), dtype=np.uint8)
     cv2_center = (width // 2, height // 2)
-    # Draw brain ellipse
-    import cv2
     cv2.ellipse(img, cv2_center, (width // 3, height // 3), 0, 0, 360, 180, -1)
-    # Add noise
     noise = np.random.normal(0, 10, (height, width)).astype(np.uint8)
     return cv2.add(img, noise)
 
@@ -50,6 +47,18 @@ def test_dip_pipeline_process():
     assert metadata.clahe_applied is True
     assert metadata.normalization_applied is True
     assert metadata.total_processing_time_ms > 0
+
+
+def test_read_image_as_rgb_target_size_none():
+    """Verifies target_size=None does not raise NoneType iteration error and preserves image resolution."""
+    pil_img = Image.new("RGB", (300, 400), color="blue")
+    buf = io.BytesIO()
+    pil_img.save(buf, format="PNG")
+    img_bytes = buf.getvalue()
+
+    arr = read_image_as_rgb(img_bytes, target_size=None)
+    assert isinstance(arr, np.ndarray)
+    assert arr.shape == (400, 300, 3)
 
 
 def test_invalid_image_raises_validation_error():
