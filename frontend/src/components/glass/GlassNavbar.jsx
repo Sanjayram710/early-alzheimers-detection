@@ -26,7 +26,7 @@ export const GlassNavbar = () => {
   return (
     <header className="sticky top-4 z-50 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Inflated Claymorphism Capsule Outer Shell */}
-      <div className="bg-white/90 backdrop-blur-[20px] -webkit-backdrop-blur-[20px] border border-white rounded-full px-4 sm:px-6 py-2.5 shadow-[0_16px_36px_rgba(59,130,246,0.12),0_4px_12px_rgba(0,0,0,0.03),inset_0_2.5px_3px_0_rgba(255,255,255,1),inset_0_-3px_6px_0_rgba(219,234,254,0.7)] flex items-center justify-between relative overflow-hidden">
+      <div className="bg-white/94 backdrop-blur-[25px] -webkit-backdrop-blur-[25px] border-2 border-[#3B82F6] rounded-full px-4 sm:px-6 py-2.5 shadow-[0_16px_36px_rgba(59,130,246,0.18),0_4px_12px_rgba(0,0,0,0.03),inset_0_2.5px_3px_0_rgba(255,255,255,1),inset_0_-3px_6px_0_rgba(219,234,254,0.7)] flex items-center justify-between relative overflow-hidden">
         
         {/* Top Glare Reflection */}
         <div 
@@ -49,8 +49,8 @@ export const GlassNavbar = () => {
           </div>
         </Link>
 
-        {/* Claymorphism Navigation Segment Pill */}
-        <nav className="relative z-10 hidden xl:flex items-center bg-[#F1F5F9]/80 border border-white/80 rounded-full p-1.5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)]">
+        {/* Claymorphism Navigation Segment Control - Curved Rectangle with Blue Layout Line */}
+        <nav className="relative z-10 hidden xl:flex items-center bg-[#F1F5F9]/90 border-2 border-[#3B82F6] rounded-full p-1.5 shadow-[0_0_14px_rgba(59,130,246,0.25),inset_0_1.5px_2px_rgba(255,255,255,0.9)]">
           {navLinks.map((link) => {
             const active = isActive(link.path);
             return (
@@ -62,11 +62,11 @@ export const GlassNavbar = () => {
                 {active && (
                   <motion.div
                     layoutId="activeClayPill"
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] border border-white shadow-[inset_0_2px_3px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(191,219,254,0.8),0_4px_12px_rgba(59,130,246,0.15)]"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] border border-[#3B82F6] shadow-[inset_0_2px_3px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(191,219,254,0.8),0_4px_12px_rgba(59,130,246,0.20)]"
                     transition={{ type: 'spring', stiffness: 420, damping: 28 }}
                   />
                 )}
-                <span className={`relative z-10 ${active ? 'text-[#2563EB] font-extrabold drop-shadow-xs' : 'text-[#475569] font-bold hover:text-[#2563EB]'}`}>
+                <span className={`relative z-10 ${active ? 'text-[#2563EB] font-black drop-shadow-xs' : 'text-[#475569] font-extrabold hover:text-[#2563EB]'}`}>
                   {link.name}
                 </span>
               </Link>
@@ -133,7 +133,7 @@ export const GlassNavbar = () => {
               onClick={() => setMobileMenuOpen(false)}
               className={`block px-4 py-2.5 rounded-full text-sm font-bold transition-all ${
                 isActive(link.path)
-                  ? 'bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] text-[#2563EB] shadow-sm border border-white font-extrabold'
+                  ? 'bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] text-[#2563EB] shadow-sm border border-[#3B82F6] font-extrabold'
                   : 'text-[#475569] font-bold hover:bg-[#F1F5F9] hover:text-[#2563EB]'
               }`}
             >

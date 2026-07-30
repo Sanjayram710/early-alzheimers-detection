@@ -52,7 +52,7 @@ export const DashboardPage = () => {
       className="max-w-[1440px] mx-auto px-4 sm:px-8 py-8 space-y-8"
     >
       {/* Hero Inflated Clay Container Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/92 backdrop-blur-[20px] p-8 sm:p-10 rounded-[32px] border border-white shadow-[0_20px_40px_rgba(59,130,246,0.10),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/94 backdrop-blur-[20px] p-8 sm:p-10 rounded-[32px] border-2 border-[#3B82F6] shadow-[0_20px_40px_rgba(59,130,246,0.18),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]">
         <div>
           <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-extrabold uppercase tracking-wider mb-3.5 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-[#1D4ED8]" />
