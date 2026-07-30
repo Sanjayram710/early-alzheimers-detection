@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { History, Eye, Download, Search, Brain, User, Calendar, Droplet } from 'lucide-react';
+import { Eye, Search, Brain } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '../services/api';
-import { ClayCard } from '../components/clay/ClayCard';
-import { ClayInput } from '../components/clay/ClayInput';
-import { ClayButton } from '../components/clay/ClayButton';
+import { GlassCard } from '../components/glass/GlassCard';
+import { GlassInput } from '../components/glass/GlassInput';
+import { GlassButton } from '../components/glass/GlassButton';
+import { GlassTable, GlassTableRow } from '../components/glass/GlassTable';
+import { GlassBadge } from '../components/glass/GlassBadge';
 
 export const HistoryPage = () => {
   const [history, setHistory] = useState([]);
@@ -52,17 +54,17 @@ export const HistoryPage = () => {
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl sm:text-[42px] leading-tight font-extrabold text-[#1F2937] tracking-tight">
+          <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-[#111827] tracking-tight">
             MRI Scan & Prediction History
           </h1>
-          <p className="text-[#6B7280] text-sm sm:text-base font-medium">
+          <p className="text-[#6B7280] text-sm sm:text-base font-semibold">
             Past AI prediction logs, patient profiles, and clinical analysis records
           </p>
         </div>
 
         {/* Search Input */}
         <div className="w-full sm:w-80">
-          <ClayInput
+          <GlassInput
             icon={Search}
             placeholder="Search Patient Name, ID, or Stage..."
             value={searchTerm}
@@ -73,69 +75,58 @@ export const HistoryPage = () => {
 
       {loading ? (
         <div className="py-20 text-center space-y-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-2 shadow-[8px_8px_20px_rgba(163,177,198,0.35)] flex items-center justify-center mx-auto animate-bounce">
+          <div className="w-12 h-12 rounded-full bg-white/60 backdrop-blur-[15px] border border-white/60 p-2 shadow-md flex items-center justify-center mx-auto animate-bounce">
             <Brain className="w-6 h-6 text-[#6D5EF5]" />
           </div>
           <p className="text-xs font-bold text-[#6B7280]">Loading Prediction Logs...</p>
         </div>
       ) : filteredHistory.length === 0 ? (
-        <ClayCard padding="p-12 text-center" hoverEffect={false}>
-          <p className="text-base font-bold text-[#1F2937]">No prediction history records found</p>
-          <p className="text-xs text-[#6B7280] font-medium mt-1">Upload a brain MRI scan image to populate history logs.</p>
-        </ClayCard>
+        <GlassCard padding="p-12 text-center" hoverEffect={false}>
+          <p className="text-base font-bold text-[#111827]">No prediction history records found</p>
+          <p className="text-xs text-[#6B7280] font-semibold mt-1">Upload a brain MRI scan image to populate history logs.</p>
+        </GlassCard>
       ) : (
-        <div className="bg-gradient-to-br from-white via-[#F8FAFC] to-[#EEF2FF] rounded-[28px] border border-white/80 overflow-hidden shadow-[12px_12px_28px_rgba(163,177,198,0.35),-10px_-10px_24px_rgba(255,255,255,0.95)]">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#EEF2FF] text-[#1F2937] font-extrabold uppercase tracking-wider border-b border-white/80">
-                <tr>
-                  <th className="p-4">Patient Name</th>
-                  <th className="p-4">Patient ID</th>
-                  <th className="p-4">Age</th>
-                  <th className="p-4">Blood Group</th>
-                  <th className="p-4">Predicted Stage</th>
-                  <th className="p-4">Confidence</th>
-                  <th className="p-4">Date</th>
-                  <th className="p-4 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200/60 text-[#1F2937] font-medium">
-                {filteredHistory.map((item) => {
-                  const isNonDemented = item.predicted_class.includes('Non');
-                  return (
-                    <tr key={item.id} className="hover:bg-white/70 transition-colors">
-                      <td className="p-4 font-bold text-[#1F2937]">{item.patient_name || 'N/A'}</td>
-                      <td className="p-4 font-mono font-bold text-[#6D5EF5]">{item.patient_id || 'N/A'}</td>
-                      <td className="p-4 text-[#6B7280]">{item.patient_age ? `${item.patient_age} yrs` : 'N/A'}</td>
-                      <td className="p-4 font-bold text-[#EF4444]">{item.blood_group || 'N/A'}</td>
-                      <td className="p-4">
-                        <span className={`px-3 py-1 rounded-full font-bold text-[11px] shadow-[inset_2px_2px_4px_rgba(163,177,198,0.2),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] ${
-                          isNonDemented
-                            ? 'bg-[#DCFCE7] text-[#15803D]'
-                            : 'bg-[#FEE2E2] text-[#B91C1C]'
-                        }`}>
-                          {item.predicted_class}
-                        </span>
-                      </td>
-                      <td className="p-4 font-mono font-bold text-[#1F2937]">{(item.confidence * 100).toFixed(1)}%</td>
-                      <td className="p-4 text-[#6B7280]">{new Date(item.created_at).toLocaleDateString()}</td>
-                      <td className="p-4 text-right">
-                        <ClayButton
-                          variant="secondary"
-                          size="sm"
-                          icon={Eye}
-                          onClick={() => handleViewDetail(item.id)}
-                        >
-                          View Report
-                        </ClayButton>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <GlassCard padding="p-6">
+          <GlassTable
+            headers={['Patient Name', 'Patient ID', 'Age', 'Blood Group', 'Predicted Stage', 'Confidence', 'Date', 'Action']}
+          >
+            {filteredHistory.map((item) => {
+              const isNonDemented = item.predicted_class.includes('Non');
+              return (
+                <GlassTableRow key={item.id} onClick={() => handleViewDetail(item.id)}>
+                  <td className="p-4 font-bold text-[#111827]">{item.patient_name || 'N/A'}</td>
+                  <td className="p-4 font-mono font-bold text-[#6D5EF5]">{item.patient_id || 'N/A'}</td>
+                  <td className="p-4 font-semibold text-[#111827]">{item.patient_age ? `${item.patient_age}y` : 'N/A'}</td>
+                  <td className="p-4 font-semibold text-[#EF4444]">{item.blood_group || 'N/A'}</td>
+                  <td className="p-4">
+                    <GlassBadge variant={isNonDemented ? 'success' : 'danger'}>
+                      {item.predicted_class}
+                    </GlassBadge>
+                  </td>
+                  <td className="p-4 font-mono font-extrabold text-[#111827]">
+                    {(item.confidence * 100).toFixed(1)}%
+                  </td>
+                  <td className="p-4 font-medium text-[#6B7280]">
+                    {new Date(item.created_at).toLocaleDateString()}
+                  </td>
+                  <td className="p-4 text-right">
+                    <GlassButton
+                      size="sm"
+                      variant="secondary"
+                      icon={Eye}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewDetail(item.id);
+                      }}
+                    >
+                      View
+                    </GlassButton>
+                  </td>
+                </GlassTableRow>
+              );
+            })}
+          </GlassTable>
+        </GlassCard>
       )}
     </motion.div>
   );

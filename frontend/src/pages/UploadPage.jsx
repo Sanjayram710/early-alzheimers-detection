@@ -4,9 +4,9 @@ import { Upload, FileImage, AlertCircle, ArrowRight, Loader2, User, Calendar, Dr
 import { motion } from 'framer-motion';
 import api from '../services/api';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
-import { ClayCard } from '../components/clay/ClayCard';
-import { ClayInput } from '../components/clay/ClayInput';
-import { ClayButton } from '../components/clay/ClayButton';
+import { GlassCard } from '../components/glass/GlassCard';
+import { GlassInput } from '../components/glass/GlassInput';
+import { GlassButton } from '../components/glass/GlassButton';
 import { DEMO_PATIENTS } from '../data/demoPatients';
 
 const ALZHEIMERS_SYMPTOMS = [
@@ -129,10 +129,10 @@ export const UploadPage = () => {
       className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8"
     >
       <div className="text-center space-y-2">
-        <h1 className="font-display text-3xl sm:text-[42px] leading-tight font-extrabold text-[#1F2937] tracking-tight">
+        <h1 className="font-display text-3xl sm:text-[48px] leading-tight font-extrabold text-[#111827] tracking-tight">
           Patient Intake & Brain MRI Upload
         </h1>
-        <p className="text-[#6B7280] text-sm sm:text-base font-medium">
+        <p className="text-[#6B7280] text-sm sm:text-base font-semibold">
           Enter patient details, select observed symptoms, and upload MRI scan for AI analysis
         </p>
       </div>
@@ -143,7 +143,7 @@ export const UploadPage = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="p-3.5 rounded-[20px] bg-[#DCFCE7] border border-white/80 text-[#15803D] text-xs font-bold flex items-center justify-between shadow-[inset_2px_2px_4px_rgba(163,177,198,0.2)]"
+          className="p-4 rounded-[20px] bg-[#DCFCE7]/50 backdrop-blur-[20px] border border-white/50 text-[#15803D] text-xs font-bold flex items-center justify-between shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6)]"
         >
           <div className="flex items-center space-x-2">
             <CheckCircle2 className="w-4 h-4 text-[#22C55E]" />
@@ -152,7 +152,7 @@ export const UploadPage = () => {
           <button
             type="button"
             onClick={() => setDemoLoadedBanner(null)}
-            className="text-xs text-[#15803D] underline ml-4 hover:opacity-80 font-bold"
+            className="text-xs text-[#15803D] underline ml-4 hover:opacity-80 font-bold cursor-pointer"
           >
             Dismiss
           </button>
@@ -160,7 +160,7 @@ export const UploadPage = () => {
       )}
 
       {error && (
-        <div className="p-4 rounded-[22px] bg-[#FEE2E2] border border-[#FCA5A5] text-[#991B1B] text-sm flex items-center space-x-3 shadow-[6px_6px_16px_rgba(239,68,68,0.2)]">
+        <div className="p-4 rounded-[22px] bg-[#FEE2E2]/50 backdrop-blur-[20px] border border-[#FCA5A5]/60 text-[#991B1B] text-sm flex items-center space-x-3 shadow-md">
           <AlertCircle className="w-5 h-5 text-[#EF4444] flex-shrink-0" />
           <span className="font-bold">{error}</span>
         </div>
@@ -169,22 +169,22 @@ export const UploadPage = () => {
       <form onSubmit={handleSubmit} className="space-y-8">
         
         {/* Section 1: Patient General Demographics with single Demo Button */}
-        <ClayCard hoverEffect={false} padding="p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/70 pb-4 mb-6">
+        <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/20 pb-4 mb-6">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8E82FF] flex items-center justify-center text-white">
+              <div className="w-10 h-10 rounded-full bg-white/25 backdrop-blur-[15px] border border-white/40 p-0.5 shadow-sm flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#6D5EF5] to-[#8B5CF6] flex items-center justify-center text-white">
                   <User className="w-4 h-4" />
                 </div>
               </div>
               <div>
-                <h2 className="text-lg font-bold text-[#1F2937]">1. Patient Demographic Details</h2>
-                <p className="text-xs text-[#6B7280] font-medium">Enter general medical identity details</p>
+                <h2 className="text-lg font-bold text-[#111827]">1. Patient Demographic Details</h2>
+                <p className="text-xs text-[#6B7280] font-semibold">Enter general medical identity details</p>
               </div>
             </div>
 
             {/* Single Demo Button placed on the right side of Section 1 */}
-            <ClayButton
+            <GlassButton
               type="button"
               variant="secondary"
               size="sm"
@@ -193,11 +193,11 @@ export const UploadPage = () => {
               className="w-full sm:w-auto text-xs whitespace-nowrap font-bold"
             >
               Fill Demo Patient Data
-            </ClayButton>
+            </GlassButton>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <ClayInput
+            <GlassInput
               label="Patient Name"
               icon={User}
               placeholder="e.g. John Doe"
@@ -205,7 +205,7 @@ export const UploadPage = () => {
               onChange={(e) => setPatientName(e.target.value)}
             />
 
-            <ClayInput
+            <GlassInput
               label="Age (Years)"
               icon={Calendar}
               type="number"
@@ -218,15 +218,15 @@ export const UploadPage = () => {
 
             {/* Blood Group Select */}
             <div className="space-y-1.5 w-full">
-              <label className="block text-xs font-semibold text-[#1F2937] ml-1 tracking-wide">
+              <label className="block text-xs font-bold text-[#111827] ml-1 tracking-wide">
                 Blood Group
               </label>
               <div className="relative flex items-center">
-                <Droplet className="w-4 h-4 text-[#6D5EF5] absolute left-4 pointer-events-none" />
+                <Droplet className="w-4 h-4 text-[#6D5EF5] absolute left-4 pointer-events-none z-10" />
                 <select
                   value={bloodGroup}
                   onChange={(e) => setBloodGroup(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-[22px] bg-[#F4F6FB] text-sm text-[#1F2937] font-medium shadow-[inset_4px_4px_8px_rgba(163,177,198,0.35),inset_-4px_-4px_8px_rgba(255,255,255,0.95)] border border-white/60 focus:outline-none focus:border-[#6D5EF5] focus:ring-2 focus:ring-[#6D5EF5]/20 appearance-none cursor-pointer"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-[20px] bg-white/18 backdrop-blur-[18px] text-sm text-[#111827] font-semibold shadow-[inset_0_2px_4px_rgba(0,0,0,0.04),inset_0_1px_1px_0_rgba(255,255,255,0.4)] border border-white/32 focus:outline-none focus:border-[#6D5EF5] focus:bg-white/32 focus:ring-4 focus:ring-[#6D5EF5]/25 appearance-none cursor-pointer"
                 >
                   <option value="">-- Select Blood Group --</option>
                   {BLOOD_GROUPS.map((bg) => (
@@ -236,7 +236,7 @@ export const UploadPage = () => {
               </div>
             </div>
 
-            <ClayInput
+            <GlassInput
               label="Patient / Study ID (Optional)"
               icon={FileText}
               placeholder="e.g. PT-98231 or OAS1_0001"
@@ -244,19 +244,19 @@ export const UploadPage = () => {
               onChange={(e) => setPatientId(e.target.value)}
             />
           </div>
-        </ClayCard>
+        </GlassCard>
 
         {/* Section 2: Observed Symptoms Checklist */}
-        <ClayCard hoverEffect={false} padding="p-6 sm:p-8">
-          <div className="flex items-center space-x-3 border-b border-slate-200/70 pb-4 mb-6">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8E82FF] to-[#6D5EF5] flex items-center justify-center text-white">
+        <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
+          <div className="flex items-center space-x-3 border-b border-white/20 pb-4 mb-6">
+            <div className="w-10 h-10 rounded-full bg-white/25 backdrop-blur-[15px] border border-white/40 p-0.5 shadow-sm flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8B5CF6] to-[#6D5EF5] flex items-center justify-center text-white">
                 <Activity className="w-4 h-4" />
               </div>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#1F2937]">2. Symptoms & Clinical Observations</h2>
-              <p className="text-xs text-[#6B7280] font-medium">Select any symptoms currently exhibited by the patient</p>
+              <h2 className="text-lg font-bold text-[#111827]">2. Symptoms & Clinical Observations</h2>
+              <p className="text-xs text-[#6B7280] font-semibold">Select any symptoms currently exhibited by the patient</p>
             </div>
           </div>
 
@@ -268,10 +268,10 @@ export const UploadPage = () => {
                   key={symptom}
                   type="button"
                   onClick={() => toggleSymptom(symptom)}
-                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border ${
+                  className={`p-3.5 rounded-[20px] text-left transition-all flex items-start space-x-3 border cursor-pointer ${
                     isChecked
-                      ? 'bg-gradient-to-br from-[#EEF2FF] to-[#E0E7FF] border-[#6D5EF5] text-[#1F2937] shadow-[6px_6px_14px_rgba(109,94,245,0.2)]'
-                      : 'bg-[#F4F6FB] border-white/80 text-[#6B7280] shadow-[inset_3px_3px_6px_rgba(163,177,198,0.2),inset_-3px_-3px_6px_rgba(255,255,255,0.9)] hover:text-[#1F2937]'
+                      ? 'bg-gradient-to-r from-[#EEF4FF]/60 to-[#E0E7FF]/60 border-[#6D5EF5] text-[#111827] shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.7),0_4px_16px_rgba(109,94,245,0.18)] backdrop-blur-[15px]'
+                      : 'bg-white/18 backdrop-blur-[15px] border-white/35 text-[#6B7280] shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.4)] hover:text-[#111827] hover:bg-white/30'
                   }`}
                 >
                   {isChecked ? (
@@ -279,7 +279,7 @@ export const UploadPage = () => {
                   ) : (
                     <Square className="w-5 h-5 text-[#9CA3AF] flex-shrink-0 mt-0.5" />
                   )}
-                  <span className="text-xs leading-relaxed font-semibold">{symptom}</span>
+                  <span className="text-xs leading-relaxed font-bold">{symptom}</span>
                 </button>
               );
             })}
@@ -287,7 +287,7 @@ export const UploadPage = () => {
 
           {/* Additional Notes */}
           <div className="space-y-2 pt-4">
-            <label className="block text-xs font-semibold text-[#1F2937] tracking-wider uppercase ml-1">
+            <label className="block text-xs font-extrabold text-[#111827] tracking-wider uppercase ml-1">
               Other Symptoms / Clinical Notes (Optional)
             </label>
             <textarea
@@ -295,50 +295,58 @@ export const UploadPage = () => {
               value={customSymptom}
               onChange={(e) => setCustomSymptom(e.target.value)}
               placeholder="Enter any additional behavioral or cognitive observations..."
-              className="w-full p-4 rounded-[22px] bg-[#F4F6FB] text-xs text-[#1F2937] placeholder-[#9CA3AF] font-medium shadow-[inset_4px_4px_8px_rgba(163,177,198,0.35),inset_-4px_-4px_8px_rgba(255,255,255,0.95)] border border-white/60 focus:outline-none focus:border-[#6D5EF5] transition-colors"
+              className="w-full p-4 rounded-[20px] bg-white/18 backdrop-blur-[18px] text-xs text-[#111827] placeholder-[#6B7280]/70 font-semibold shadow-[inset_0_2px_4px_rgba(0,0,0,0.04),inset_0_1px_1px_0_rgba(255,255,255,0.4)] border border-white/32 focus:outline-none focus:border-[#6D5EF5] focus:bg-white/32 focus:ring-4 focus:ring-[#6D5EF5]/25 transition-all"
             />
           </div>
-        </ClayCard>
+        </GlassCard>
 
         {/* Section 3: MRI Scan Upload */}
-        <ClayCard hoverEffect={false} padding="p-6 sm:p-8">
-          <div className="flex items-center space-x-3 border-b border-slate-200/70 pb-4 mb-6">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-0.5 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] flex items-center justify-center">
+        <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
+          <div className="flex items-center space-x-3 border-b border-white/20 pb-4 mb-6">
+            <div className="w-10 h-10 rounded-full bg-white/25 backdrop-blur-[15px] border border-white/40 p-0.5 shadow-sm flex items-center justify-center">
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#22C55E] to-[#4ADE80] flex items-center justify-center text-white">
                 <Upload className="w-4 h-4" />
               </div>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-[#1F2937]">3. Upload Patient Brain MRI Scan</h2>
-              <p className="text-xs text-[#6B7280] font-medium">Supported formats: DICOM (.dcm), NIfTI (.nii, .nii.gz), PNG, JPG (Max 25MB)</p>
+              <h2 className="text-lg font-bold text-[#111827]">3. Upload Patient Brain MRI Scan</h2>
+              <p className="text-xs text-[#6B7280] font-semibold">Supported formats: DICOM (.dcm), NIfTI (.nii, .nii.gz), PNG, JPG (Max 25MB)</p>
             </div>
           </div>
 
-          {/* Indented Clay Dropzone Slot */}
-          <div className="relative rounded-[28px] p-8 text-center bg-[#F4F6FB] border border-white/80 shadow-[inset_6px_6px_14px_rgba(163,177,198,0.3),inset_-6px_-6px_14px_rgba(255,255,255,0.95)] group hover:border-[#6D5EF5] transition-all">
+          {/* Apple VisionOS Floating Glass Dropzone Panel */}
+          <div className="relative overflow-hidden rounded-[28px] p-8 text-center bg-white/20 backdrop-blur-[25px] border-2 border-dashed border-[#6D5EF5]/40 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.6),0_10px_30px_rgba(31,38,135,0.08)] group hover:border-[#6D5EF5] hover:bg-white/30 transition-all">
+            {/* Top Sheen */}
+            <div 
+              className="absolute inset-0 pointer-events-none z-0"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 100%)'
+              }}
+            />
+
             <input
               type="file"
               onChange={handleFileChange}
               accept=".png,.jpg,.jpeg,.dcm,.dicom,.nii,.gz"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
             />
 
             {preview ? (
-              <div className="space-y-3">
-                <img src={preview} alt="MRI Preview" className="max-h-56 mx-auto rounded-[20px] border border-white/80 object-contain shadow-[8px_8px_20px_rgba(163,177,198,0.3)]" />
-                <p className="text-xs font-bold text-[#6D5EF5]">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>
+              <div className="relative z-10 space-y-3">
+                <img src={preview} alt="MRI Preview" className="max-h-56 mx-auto rounded-[24px] border border-white/50 object-contain shadow-lg" />
+                <p className="text-xs font-extrabold text-[#6D5EF5]">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>
               </div>
             ) : (
-              <div className="space-y-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white to-[#EEF2FF] border border-white/80 p-1 shadow-[6px_6px_16px_rgba(163,177,198,0.3),-4px_-4px_12px_rgba(255,255,255,0.95)] flex items-center justify-center mx-auto text-[#6D5EF5] group-hover:scale-110 transition-transform">
+              <div className="relative z-10 space-y-4">
+                <div className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-[15px] border border-white/50 p-1 shadow-lg flex items-center justify-center mx-auto text-[#6D5EF5] group-hover:scale-110 transition-transform">
                   <Upload className="w-7 h-7" />
                 </div>
                 <div>
-                  <span className="block text-base font-bold text-[#1F2937]">Click or drag brain MRI scan here</span>
-                  <span className="block text-xs text-[#6B7280] font-medium mt-1">DICOM, NIfTI, PNG or JPG files up to 25MB</span>
+                  <span className="block text-base font-extrabold text-[#111827]">Click or drag brain MRI scan here</span>
+                  <span className="block text-xs text-[#6B7280] font-semibold mt-1">DICOM, NIfTI, PNG or JPG files up to 25MB</span>
                 </div>
                 {file && (
-                  <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white border border-white/80 text-[#1F2937] text-xs font-mono font-bold shadow-md">
+                  <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/40 backdrop-blur-[15px] border border-white/60 text-[#111827] text-xs font-mono font-bold shadow-sm">
                     <FileImage className="w-4 h-4 text-[#6D5EF5]" />
                     <span>{file.name}</span>
                   </div>
@@ -346,10 +354,10 @@ export const UploadPage = () => {
               </div>
             )}
           </div>
-        </ClayCard>
+        </GlassCard>
 
         {/* Submit Button */}
-        <ClayButton
+        <GlassButton
           type="submit"
           variant="primary"
           size="lg"
@@ -367,7 +375,7 @@ export const UploadPage = () => {
               <ArrowRight className="w-5 h-5" />
             </div>
           )}
-        </ClayButton>
+        </GlassButton>
       </form>
     </motion.div>
   );
