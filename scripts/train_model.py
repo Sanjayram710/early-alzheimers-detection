@@ -60,7 +60,7 @@ def build_tf_dataset(X: np.ndarray, y: np.ndarray, batch_size: int = 32, is_trai
 
 def main():
     parser = argparse.ArgumentParser(description="Alzheimer's MRI Model Training CLI")
-    parser.add_argument("--model_name", default="custom_cnn", help="Model architecture name")
+    parser.add_argument("--model_name", default="neurodxnet", help="Model architecture name")
     parser.add_argument("--epochs", type=int, default=20, help="Number of training epochs")
     parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
     parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate")

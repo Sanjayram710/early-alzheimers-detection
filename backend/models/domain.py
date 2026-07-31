@@ -47,7 +47,7 @@ class Prediction(Base):
     confidence = Column(Float, nullable=False)
     class_probabilities = Column(JSON, nullable=False)
     
-    model_version = Column(String(100), default="custom_cnn", nullable=False)
+    model_version = Column(String(100), default="neurodxnet", nullable=False)
     inference_time_ms = Column(Float, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 

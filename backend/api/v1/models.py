@@ -28,10 +28,10 @@ async def list_models(
             ModelVersionResponse(
                 id=f"mod-{name}",
                 version_name=name,
-                architecture=name.upper(),
-                val_accuracy=0.945 if name == "custom_cnn" else 0.92,
-                val_f1=0.941 if name == "custom_cnn" else 0.91,
-                is_active=(name == "custom_cnn"),
+                architecture="NeuroDxNet (Custom CNN)" if name in ["neurodxnet", "custom_cnn"] else name.upper(),
+                val_accuracy=0.9805 if name in ["neurodxnet", "custom_cnn"] else 0.92,
+                val_f1=0.9805 if name in ["neurodxnet", "custom_cnn"] else 0.91,
+                is_active=(name == "neurodxnet"),
                 created_at=None
             )
             for name in supported

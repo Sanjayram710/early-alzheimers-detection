@@ -64,6 +64,7 @@ class ModelRegistry:
                 input_shape=input_shape,
                 num_classes=num_classes,
                 learning_rate=learning_rate,
+                name=key,
                 **kwargs
             )
             model_instance.build()
