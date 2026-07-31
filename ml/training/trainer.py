@@ -68,21 +68,39 @@ class ModelTrainer:
         steps_per_epoch: Optional[int] = None,
         validation_steps: Optional[int] = None,
         patience_early_stopping: int = 10,
-        patience_reduce_lr: int = 5
+        patience_reduce_lr: int = 5,
+        resume: bool = False
     ) -> Tuple[tf.keras.callbacks.History, Dict[str, Any]]:
         """
         Executes model training loop with full callback stack.
         Returns Keras History object and training metadata summary.
         """
-        model = self.model_wrapper.model
-        if model is None:
-            model = self.model_wrapper.compile()
-
         # Checkpoints setup
         best_model_path = self.output_dir / f"{self.model_wrapper.name}_best.keras"
         last_checkpoint_path = self.output_dir / f"{self.model_wrapper.name}_last.keras"
+        csv_history_path = self.output_dir / "training_history.csv"
         log_dir = self.output_dir / "logs"
         log_dir.mkdir(parents=True, exist_ok=True)
+
+        initial_epoch = 0
+        if resume and last_checkpoint_path.exists():
+            logger.info(f"Resuming training from checkpoint: {last_checkpoint_path}")
+            try:
+                self.model_wrapper.model = tf.keras.models.load_model(str(last_checkpoint_path))
+                if csv_history_path.exists():
+                    import pandas as pd
+                    df_hist = pd.read_csv(csv_history_path)
+                    if not df_hist.empty and "epoch" in df_hist.columns:
+                        initial_epoch = int(df_hist["epoch"].max()) + 1
+                    else:
+                        initial_epoch = len(df_hist)
+                    logger.info(f"Loaded training history ({len(df_hist)} entries). Resuming from epoch {initial_epoch}.")
+            except Exception as e:
+                logger.warning(f"Could not load checkpoint for resuming ({e}). Starting fresh training.")
+
+        model = self.model_wrapper.model
+        if model is None:
+            model = self.model_wrapper.compile()
 
         cb_stack = [
             callbacks.ModelCheckpoint(
@@ -112,8 +130,8 @@ class ModelTrainer:
                 verbose=1
             ),
             callbacks.CSVLogger(
-                filename=str(self.output_dir / "training_history.csv"),
-                append=False
+                filename=str(csv_history_path),
+                append=resume and initial_epoch > 0
             )
         ]
 
@@ -125,11 +143,12 @@ class ModelTrainer:
         except Exception as e:
             logger.warning(f"TensorBoard summary writer unavailable ({e}). Using CSVLogger.")
 
-        logger.info(f"Starting training for {self.model_wrapper.name} for {epochs} epochs...")
+        logger.info(f"Starting training for {self.model_wrapper.name} for {epochs} epochs (initial_epoch={initial_epoch})...")
         history = model.fit(
             train_dataset,
             validation_data=val_dataset,
             epochs=epochs,
+            initial_epoch=initial_epoch,
             steps_per_epoch=steps_per_epoch,
             validation_steps=validation_steps,
             callbacks=cb_stack,

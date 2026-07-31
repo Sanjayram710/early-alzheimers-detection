@@ -66,6 +66,7 @@ def main():
     parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate")
     parser.add_argument("--manifest_dir", default="./data/processed", help="Path to train.csv/val.csv")
     parser.add_argument("--output_dir", default="./ml/saved_models", help="Output directory for model weights")
+    parser.add_argument("--resume", action="store_true", help="Resume training from last saved checkpoint if available")
     args = parser.parse_args()
 
     manifest_path = Path(args.manifest_dir)
@@ -98,7 +99,8 @@ def main():
         train_dataset=train_ds,
         val_dataset=val_ds,
         epochs=args.epochs,
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
+        resume=args.resume
     )
 
     logger.info(f"Training completed successfully. Artifacts saved: {metadata}")
