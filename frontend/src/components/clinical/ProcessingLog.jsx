@@ -20,7 +20,7 @@ export const ProcessingLog = ({ customTimestamp }) => {
   ];
 
   return (
-    <div className="rounded-[28px] bg-[#0F172A] border-2 border-[#3B82F6] text-white overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
+    <div className="rounded-[24px] bg-[#0F172A] border-[1.5px] border-[#3B82F6]/65 hover:border-[#3B82F6] text-white overflow-hidden shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2),0_8px_24px_rgba(59,130,246,0.08)] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35),0_12px_32px_rgba(59,130,246,0.16)] transition-all duration-250 ease-in-out">
       {/* Header Bar */}
       <button
         type="button"

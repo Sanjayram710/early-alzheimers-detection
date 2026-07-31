@@ -26,7 +26,7 @@ export const GradCamViewer = ({ originalUrl, heatmapUrl, overlayUrl }) => {
   const formattedOverlay = formatImageUrl(overlayUrl) || formattedHeatmap;
 
   return (
-    <GlassCard padding="p-6 sm:p-7" hoverEffect={false} className="space-y-6">
+    <GlassCard hierarchy="primary" accent="cyan" padding="p-6 sm:p-7" hoverEffect={true} className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow-[0_6px_16px_rgba(59,130,246,0.18),inset_0_2px_3px_rgba(255,255,255,1)] border border-white flex items-center justify-center">

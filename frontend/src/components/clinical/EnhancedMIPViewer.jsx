@@ -62,7 +62,7 @@ export const EnhancedMIPViewer = ({
   return (
     <div
       ref={containerRef}
-      className={`relative bg-[#0F172A] rounded-[32px] overflow-hidden border-2 border-[#3B82F6] shadow-[0_20px_40px_rgba(0,0,0,0.25)] flex flex-col ${
+      className={`relative bg-[#0F172A] rounded-[24px] overflow-hidden border-2 border-[#3B82F6]/65 hover:border-[#3B82F6] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35),0_8px_24px_rgba(59,130,246,0.08),0_2px_8px_rgba(59,130,246,0.05)] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.50),0_12px_32px_rgba(59,130,246,0.16),0_4px_12px_rgba(59,130,246,0.10)] transition-all duration-250 ease-in-out flex flex-col ${
         isFullscreen ? 'fixed inset-0 z-50 rounded-none border-none' : 'w-full min-h-[440px]'
       }`}
     >

@@ -220,7 +220,7 @@ export const AIPipelineTimeline = ({
   };
 
   return (
-    <div className="bg-white/94 backdrop-blur-[20px] rounded-[32px] p-6 sm:p-8 border-2 border-[#3B82F6] shadow-[0_20px_40px_rgba(59,130,246,0.16),0_8px_16px_rgba(0,0,0,0.03),inset_0_2.5px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)] space-y-6">
+    <div className="bg-white/94 backdrop-blur-[20px] -webkit-backdrop-blur-[20px] rounded-[24px] p-6 sm:p-8 border-2 border-[#3B82F6]/65 hover:border-[#3B82F6] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35),0_8px_24px_rgba(59,130,246,0.08),0_2px_8px_rgba(59,130,246,0.05),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.50),0_12px_32px_rgba(59,130,246,0.16),0_4px_12px_rgba(59,130,246,0.10),inset_0_2px_5px_0_rgba(255,255,255,1),inset_0_-5px_10px_0_rgba(219,234,254,0.8)] transition-all duration-250 ease-in-out space-y-6">
 
       {/* Clean Pipeline Header Bar & Health Telemetry */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">

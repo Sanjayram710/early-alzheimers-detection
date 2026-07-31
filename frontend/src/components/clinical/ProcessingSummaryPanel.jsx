@@ -13,7 +13,7 @@ export const ProcessingSummaryPanel = ({ metadata }) => {
   ];
 
   return (
-    <div className="p-5 rounded-[28px] bg-gradient-to-br from-white to-[#F8FAFC] border-2 border-[#3B82F6] shadow-[0_12px_32px_rgba(59,130,246,0.12),inset_0_2px_4px_rgba(255,255,255,1)] space-y-4">
+    <div className="p-5 rounded-[24px] bg-gradient-to-br from-white to-[#F8FAFC] border-[1.5px] border-[#3B82F6]/65 hover:border-[#3B82F6] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35),0_6px_20px_rgba(59,130,246,0.06),0_2px_6px_rgba(59,130,246,0.04),inset_0_2px_4px_0_rgba(255,255,255,0.9)] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.50),0_10px_28px_rgba(59,130,246,0.12)] transition-all duration-250 ease-in-out space-y-4">
       <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
         <div className="flex items-center space-x-2.5">
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#3B82F6] to-[#60A5FA] text-white flex items-center justify-center p-0.5 shadow-xs">
