@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Search, Brain, History as HistoryIcon } from 'lucide-react';
+import { Eye, Search, Brain, History as HistoryIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '../services/api';
 import { GlassCard } from '../components/glass/GlassCard';
@@ -13,6 +13,9 @@ export const HistoryPage = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +31,12 @@ export const HistoryPage = () => {
     };
     fetchHistory();
   }, []);
+
+  // Reset to Page 1 when searching
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
 
   const handleViewDetail = async (id) => {
     try {
@@ -45,6 +54,12 @@ export const HistoryPage = () => {
     item.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Pagination calculation
+  const totalPages = Math.ceil(filteredHistory.length / itemsPerPage) || 1;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredHistory.length);
+  const currentRecords = filteredHistory.slice(startIndex, endIndex);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -53,7 +68,7 @@ export const HistoryPage = () => {
       className="max-w-[1440px] mx-auto px-4 sm:px-8 py-8 space-y-8"
     >
       {/* Hero Claymorphism Banner Matching Dashboard Page */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/94 backdrop-blur-[20px] p-8 sm:p-10 rounded-[32px] border-2 border-[#3B82F6] shadow-[0_20px_40px_rgba(59,130,246,0.18),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/94 backdrop-blur-[20px] p-8 sm:p-10 rounded-[24px] border-2 border-[#3B82F6]/65 hover:border-[#3B82F6] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35),0_8px_24px_rgba(59,130,246,0.08),0_2px_8px_rgba(59,130,246,0.05),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)] transition-all duration-250 ease-in-out">
         <div>
           <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-extrabold uppercase tracking-wider mb-3.5 shadow-sm">
             <HistoryIcon className="w-3.5 h-3.5 text-[#1D4ED8]" />
@@ -73,7 +88,7 @@ export const HistoryPage = () => {
             icon={Search}
             placeholder="Search Patient Name, ID, or Stage..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
           />
         </div>
       </div>
@@ -91,11 +106,11 @@ export const HistoryPage = () => {
           <p className="text-xs text-[#475569] font-semibold mt-1">Upload a brain MRI scan image to populate history logs.</p>
         </GlassCard>
       ) : (
-        <GlassCard padding="p-6 sm:p-8">
+        <GlassCard hierarchy="primary" accent="blue" padding="p-6 sm:p-8" className="space-y-6">
           <GlassTable
             headers={['Patient Name', 'Patient ID', 'Age', 'Blood Group', 'Predicted Stage', 'Confidence', 'Date', 'Action']}
           >
-            {filteredHistory.map((item) => {
+            {currentRecords.map((item) => {
               const isNonDemented = item.predicted_class.includes('Non');
               return (
                 <GlassTableRow key={item.id} onClick={() => handleViewDetail(item.id)}>
@@ -131,6 +146,53 @@ export const HistoryPage = () => {
               );
             })}
           </GlassTable>
+
+          {/* Pagination Controls Section */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100 font-semibold text-xs text-[#475569]">
+            <div>
+              Showing <span className="font-extrabold text-[#0F172A]">{filteredHistory.length > 0 ? startIndex + 1 : 0}</span> to{' '}
+              <span className="font-extrabold text-[#0F172A]">{endIndex}</span> of{' '}
+              <span className="font-extrabold text-[#0F172A]">{filteredHistory.length}</span> patient records
+            </div>
+
+            <div className="flex items-center space-x-1.5">
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 rounded-full border border-slate-200 bg-white font-extrabold text-[#0F172A] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#F1F5F9] transition-all flex items-center gap-1 cursor-pointer"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span>Previous</span>
+              </button>
+
+              {/* Page Number Pills */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  type="button"
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`w-8 h-8 rounded-full font-extrabold transition-all cursor-pointer flex items-center justify-center ${
+                    currentPage === pageNum
+                      ? 'bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white shadow-[0_4px_12px_rgba(59,130,246,0.35)] border border-white'
+                      : 'bg-white border border-slate-200 text-[#475569] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages || totalPages === 0}
+                className="px-3 py-1.5 rounded-full border border-slate-200 bg-white font-extrabold text-[#0F172A] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#F1F5F9] transition-all flex items-center gap-1 cursor-pointer"
+              >
+                <span>Next</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
         </GlassCard>
       )}
     </motion.div>
