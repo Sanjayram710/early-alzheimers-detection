@@ -8,6 +8,8 @@ import { GlassCard } from '../components/glass/GlassCard';
 import { GlassInput } from '../components/glass/GlassInput';
 import { GlassButton } from '../components/glass/GlassButton';
 import { DEMO_PATIENTS } from '../data/demoPatients';
+import { PipelineStatusWorkflow } from '../components/clinical/PipelineStatusWorkflow';
+import { ProcessingSummaryPanel } from '../components/clinical/ProcessingSummaryPanel';
 
 const ALZHEIMERS_SYMPTOMS = [
   "Memory loss disrupting daily life",
@@ -36,7 +38,6 @@ export const UploadPage = () => {
   const [customSymptom, setCustomSymptom] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [previewTab, setPreviewTab] = useState('original'); // 'original' or 'dip'
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -45,7 +46,6 @@ export const UploadPage = () => {
       setFile(selected);
       setError(null);
 
-      // Create preview for standard images
       if (selected.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onloadend = () => setPreview(reader.result);
@@ -96,7 +96,6 @@ export const UploadPage = () => {
     if (patientAge) formData.append('patient_age', patientAge);
     if (bloodGroup) formData.append('blood_group', bloodGroup);
 
-    // Combine selected checkboxes and custom symptom text into array
     const allSymptoms = [...selectedSymptoms];
     if (customSymptom.trim()) {
       allSymptoms.push(customSymptom.trim());
@@ -110,7 +109,6 @@ export const UploadPage = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      // Pass prediction result to prediction page via state
       navigate('/prediction', { state: { prediction: res.data } });
     } catch (err) {
       console.error('Upload Error:', err);
@@ -132,7 +130,7 @@ export const UploadPage = () => {
           Patient Intake & Brain MRI Upload
         </h1>
         <p className="text-[#334155] text-sm sm:text-base font-bold">
-          Enter patient details, select observed symptoms, and upload MRI scan for AI analysis
+          Enter patient details, select observed symptoms, and upload MRI scan for Medical Image Processing and AI analysis
         </p>
       </div>
 
@@ -162,7 +160,6 @@ export const UploadPage = () => {
               </div>
             </div>
 
-            {/* Demo Button */}
             <GlassButton
               type="button"
               variant="secondary"
@@ -195,7 +192,6 @@ export const UploadPage = () => {
               onChange={(e) => setPatientAge(e.target.value)}
             />
 
-            {/* Blood Group Select */}
             <div className="space-y-1.5 w-full">
               <label className="block text-xs font-semibold text-[#475569] ml-1 tracking-wide">
                 Blood Group
@@ -264,7 +260,6 @@ export const UploadPage = () => {
             })}
           </div>
 
-          {/* Additional Notes */}
           <div className="space-y-2 pt-4">
             <label className="block text-xs font-semibold text-[#475569] tracking-wide ml-1">
               Other Symptoms / Clinical Notes (Optional)
@@ -279,7 +274,7 @@ export const UploadPage = () => {
           </div>
         </GlassCard>
 
-        {/* Section 3: MRI Scan Upload & DIP Preprocessing */}
+        {/* Section 3: MRI Scan Upload & Medical Image Processing Pipeline */}
         <GlassCard hoverEffect={false} padding="p-6 sm:p-8">
           <div className="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
             <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow-[0_6px_16px_rgba(59,130,246,0.18),inset_0_2px_3px_rgba(255,255,255,1)] border border-white flex items-center justify-center">
@@ -293,7 +288,6 @@ export const UploadPage = () => {
             </div>
           </div>
 
-          {/* Claymorphism Dropzone Panel */}
           <div className="relative overflow-hidden rounded-[28px] p-8 text-center bg-white/80 backdrop-blur-[20px] border-2 border-dashed border-[#3B82F6]/50 shadow-[0_10px_30px_rgba(59,130,246,0.08),inset_0_2px_4px_rgba(255,255,255,1)] group hover:border-[#3B82F6] hover:bg-white transition-all">
             <input
               type="file"
@@ -308,7 +302,7 @@ export const UploadPage = () => {
                 <div className="flex items-center justify-center space-x-2">
                   <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#DCFCE7] border border-[#86EFAC] text-[#15803D] text-xs font-extrabold">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>File Validated & DIP Ready</span>
+                    <span>File Validated & Preprocessing Ready</span>
                   </div>
                   <span className="text-xs font-mono font-bold text-[#0F172A]">{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
                 </div>
@@ -326,36 +320,10 @@ export const UploadPage = () => {
             )}
           </div>
 
-          {/* Digital Image Processing (DIP) Pipeline Features Summary */}
-          <div className="mt-6 p-4 rounded-[24px] bg-[#F8FAFC] border border-slate-200/80 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-[#0F172A] uppercase tracking-wider flex items-center gap-1.5">
-                <Sliders className="w-4 h-4 text-[#3B82F6]" />
-                <span>Automated DIP Preprocessing Stages</span>
-              </span>
-              <span className="text-[11px] font-bold text-[#2563EB] bg-[#DBEAFE] px-2.5 py-0.5 rounded-full border border-[#BFDBFE]">
-                Active Pipeline
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold text-[#334155]">
-              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#22C55E]" />
-                <span>Quality Metric Assessment</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#3B82F6]" />
-                <span>Gaussian Denoising</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#8B5CF6]" />
-                <span>CLAHE Enhancement</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center space-x-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#F59E0B]" />
-                <span>Brain ROI Bounding Crop</span>
-              </div>
-            </div>
+          {/* Preprocessing Workflow Pipeline & Summary Panel */}
+          <div className="mt-6 space-y-6">
+            <PipelineStatusWorkflow currentStepIndex={file ? 5 : 0} isProcessing={loading} />
+            <ProcessingSummaryPanel />
           </div>
         </GlassCard>
 
@@ -370,11 +338,11 @@ export const UploadPage = () => {
           {loading ? (
             <div className="flex items-center space-x-2">
               <Loader2 className="w-5 h-5 animate-spin text-white" />
-              <span>Executing DIP Pipeline & NeuroDxNet Inference...</span>
+              <span>Executing Medical Image Processing & NeuroDxNet Inference...</span>
             </div>
           ) : (
             <div className="flex items-center space-x-2">
-              <span>Run DIP Preprocessing & AI Analysis</span>
+              <span>Run Preprocessing Pipeline & AI Analysis</span>
               <ArrowRight className="w-5 h-5 text-white" />
             </div>
           )}
