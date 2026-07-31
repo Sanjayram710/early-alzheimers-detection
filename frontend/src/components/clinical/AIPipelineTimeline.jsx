@@ -221,7 +221,7 @@ export const AIPipelineTimeline = ({
 
   return (
     <div className="bg-white/94 backdrop-blur-[20px] rounded-[32px] p-6 sm:p-8 border-2 border-[#3B82F6] shadow-[0_20px_40px_rgba(59,130,246,0.16),0_8px_16px_rgba(0,0,0,0.03),inset_0_2.5px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)] space-y-6">
-      
+
       {/* Clean Pipeline Header Bar & Health Telemetry */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
         <div className="flex items-center space-x-3">
@@ -291,13 +291,13 @@ export const AIPipelineTimeline = ({
         </div>
       </div>
 
-      {/* Continuous Connected Pipeline Graph */}
-      <div className="relative pt-4 pb-6 overflow-x-auto">
+      {/* Continuous Connected Pipeline Graph with Padded Headroom for Tooltips */}
+      <div className="relative pt-36 pb-6 overflow-x-auto">
         <div className="min-w-[1050px] flex items-center justify-between relative px-4">
-          
+
           {/* Continuous Background Track Line */}
           <div className="absolute top-[28px] left-10 right-10 h-1.5 bg-slate-200 -translate-y-1/2 z-0 rounded-full" />
-          
+
           {/* Animated Flow Connector Gradient Line */}
           <motion.div
             className="absolute top-[28px] left-10 h-1.5 bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#16A34A] -translate-y-1/2 z-0 rounded-full"
@@ -315,20 +315,19 @@ export const AIPipelineTimeline = ({
 
             return (
               <div key={stage.id} className="relative z-10 flex flex-col items-center group">
-                
+
                 {/* Node Button with Functional Color Coding */}
                 <button
                   type="button"
                   onClick={() => toggleStageExpand(stage.id)}
                   onMouseEnter={() => setHoveredStageId(stage.id)}
                   onMouseLeave={() => setHoveredStageId(null)}
-                  className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 cursor-pointer select-none shadow-md ${
-                    isCompleted
+                  className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 cursor-pointer select-none shadow-md ${isCompleted
                       ? `${stage.color.bg} ${stage.color.border} ${stage.color.text} shadow-[0_4px_14px_rgba(0,0,0,0.08)] hover:scale-110`
                       : isCurrent
-                      ? 'bg-[#3B82F6] border-white text-white shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-pulse scale-110 ring-4 ring-[#3B82F6]/30'
-                      : 'bg-white border-slate-300 text-slate-400 hover:border-[#3B82F6] hover:text-[#3B82F6]'
-                  } ${isSelected ? 'ring-4 ring-[#3B82F6] scale-110' : ''}`}
+                        ? 'bg-[#3B82F6] border-white text-white shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-pulse scale-110 ring-4 ring-[#3B82F6]/30'
+                        : 'bg-white border-slate-300 text-slate-400 hover:border-[#3B82F6] hover:text-[#3B82F6]'
+                    } ${isSelected ? 'ring-4 ring-[#3B82F6] scale-110' : ''}`}
                 >
                   {isCompleted ? (
                     <StageIcon className="w-5 h-5" />
@@ -344,7 +343,7 @@ export const AIPipelineTimeline = ({
                   <span className={`block text-xs font-extrabold leading-tight ${isCompleted ? 'text-[#0F172A]' : isCurrent ? 'text-[#2563EB]' : 'text-[#64748B]'}`}>
                     {stage.title}
                   </span>
-                  
+
                   <span className="block text-[10px] font-mono font-bold text-[#2563EB] mt-0.5">
                     {stage.timeMs} ms
                   </span>
@@ -354,40 +353,43 @@ export const AIPipelineTimeline = ({
                   </span>
 
                   {/* Status Colored Pill Badge */}
-                  <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold border ${
-                    isCompleted ? 'bg-[#DCFCE7] text-[#15803D] border-[#86EFAC]' : isCurrent ? 'bg-[#DBEAFE] text-[#1D4ED8] border-[#BFDBFE]' : 'bg-[#F1F5F9] text-[#64748B] border-slate-200'
-                  }`}>
+                  <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold border ${isCompleted ? 'bg-[#DCFCE7] text-[#15803D] border-[#86EFAC]' : isCurrent ? 'bg-[#DBEAFE] text-[#1D4ED8] border-[#BFDBFE]' : 'bg-[#F1F5F9] text-[#64748B] border-slate-200'
+                    }`}>
                     {isCompleted ? 'Completed' : isCurrent ? 'Running...' : 'Pending'}
                   </span>
                 </div>
 
-                {/* Hover Tooltip Overlay with Operations & Output Details */}
+                {/* Light Claymorphism Hover Tooltip Overlay */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                      className="absolute bottom-full mb-3 w-64 p-3.5 rounded-[22px] bg-[#0F172A] text-white text-xs font-bold shadow-xl border border-slate-700 z-30 pointer-events-none space-y-2"
+                      className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-64 p-3.5 rounded-[22px] bg-white/98 backdrop-blur-[15px] text-[#0F172A] text-xs font-bold shadow-[0_12px_32px_rgba(59,130,246,0.22),0_4px_12px_rgba(0,0,0,0.06)] border-2 border-[#3B82F6]/40 z-30 pointer-events-none space-y-2"
                     >
-                      <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
-                        <span className="text-[#3B82F6] font-extrabold text-xs">{stage.title}</span>
-                        <span className="text-emerald-400 font-mono font-bold text-[11px]">{stage.timeMs} ms</span>
+                      <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                        <span className="text-[#2563EB] font-extrabold text-xs">{stage.title}</span>
+                        <span className="text-[#15803D] font-mono font-extrabold text-[11px] bg-[#DCFCE7] px-2 py-0.5 rounded-full border border-[#86EFAC]">{stage.timeMs} ms</span>
                       </div>
 
-                      <div className="space-y-1 text-[11px] text-slate-300">
-                        <span className="text-slate-400 font-semibold uppercase text-[9px] block">Operations Performed:</span>
+                      <div className="space-y-1 text-[11px] text-[#334155]">
+                        <span className="text-[#64748B] font-extrabold uppercase text-[9px] block">Operations Performed:</span>
                         {stage.operations.slice(0, 3).map((op, idx) => (
                           <div key={idx} className="flex items-center space-x-1.5">
-                            <CheckCircle2 className="w-3 h-3 text-[#22C55E] flex-shrink-0" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] flex-shrink-0" />
                             <span className="truncate">{op}</span>
                           </div>
                         ))}
                       </div>
 
-                      <div className="pt-1.5 border-t border-slate-800 text-[10px] text-slate-400">
-                        <span>Output: <strong className="text-sky-300 font-mono">{stage.output}</strong></span>
+                      <div className="pt-1.5 border-t border-slate-100 text-[10px] text-[#64748B] flex justify-between items-center">
+                        <span>Output Result:</span>
+                        <strong className="text-[#1D4ED8] font-mono">{stage.output}</strong>
                       </div>
+
+                      {/* Tooltip Downward Pointer Arrow */}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white" />
                     </motion.div>
                   )}
                 </AnimatePresence>

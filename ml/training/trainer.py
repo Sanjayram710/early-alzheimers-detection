@@ -41,7 +41,7 @@ class ModelTrainer:
     - ModelCheckpoint (Best model + Last checkpoint)
     - EarlyStopping
     - ReduceLROnPlateau
-    - TensorBoard Logging
+    - CSVLogger & Optional TensorBoard Logging
     """
 
     def __init__(
@@ -118,11 +118,12 @@ class ModelTrainer:
         ]
 
         try:
+            import tensorboard
             writer = tf.summary.create_file_writer(str(log_dir))
             writer.close()
             cb_stack.append(callbacks.TensorBoard(log_dir=str(log_dir), histogram_freq=0))
         except Exception as e:
-            logger.warning(f"TensorBoard summary writer unavailable for path ({e}). Using CSVLogger.")
+            logger.warning(f"TensorBoard summary writer unavailable ({e}). Using CSVLogger.")
 
         logger.info(f"Starting training for {self.model_wrapper.name} for {epochs} epochs...")
         history = model.fit(
