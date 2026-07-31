@@ -19,13 +19,14 @@ class CustomCNNModel(BaseAlzheimerModel):
         self,
         input_shape: Tuple[int, int, int] = (224, 224, 3),
         num_classes: int = 4,
-        learning_rate: float = 1e-3
+        learning_rate: float = 1e-3,
+        name: str = "neurodxnet"
     ):
         super().__init__(
             input_shape=input_shape,
             num_classes=num_classes,
             learning_rate=learning_rate,
-            name="custom_cnn"
+            name=name
         )
 
     def build(self) -> Model:
