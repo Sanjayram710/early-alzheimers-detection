@@ -217,10 +217,15 @@ export const DashboardPage = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="clayBarGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.9} />
-                      <stop offset="100%" stopColor="#60A5FA" stopOpacity={0.6} />
-                    </linearGradient>
+                    {chartData.map((entry, index) => {
+                      const colorObj = COLORS[index % COLORS.length];
+                      return (
+                        <linearGradient id={`barGrad-${index}`} key={`barGrad-${index}`} x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor={COLORS[index % COLORS.length]} stopOpacity={0.95} />
+                          <stop offset="100%" stopColor={COLORS[index % COLORS.length]} stopOpacity={0.55} />
+                        </linearGradient>
+                      );
+                    })}
                   </defs>
                   <XAxis dataKey="name" stroke="#475569" fontSize={11} tickLine={false} axisLine={false} fontWeight={700} />
                   <YAxis stroke="#475569" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} fontWeight={700} />
@@ -234,7 +239,11 @@ export const DashboardPage = () => {
                       fontWeight: 'bold'
                     }}
                   />
-                  <Bar dataKey="count" fill="url(#clayBarGradient)" radius={[12, 12, 0, 0]} />
+                  <Bar dataKey="count" radius={[12, 12, 0, 0]}>
+                    {chartData.map((entry, index) => (
+                      <Cell key={`bar-cell-${index}`} fill={`url(#barGrad-${index})`} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>

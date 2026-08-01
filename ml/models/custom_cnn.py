@@ -46,6 +46,7 @@ class CustomCNNModel(BaseAlzheimerModel):
         # Block 3
         x = layers.Conv2D(128, (3, 3), padding="same", name="target_conv_layer")(x)
         x = layers.Activation("relu", name="relu_3")(x)
+        x = layers.MaxPooling2D((2, 2), name="maxpool_3")(x)
         x = layers.Dropout(0.3, name="dropout_1")(x)
 
         # Classifier Head

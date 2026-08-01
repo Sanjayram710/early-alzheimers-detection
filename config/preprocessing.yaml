@@ -30,10 +30,10 @@ seed: 42
 
 # Label encoding mapping
 label_mapping:
-  NonDemented: 0
-  VeryMildDemented: 1
-  MildDemented: 2
-  ModerateDemented: 3
+  MildDemented: 0
+  ModerateDemented: 1
+  NonDemented: 2
+  VeryMildDemented: 3
 
 # Medical Data Augmentation (Applied ONLY to Training split)
 augmentation:

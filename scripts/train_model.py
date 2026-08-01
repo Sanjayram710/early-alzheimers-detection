@@ -23,23 +23,24 @@ import tensorflow as tf
 
 from ml.models.registry import ModelRegistry
 from ml.training.trainer import ModelTrainer
-from ml.preprocessing.normalization import load_and_preprocess_single
+from backend.preprocessing.pipeline import dip_pipeline
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-CLASS_NAMES = ["Non Demented", "Very Mild Demented", "Mild Demented", "Moderate Demented"]
+CLASS_NAMES = ["Mild Demented", "Moderate Demented", "Non Demented", "Very Mild Demented"]
 LABEL_MAP = {name: idx for idx, name in enumerate(CLASS_NAMES)}
 
 
 def load_dataset_to_memory(df: pd.DataFrame, max_workers: int = 8) -> Tuple[np.ndarray, np.ndarray]:
-    """Pre-loads and rescales images into RAM in parallel for high-throughput training."""
-    logger.info(f"Pre-loading {len(df)} images into RAM memory...")
+    """Pre-loads and preprocesses images via DIP pipeline into RAM for high-throughput training."""
+    logger.info(f"Pre-loading {len(df)} images with DIP pipeline into RAM memory...")
     paths = df["file_path"].tolist()
     labels = [LABEL_MAP[lbl] for lbl in df["canonical_label"].tolist()]
 
     def _load(p):
-        return load_and_preprocess_single(p, target_size=(224, 224), normalize_pixels=True)
+        processed_rgb, _, _ = dip_pipeline.process(p)
+        return processed_rgb
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         images = list(executor.map(_load, paths))
