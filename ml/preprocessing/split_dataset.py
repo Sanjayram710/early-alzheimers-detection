@@ -7,10 +7,10 @@ from sklearn.model_selection import StratifiedShuffleSplit
 logger = logging.getLogger(__name__)
 
 DEFAULT_LABEL_MAPPING = {
-    "NonDemented": 0,
-    "VeryMildDemented": 1,
-    "MildDemented": 2,
-    "ModerateDemented": 3
+    "MildDemented": 0,
+    "ModerateDemented": 1,
+    "NonDemented": 2,
+    "VeryMildDemented": 3
 }
 
 

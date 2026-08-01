@@ -204,23 +204,29 @@ export const DashboardPage = () => {
       </div>
 
       {/* 12-Column Grid for Clay Chart Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         
         {/* Class Distribution Bar Chart */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 flex flex-col">
           <GlassChartCard
             title="Disease Stage Class Distribution"
             subtitle="Frequency breakdown of Non-Demented, Very Mild, Mild, and Moderate stages"
             icon={BarChart2}
+            className="h-full flex flex-col justify-between"
           >
-            <div className="h-72 w-full pt-4">
+            <div className="flex-1 w-full min-h-[310px] pt-4 flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="clayBarGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.9} />
-                      <stop offset="100%" stopColor="#60A5FA" stopOpacity={0.6} />
-                    </linearGradient>
+                    {chartData.map((entry, index) => {
+                      const colorObj = COLORS[index % COLORS.length];
+                      return (
+                        <linearGradient id={`barGrad-${index}`} key={`barGrad-${index}`} x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor={COLORS[index % COLORS.length]} stopOpacity={0.95} />
+                          <stop offset="100%" stopColor={COLORS[index % COLORS.length]} stopOpacity={0.55} />
+                        </linearGradient>
+                      );
+                    })}
                   </defs>
                   <XAxis dataKey="name" stroke="#475569" fontSize={11} tickLine={false} axisLine={false} fontWeight={700} />
                   <YAxis stroke="#475569" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} fontWeight={700} />
@@ -234,7 +240,11 @@ export const DashboardPage = () => {
                       fontWeight: 'bold'
                     }}
                   />
-                  <Bar dataKey="count" fill="url(#clayBarGradient)" radius={[12, 12, 0, 0]} />
+                  <Bar dataKey="count" radius={[12, 12, 0, 0]}>
+                    {chartData.map((entry, index) => (
+                      <Cell key={`bar-cell-${index}`} fill={`url(#barGrad-${index})`} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -242,39 +252,69 @@ export const DashboardPage = () => {
         </div>
 
         {/* Category Ratio Pie Chart */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 flex flex-col">
           <GlassChartCard
             title="Category Ratio Analysis"
             subtitle="Proportional breakdown across analyzed patients"
             icon={PieChartIcon}
+            className="h-full flex flex-col justify-between"
           >
-            <div className="h-72 w-full flex items-center justify-center pt-2">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    paddingAngle={4}
-                    dataKey="count"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                      borderRadius: '16px',
-                      border: '1px solid #E2E8F0',
-                      color: '#0F172A',
-                      fontWeight: 'bold'
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="flex-1 flex flex-col justify-between space-y-4">
+              <div className="h-52 w-full flex items-center justify-center pt-2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={chartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={80}
+                      paddingAngle={4}
+                      dataKey="count"
+                    >
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        borderRadius: '16px',
+                        border: '1px solid #E2E8F0',
+                        color: '#0F172A',
+                        fontWeight: 'bold'
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Category Legend with Color, Name, Value, and Percentage */}
+              <div className="grid grid-cols-2 gap-2.5 pt-3 border-t border-slate-100">
+                {chartData.map((item, index) => {
+                  const color = COLORS[index % COLORS.length];
+                  const total = chartData.reduce((acc, curr) => acc + curr.count, 0);
+                  const pct = total > 0 ? ((item.count / total) * 100).toFixed(1) : '0.0';
+                  return (
+                    <div
+                      key={`legend-${index}`}
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold shadow-2xs"
+                    >
+                      <div className="flex items-center space-x-2 truncate">
+                        <span
+                          className="w-3 h-3 rounded-full flex-shrink-0 shadow-xs border border-white"
+                          style={{ backgroundColor: color }}
+                        />
+                        <span className="text-[#334155] truncate font-extrabold">{item.name}</span>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-2">
+                        <span className="text-[#0F172A] font-extrabold font-mono text-sm">{item.count}</span>
+                        <span className="text-[#64748B] text-[10px] ml-1 font-semibold">({pct}%)</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </GlassChartCard>
         </div>

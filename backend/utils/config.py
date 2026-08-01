@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     DEFAULT_MODEL_NAME: str = "NeuroDxNet"
     MODEL_WEIGHTS_DIR: str = "./ml/saved_models"
     IMAGE_SIZE: int = 224
-    CLASS_NAMES: List[str] = ["Non Demented", "Very Mild Demented", "Mild Demented", "Moderate Demented"]
+    CLASS_NAMES: List[str] = ["Mild Demented", "Moderate Demented", "Non Demented", "Very Mild Demented"]
 
     # Security & CORS
     CORS_ORIGINS: List[str] = [
