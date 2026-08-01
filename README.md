@@ -238,21 +238,6 @@ docker-compose up --build -d
 
 ---
 
-## 🔑 Default Login Credentials
-
-The `scripts/seed_db.py` command populates the system with initial demo accounts:
-
-| User Role | Email Address | Password | Permissions |
-| :--- | :--- | :--- | :--- |
-| **Clinician / User** | `doctor@alzheimers.ai` | `doctor123` | Upload MRI scans, view predictions & Grad-CAM heatmaps, download PDF reports. |
-| **Administrator** | `admin@alzheimers.ai` | `admin123` | Manage users, view system metrics, inspect model registry, review audit logs. |
-
----
-
-
-
----
-
 ## 🔌 REST API Reference
 
 Major backend API endpoints available at `http://localhost:8000`:
