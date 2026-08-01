@@ -31,8 +31,6 @@
   - [Prerequisites](#prerequisites)
   - [Option 1: Local Development (Recommended)](#option-1-local-development-recommended)
   - [Option 2: Docker Compose Setup](#option-2-docker-compose-setup)
-- [Default Login Credentials](#-default-login-credentials)
-- [Environment Configuration (`.env`)](#-environment-configuration-env)
 - [REST API Reference](#-rest-api-reference)
 - [Machine Learning Architecture & Models](#-machine-learning-architecture--models)
 - [Testing & Quality Assurance](#-testing--quality-assurance)
