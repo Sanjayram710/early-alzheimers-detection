@@ -204,16 +204,17 @@ export const DashboardPage = () => {
       </div>
 
       {/* 12-Column Grid for Clay Chart Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         
         {/* Class Distribution Bar Chart */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 flex flex-col">
           <GlassChartCard
             title="Disease Stage Class Distribution"
             subtitle="Frequency breakdown of Non-Demented, Very Mild, Mild, and Moderate stages"
             icon={BarChart2}
+            className="h-full flex flex-col justify-between"
           >
-            <div className="h-72 w-full pt-4">
+            <div className="flex-1 w-full min-h-[310px] pt-4 flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
@@ -251,13 +252,14 @@ export const DashboardPage = () => {
         </div>
 
         {/* Category Ratio Pie Chart */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 flex flex-col">
           <GlassChartCard
             title="Category Ratio Analysis"
             subtitle="Proportional breakdown across analyzed patients"
             icon={PieChartIcon}
+            className="h-full flex flex-col justify-between"
           >
-            <div className="space-y-4">
+            <div className="flex-1 flex flex-col justify-between space-y-4">
               <div className="h-52 w-full flex items-center justify-center pt-2">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>

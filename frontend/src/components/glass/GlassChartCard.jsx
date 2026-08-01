@@ -36,7 +36,7 @@ export const GlassChartCard = ({
         ${borderWidth} ${accentBorders[accent] || accentBorders.blue}
         shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35),0_8px_24px_rgba(59,130,246,0.08),0_2px_8px_rgba(59,130,246,0.05),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)]
         hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.50),0_12px_32px_rgba(59,130,246,0.16),0_4px_12px_rgba(59,130,246,0.10),inset_0_2px_5px_0_rgba(255,255,255,1),inset_0_-5px_10px_0_rgba(219,234,254,0.8)]
-        space-y-6
+        flex flex-col justify-between
         transition-all duration-250 ease-in-out
         ${className}
       `}
@@ -49,7 +49,7 @@ export const GlassChartCard = ({
         }}
       />
 
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 flex-shrink-0">
         <div className="flex items-center space-x-3">
           {Icon && (
             <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow-[0_6px_16px_rgba(59,130,246,0.18),inset_0_2px_3px_rgba(255,255,255,1)] border border-[#3B82F6]/40 flex items-center justify-center">
@@ -71,7 +71,7 @@ export const GlassChartCard = ({
         {action && <div>{action}</div>}
       </div>
 
-      <div className="relative z-10 w-full">
+      <div className="relative z-10 w-full flex-1 flex flex-col justify-between">
         {children}
       </div>
     </motion.div>
