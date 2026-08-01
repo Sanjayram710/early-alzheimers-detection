@@ -257,33 +257,62 @@ export const DashboardPage = () => {
             subtitle="Proportional breakdown across analyzed patients"
             icon={PieChartIcon}
           >
-            <div className="h-72 w-full flex items-center justify-center pt-2">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    paddingAngle={4}
-                    dataKey="count"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                      borderRadius: '16px',
-                      border: '1px solid #E2E8F0',
-                      color: '#0F172A',
-                      fontWeight: 'bold'
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="space-y-4">
+              <div className="h-52 w-full flex items-center justify-center pt-2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={chartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={80}
+                      paddingAngle={4}
+                      dataKey="count"
+                    >
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        borderRadius: '16px',
+                        border: '1px solid #E2E8F0',
+                        color: '#0F172A',
+                        fontWeight: 'bold'
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Category Legend with Color, Name, Value, and Percentage */}
+              <div className="grid grid-cols-2 gap-2.5 pt-3 border-t border-slate-100">
+                {chartData.map((item, index) => {
+                  const color = COLORS[index % COLORS.length];
+                  const total = chartData.reduce((acc, curr) => acc + curr.count, 0);
+                  const pct = total > 0 ? ((item.count / total) * 100).toFixed(1) : '0.0';
+                  return (
+                    <div
+                      key={`legend-${index}`}
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-bold shadow-2xs"
+                    >
+                      <div className="flex items-center space-x-2 truncate">
+                        <span
+                          className="w-3 h-3 rounded-full flex-shrink-0 shadow-xs border border-white"
+                          style={{ backgroundColor: color }}
+                        />
+                        <span className="text-[#334155] truncate font-extrabold">{item.name}</span>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-2">
+                        <span className="text-[#0F172A] font-extrabold font-mono text-sm">{item.count}</span>
+                        <span className="text-[#64748B] text-[10px] ml-1 font-semibold">({pct}%)</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </GlassChartCard>
         </div>
