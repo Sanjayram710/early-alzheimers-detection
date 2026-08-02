@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Brain, Menu, X, Bell, Moon, Sun } from 'lucide-react';
+import { Brain, Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const GlassNavbar = () => {
   const { user } = useAuth();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -74,29 +73,8 @@ export const GlassNavbar = () => {
           })}
         </nav>
 
-        {/* Right Section: Notification, Dark Mode Toggle & Profile */}
+        {/* Right Section: Profile */}
         <div className="relative z-10 hidden sm:flex items-center space-x-1.5 lg:space-x-2 flex-shrink-0">
-          
-          {/* Notification Icon */}
-          <button
-            type="button"
-            title="Notifications"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#F1F5F9]/90 border border-white flex items-center justify-center text-[#475569] hover:bg-white hover:text-[#3B82F6] transition-all duration-200 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)] hover:shadow-[0_0_12px_rgba(59,130,246,0.35)] relative cursor-pointer"
-          >
-            <Bell className="w-4 h-4 text-[#475569]" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#EF4444] animate-pulse" />
-          </button>
-
-          {/* Dark Mode Toggle */}
-          <button
-            type="button"
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            title="Toggle Theme"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#F1F5F9]/90 border border-white flex items-center justify-center text-[#475569] hover:bg-white hover:text-[#8B5CF6] transition-all duration-200 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)] hover:shadow-[0_0_12px_rgba(139,92,246,0.35)] cursor-pointer"
-          >
-            {isDarkMode ? <Sun className="w-4 h-4 text-[#F59E0B]" /> : <Moon className="w-4 h-4 text-[#475569]" />}
-          </button>
-
           {/* User Status Pill */}
           <div className="bg-[#F1F5F9]/90 border border-white rounded-full px-2.5 sm:px-3.5 py-1.5 flex items-center space-x-1.5 shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.9),0_2px_6px_rgba(0,0,0,0.04)]">
             <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E] animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
