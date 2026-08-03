@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from typing import Union, Tuple, Optional
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,8 @@ def _read_bytes_image(image_bytes: bytes, target_size: Optional[Tuple[int, int]]
             dicom_data = pydicom.dcmread(io.BytesIO(image_bytes))
             pixel_array = dicom_data.pixel_array.astype(np.float32)
             normalized = _normalize_pixel_array(pixel_array)
-            img = Image.fromarray(normalized).convert("RGB")
+            img = Image.fromarray(normalized)
+            img = ImageOps.exif_transpose(img).convert("RGB")
             if target_size is not None:
                 img = img.resize(target_size, Image.Resampling.BILINEAR)
             return np.array(img)
@@ -50,7 +51,8 @@ def _read_bytes_image(image_bytes: bytes, target_size: Optional[Tuple[int, int]]
         logger.debug(f"Pydicom bytes read skipped: {e}")
 
     # Fall back to standard PIL reading
-    img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    img = Image.open(io.BytesIO(image_bytes))
+    img = ImageOps.exif_transpose(img).convert("RGB")
     if target_size is not None:
         img = img.resize(target_size, Image.Resampling.BILINEAR)
     return np.array(img)
@@ -63,7 +65,8 @@ def _read_dicom(file_path: Path, target_size: Optional[Tuple[int, int]]) -> np.n
         ds = pydicom.dcmread(str(file_path))
         pixel_array = ds.pixel_array.astype(np.float32)
         normalized = _normalize_pixel_array(pixel_array)
-        img = Image.fromarray(normalized).convert("RGB")
+        img = Image.fromarray(normalized)
+        img = ImageOps.exif_transpose(img).convert("RGB")
         if target_size is not None:
             img = img.resize(target_size, Image.Resampling.BILINEAR)
         return np.array(img)
@@ -86,7 +89,8 @@ def _read_nifti(file_path: Path, target_size: Optional[Tuple[int, int]]) -> np.n
             slice_2d = data
 
         normalized = _normalize_pixel_array(slice_2d)
-        img = Image.fromarray(normalized).convert("RGB")
+        img = Image.fromarray(normalized)
+        img = ImageOps.exif_transpose(img).convert("RGB")
         if target_size is not None:
             img = img.resize(target_size, Image.Resampling.BILINEAR)
         return np.array(img)
@@ -98,7 +102,7 @@ def _read_nifti(file_path: Path, target_size: Optional[Tuple[int, int]]) -> np.n
 def _read_standard_image(file_path: Path, target_size: Optional[Tuple[int, int]]) -> np.ndarray:
     """Reads standard PNG, JPG, JPEG, BMP images via PIL."""
     with Image.open(file_path) as img:
-        img = img.convert("RGB")
+        img = ImageOps.exif_transpose(img).convert("RGB")
         if target_size is not None:
             img = img.resize(target_size, Image.Resampling.BILINEAR)
         return np.array(img)
