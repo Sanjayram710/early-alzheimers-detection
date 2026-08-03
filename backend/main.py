@@ -1,4 +1,10 @@
 import os
+import sys
+from pathlib import Path
+
+# Ensure workspace root is in Python path for module resolution
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware

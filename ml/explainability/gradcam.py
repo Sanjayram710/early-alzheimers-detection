@@ -18,19 +18,25 @@ class GradCAMGenerator:
 
     def __init__(self, model: tf.keras.Model, target_layer_name: Optional[str] = None):
         self.model = model
-        self.target_layer_name = target_layer_name or self._find_target_layer_name()
+        existing_layers = {l.name for l in self.model.layers}
+        if target_layer_name and target_layer_name in existing_layers:
+            self.target_layer_name = target_layer_name
+        else:
+            self.target_layer_name = self._find_target_layer_name()
 
     def _find_target_layer_name(self) -> str:
         """Finds the last 4D Conv2D or activation layer in the Keras model graph."""
         for layer in reversed(self.model.layers):
             if isinstance(layer, (tf.keras.layers.Conv2D, tf.keras.layers.DepthwiseConv2D)):
                 return layer.name
-            if len(layer.output_shape) == 4 and "conv" in layer.name.lower():
+            out_shape = getattr(layer, 'output_shape', None)
+            if out_shape and len(out_shape) == 4 and "conv" in layer.name.lower():
                 return layer.name
 
-        # Fallback to the layer before flatten
+        # Fallback to the layer with 4D output shape
         for layer in reversed(self.model.layers):
-            if len(layer.output_shape) == 4:
+            out_shape = getattr(layer, 'output_shape', None)
+            if out_shape and len(out_shape) == 4:
                 return layer.name
 
         raise ValueError("Could not automatically locate 4D target convolutional layer for Grad-CAM.")

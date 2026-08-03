@@ -32,16 +32,18 @@ class MRIPredictor:
 
     def __init__(
         self,
-        model_name: str = "custom_cnn",
+        model_name: str = "neurodxnet",
         weights_path: Optional[Union[str, Path]] = None,
         class_names: Optional[list] = None
     ):
         self.model_name = model_name
         self.class_names = class_names or DEFAULT_CLASSES
-        if weights_path:
+        if weights_path and Path(weights_path).exists():
             self.weights_path = Path(weights_path)
         else:
-            default_w = Path("./ml/saved_models") / f"{model_name}_best.keras"
+            default_w = Path("./ml/saved_models") / "neurodxnet_best.keras"
+            if not default_w.exists():
+                default_w = Path("./ml/saved_models") / f"{model_name}_best.keras"
             self.weights_path = default_w if default_w.exists() else None
         self.model_wrapper = None
         self.gradcam = None
