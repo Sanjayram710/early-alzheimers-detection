@@ -20,12 +20,16 @@ def get_predictor() -> MRIPredictor:
     model_name = settings.DEFAULT_MODEL_NAME.lower()
     weights_file = weights_dir / f"{model_name}_best.keras"
     if not weights_file.exists():
+        weights_file = weights_dir / "neurodxnet_best.keras"
+    if not weights_file.exists():
         weights_file = weights_dir / f"{settings.DEFAULT_MODEL_NAME}_best.keras"
 
     if _predictor_instance is None:
+        selected_weights = weights_file if weights_file.exists() else None
+        logger.info(f"Initializing singleton MRIPredictor using model '{model_name}' and weights '{selected_weights}'")
         _predictor_instance = MRIPredictor(
             model_name=model_name,
-            weights_path=weights_file if weights_file.exists() else None,
+            weights_path=selected_weights,
             class_names=settings.CLASS_NAMES
         )
     return _predictor_instance
