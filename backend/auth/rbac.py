@@ -1,5 +1,5 @@
-from typing import Optional
-from fastapi import Depends, Request
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -8,21 +8,14 @@ from backend.models.domain import User
 from backend.auth.security import decode_access_token
 from backend.utils.exceptions import CredentialsException, PermissionDeniedException
 
-
-def get_token_from_header(request: Request) -> Optional[str]:
-    """Extracts Bearer token from Authorization header without registering OpenAPI security schemes."""
-    auth_header = request.headers.get("Authorization")
-    if auth_header and auth_header.startswith("Bearer "):
-        return auth_header.split(" ")[1]
-    return None
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
 
 async def get_current_user(
-    request: Request,
+    token: str = Depends(oauth2_scheme),
     db: AsyncSession = Depends(get_db)
 ) -> User:
     """FastAPI Dependency resolving current authenticated User ORM model from JWT token or fallback default user."""
-    token = get_token_from_header(request)
     if token:
         try:
             token_data = decode_access_token(token)
