@@ -69,6 +69,7 @@ class ModelTrainer:
         validation_steps: Optional[int] = None,
         patience_early_stopping: int = 10,
         patience_reduce_lr: int = 5,
+        class_weight: Optional[Dict[int, float]] = None,
         resume: bool = False
     ) -> Tuple[tf.keras.callbacks.History, Dict[str, Any]]:
         """
@@ -152,6 +153,7 @@ class ModelTrainer:
             steps_per_epoch=steps_per_epoch,
             validation_steps=validation_steps,
             callbacks=cb_stack,
+            class_weight=class_weight,
             verbose=1
         )
 

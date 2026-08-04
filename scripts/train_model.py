@@ -32,31 +32,36 @@ CLASS_NAMES = ["Mild Demented", "Moderate Demented", "Non Demented", "Very Mild 
 LABEL_MAP = {name: idx for idx, name in enumerate(CLASS_NAMES)}
 
 
-def load_dataset_to_memory(df: pd.DataFrame, max_workers: int = 8) -> Tuple[np.ndarray, np.ndarray]:
-    """Pre-loads and preprocesses images via DIP pipeline into RAM for high-throughput training."""
-    logger.info(f"Pre-loading {len(df)} images with DIP pipeline into RAM memory...")
+def build_streaming_dataset(df: pd.DataFrame, batch_size: int = 32, is_training: bool = True) -> tf.data.Dataset:
+    """Creates a memory-efficient streaming tf.data.Dataset that loads and preprocesses images per batch."""
     paths = df["file_path"].tolist()
     labels = [LABEL_MAP[lbl] for lbl in df["canonical_label"].tolist()]
+    y_cat = tf.keras.utils.to_categorical(labels, num_classes=len(CLASS_NAMES))
 
-    def _load(p):
-        processed_rgb, _, _ = dip_pipeline.process(p)
-        return processed_rgb
+    def _py_func_loader(path_tensor, label_tensor):
+        path_str = path_tensor.numpy().decode("utf-8")
+        try:
+            processed_rgb, _, _ = dip_pipeline.process(path_str)
+        except Exception:
+            processed_rgb = np.zeros((224, 224, 3), dtype=np.float32)
+        return processed_rgb.astype(np.float32), label_tensor.numpy().astype(np.float32)
 
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        images = list(executor.map(_load, paths))
+    def _map_fn(path, label):
+        img, lbl = tf.py_function(
+            func=_py_func_loader,
+            inp=[path, label],
+            Tout=[tf.float32, tf.float32]
+        )
+        img.set_shape((224, 224, 3))
+        lbl.set_shape((len(CLASS_NAMES),))
+        return img, lbl
 
-    X = np.array(images, dtype=np.float32)
-    y = tf.keras.utils.to_categorical(labels, num_classes=len(CLASS_NAMES))
-    logger.info(f"Loaded feature matrix: shape {X.shape}, labels {y.shape}")
-    return X, y
-
-
-def build_tf_dataset(X: np.ndarray, y: np.ndarray, batch_size: int = 32, is_training: bool = True) -> tf.data.Dataset:
-    """Helper to convert NumPy arrays into a batched tf.data.Dataset."""
-    ds = tf.data.Dataset.from_tensor_slices((X, y))
+    ds = tf.data.Dataset.from_tensor_slices((paths, y_cat))
     if is_training:
-        ds = ds.shuffle(buffer_size=min(len(X), 2000), seed=42)
-    return ds.batch(batch_size).prefetch(tf.data.AUTOTUNE)
+        ds = ds.shuffle(buffer_size=min(len(paths), 2000), seed=42)
+    ds = ds.map(_map_fn, num_parallel_calls=tf.data.AUTOTUNE)
+    ds = ds.batch(batch_size).prefetch(tf.data.AUTOTUNE)
+    return ds
 
 
 def main():
@@ -81,11 +86,9 @@ def main():
     train_df = pd.read_csv(train_csv)
     val_df = pd.read_csv(val_csv)
 
-    X_train, y_train = load_dataset_to_memory(train_df)
-    X_val, y_val = load_dataset_to_memory(val_df)
-
-    train_ds = build_tf_dataset(X_train, y_train, batch_size=args.batch_size, is_training=True)
-    val_ds = build_tf_dataset(X_val, y_val, batch_size=args.batch_size, is_training=False)
+    logger.info(f"Building streaming datasets for {len(train_df)} train samples and {len(val_df)} val samples...")
+    train_ds = build_streaming_dataset(train_df, batch_size=args.batch_size, is_training=True)
+    val_ds = build_streaming_dataset(val_df, batch_size=args.batch_size, is_training=False)
 
     # Instantiate model from registry
     model_wrapper = ModelRegistry.create_model(
@@ -95,12 +98,19 @@ def main():
         learning_rate=args.learning_rate
     )
 
+    from sklearn.utils.class_weight import compute_class_weight
+    train_labels = [LABEL_MAP[lbl] for lbl in train_df["canonical_label"].tolist()]
+    class_weights = compute_class_weight("balanced", classes=np.unique(train_labels), y=train_labels)
+    class_weight_dict = {int(i): float(w) for i, w in enumerate(class_weights)}
+    logger.info(f"Computed class weights for balanced training: {class_weight_dict}")
+
     trainer = ModelTrainer(output_dir=Path(args.output_dir), model_wrapper=model_wrapper)
     history, metadata = trainer.train(
         train_dataset=train_ds,
         val_dataset=val_ds,
         epochs=args.epochs,
         batch_size=args.batch_size,
+        class_weight=class_weight_dict,
         resume=args.resume
     )
 

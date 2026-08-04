@@ -56,8 +56,8 @@ def load_test_dataset(manifest_path: Path, max_workers: int = 8) -> Tuple[np.nda
 
 def main():
     parser = argparse.ArgumentParser(description="Evaluate Trained Alzheimer's MRI Model")
-    parser.add_argument("--model_name", default="neurodxnet", help="Model architecture name")
-    parser.add_argument("--weights", default="./ml/saved_models/neurodxnet_best.keras", help="Path to trained weights .keras file")
+    parser.add_argument("--model_name", default="custom_cnn", help="Model architecture name")
+    parser.add_argument("--weights", default="./ml/saved_models/custom_cnn_best.keras", help="Path to trained weights .keras file")
     parser.add_argument("--test_csv", default="./data/processed/test.csv", help="Path to test.csv manifest")
     parser.add_argument("--output_dir", default="./ml/saved_models/evaluation_results", help="Directory to save evaluation reports and plots")
     args = parser.parse_args()
