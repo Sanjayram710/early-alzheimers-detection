@@ -16,9 +16,9 @@ export const HomePage = () => {
     >
       {/* Hero Outer Claymorphism Container */}
       <div className="relative rounded-[36px] border-2 border-[#3B82F6]/50 bg-white/94 backdrop-blur-[20px] -webkit-backdrop-blur-[20px] p-6 sm:p-12 shadow-[0_20px_40px_rgba(59,130,246,0.16),0_8px_16px_rgba(0,0,0,0.03),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-4px_8px_0_rgba(219,234,254,0.7)] overflow-hidden">
-        
+
         {/* Specular Top Sheen */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none rounded-[inherit] z-0"
           style={{
             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0) 100%)'
@@ -30,9 +30,9 @@ export const HomePage = () => {
 
         {/* Central Viewport Clay Portal Window with Blue Layout Line */}
         <div className="relative z-10 max-w-2xl mx-auto my-4 sm:my-8 bg-white backdrop-blur-[20px] border-2 border-[#3B82F6] rounded-[48px] p-8 sm:p-14 text-center flex flex-col items-center justify-center shadow-[0_16px_36px_rgba(59,130,246,0.20),inset_0_2px_4px_0_rgba(255,255,255,1),inset_0_-3px_6px_0_rgba(219,234,254,0.6)]">
-          
+
           {/* Specular Light Reflection */}
-          <div 
+          <div
             className="absolute inset-0 pointer-events-none rounded-[inherit] z-0"
             style={{
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0) 100%)'
@@ -66,7 +66,7 @@ export const HomePage = () => {
 
         {/* Floating Feature Clay Cards */}
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 sm:mt-12">
-          
+
           {/* Feature 1 */}
           <GlassCard padding="p-8">
             <div className="w-12 h-12 rounded-full bg-white p-1 shadow-[0_6px_16px_rgba(59,130,246,0.18),inset_0_2px_3px_rgba(255,255,255,1)] border border-white mb-5 flex items-center justify-center">

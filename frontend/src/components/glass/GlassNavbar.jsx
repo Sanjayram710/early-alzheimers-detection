@@ -26,9 +26,9 @@ export const GlassNavbar = () => {
     <header className="sticky top-4 z-50 max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
       {/* Inflated Claymorphism Capsule Outer Shell */}
       <div className="bg-white/94 backdrop-blur-[25px] -webkit-backdrop-blur-[25px] border-2 border-[#3B82F6]/65 hover:border-[#3B82F6] rounded-full px-3 sm:px-4 lg:px-6 py-2.5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.4),0_12px_32px_rgba(59,130,246,0.18),0_4px_12px_rgba(0,0,0,0.03),inset_0_2.5px_3px_0_rgba(255,255,255,1),inset_0_-3px_6px_0_rgba(219,234,254,0.7)] transition-all duration-250 ease-in-out flex items-center justify-between relative overflow-hidden">
-        
+
         {/* Top Glare Reflection */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none rounded-full z-0 opacity-70"
           style={{
             background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0) 100%)'
@@ -109,11 +109,10 @@ export const GlassNavbar = () => {
               key={link.path}
               to={link.path}
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-4 py-2.5 rounded-full text-sm font-bold transition-all duration-200 ${
-                isActive(link.path)
+              className={`block px-4 py-2.5 rounded-full text-sm font-bold transition-all duration-200 ${isActive(link.path)
                   ? 'bg-gradient-to-r from-[#EFF6FF] to-[#DBEAFE] text-[#2563EB] shadow-[0_0_12px_rgba(59,130,246,0.35)] border border-[#3B82F6] font-extrabold'
                   : 'text-[#475569] font-bold hover:bg-[#F1F5F9] hover:text-[#2563EB]'
-              }`}
+                }`}
             >
               {link.name}
             </Link>

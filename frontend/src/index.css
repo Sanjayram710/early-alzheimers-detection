@@ -163,13 +163,33 @@
 }
 
 /* Section Accent Borders (Maintains overall blue theme with meaningful accents) */
-.accent-prediction { border-color: rgba(34, 197, 94, 0.65) !important; }
-.accent-mip { border-color: rgba(59, 130, 246, 0.65) !important; }
-.accent-neurodxnet { border-color: rgba(139, 92, 246, 0.65) !important; }
-.accent-gradcam { border-color: rgba(6, 182, 212, 0.65) !important; }
-.accent-clinical { border-color: rgba(16, 185, 129, 0.65) !important; }
-.accent-warning { border-color: rgba(245, 158, 11, 0.65) !important; }
-.accent-error { border-color: rgba(239, 68, 68, 0.65) !important; }
+.accent-prediction {
+  border-color: rgba(34, 197, 94, 0.65) !important;
+}
+
+.accent-mip {
+  border-color: rgba(59, 130, 246, 0.65) !important;
+}
+
+.accent-neurodxnet {
+  border-color: rgba(139, 92, 246, 0.65) !important;
+}
+
+.accent-gradcam {
+  border-color: rgba(6, 182, 212, 0.65) !important;
+}
+
+.accent-clinical {
+  border-color: rgba(16, 185, 129, 0.65) !important;
+}
+
+.accent-warning {
+  border-color: rgba(245, 158, 11, 0.65) !important;
+}
+
+.accent-error {
+  border-color: rgba(239, 68, 68, 0.65) !important;
+}
 
 /* Status Badges */
 .glass-badge {
