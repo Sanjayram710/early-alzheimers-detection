@@ -85,34 +85,34 @@ Classifies structural MRI scans into 4 clinical Alzheimer's disease stages:
 
 ```mermaid
 graph TD
-    subgraph DataPipeline ["📦 1. Data Pipeline & Processing"]
-        HFData["Hugging Face Parquet Hub\n(6,400 Scans)"]
-        LocalData["Local OriginalDataset\n(6,400 Scans)"]
-        Manifests[("Stratified Manifests\n(12,800 Total Samples)")]
-        DIP["DIP Pipeline\n(Denoise, CLAHE, Skull Strip, Normalize)"]
+    subgraph DataPipeline ["1. Data Pipeline and Processing"]
+        HFData["Hugging Face Parquet Hub - 6,400 Scans"]
+        LocalData["Local OriginalDataset - 6,400 Scans"]
+        Manifests[("Stratified Manifests - 12,800 Samples")]
+        DIP["DIP Pipeline - Denoise, CLAHE, Skull Strip, Normalize"]
         
         HFData --> Manifests
         LocalData --> Manifests
         Manifests --> DIP
     end
 
-    subgraph Frontend ["💻 2. React 18 Glassmorphism UI (Port 5173)"]
-        UI["Upload Page & Scan Viewer"]
-        Analytics["Clinical Analytics & History Dashboard"]
+    subgraph Frontend ["2. React 18 Glassmorphism UI Port 5173"]
+        UI["Upload Page and Scan Viewer"]
+        Analytics["Clinical Analytics and History Dashboard"]
     end
 
-    subgraph Backend ["⚡ 3. FastAPI REST Backend (Port 8000)"]
-        APIEndpoints["FastAPI REST Controllers\n(/api/v1/predict, /upload)"]
-        Auth["OAuth2 / JWT Authentication & RBAC"]
-        DB[("SQLite / PostgreSQL\n(SQLAlchemy Async ORM)")]
+    subgraph Backend ["3. FastAPI REST Backend Port 8000"]
+        APIEndpoints["FastAPI REST Controllers"]
+        Auth["OAuth2 JWT Authentication and RBAC"]
+        DB[("SQLite / PostgreSQL - SQLAlchemy Async ORM")]
         
         APIEndpoints --> Auth
         APIEndpoints --> DB
     end
 
-    subgraph MLEngine ["🧠 4. Deep Learning Engine"]
-        BatchLoader["tf.data Streaming Generator\n(Real-time Batch Loading)"]
-        ModelReg["Model Registry\n(ResNet50 Transfer, Custom CNN, ViT)"]
+    subgraph MLEngine ["4. Deep Learning Engine"]
+        BatchLoader["tf.data Streaming Batch Loader"]
+        ModelReg["Model Registry - ResNet50, Custom CNN, ViT"]
         GradCAM["Grad-CAM Explainability Module"]
         
         DIP --> BatchLoader
@@ -120,18 +120,18 @@ graph TD
         ModelReg --> GradCAM
     end
 
-    subgraph PDFService ["📄 5. Clinical Reports"]
+    subgraph PDFService ["5. Clinical PDF Reports"]
         PDFEngine["ReportLab PDF Generator"]
     end
 
-    UI -->|HTTP Upload (DICOM/NIfTI/JPG)| APIEndpoints
+    UI -->|"HTTP MRI Upload"| APIEndpoints
     APIEndpoints --> DIP
     APIEndpoints --> ModelReg
     ModelReg --> GradCAM
     GradCAM --> APIEndpoints
     APIEndpoints --> PDFEngine
-    PDFEngine -->|Download PDF Report| UI
-    APIEndpoints -->|Grad-CAM Heatmap & Probabilities| UI
+    PDFEngine -->|"Download PDF Report"| UI
+    APIEndpoints -->|"Heatmap and Probabilities"| UI
     UI --> Analytics
 ```
 
