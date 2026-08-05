@@ -68,7 +68,7 @@ export const GlassButton = ({
       {...props}
     >
       {/* Glare Reflection */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none rounded-[inherit] z-0 opacity-50"
         style={{
           background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%)'

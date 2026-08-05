@@ -44,7 +44,7 @@ export const GlassCard = ({
       {...props}
     >
       {/* Inflated Clay Glare Overlay */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none rounded-[inherit] z-0 opacity-60"
         style={{
           background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0) 100%)'
