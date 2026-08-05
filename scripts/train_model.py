@@ -100,9 +100,11 @@ def main():
 
     from sklearn.utils.class_weight import compute_class_weight
     train_labels = [LABEL_MAP[lbl] for lbl in train_df["canonical_label"].tolist()]
-    class_weights = compute_class_weight("balanced", classes=np.unique(train_labels), y=train_labels)
-    class_weight_dict = {int(i): float(w) for i, w in enumerate(class_weights)}
-    logger.info(f"Computed class weights for balanced training: {class_weight_dict}")
+    raw_weights = compute_class_weight("balanced", classes=np.unique(train_labels), y=train_labels)
+    # Apply square root scaling and clipping to prevent disproportionately heavy loss penalties
+    smoothed_weights = np.clip(np.sqrt(raw_weights), 0.8, 3.0)
+    class_weight_dict = {int(i): float(w) for i, w in enumerate(smoothed_weights)}
+    logger.info(f"Computed smoothed class weights for balanced training: {class_weight_dict}")
 
     trainer = ModelTrainer(output_dir=Path(args.output_dir), model_wrapper=model_wrapper)
     history, metadata = trainer.train(

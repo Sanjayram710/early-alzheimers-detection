@@ -54,7 +54,13 @@ class TransferLearningModel(BaseAlzheimerModel):
         )
 
         if self.freeze_backbone:
-            base_backbone.trainable = False
+            # Freeze early feature layers, keep top blocks trainable for fine-grained MRI feature extraction
+            for layer in base_backbone.layers[:-30]:
+                layer.trainable = False
+            for layer in base_backbone.layers[-30:]:
+                layer.trainable = True
+        else:
+            base_backbone.trainable = True
 
         x = base_backbone.output
         x = layers.GlobalAveragePooling2D(name="global_avg_pool")(x)
