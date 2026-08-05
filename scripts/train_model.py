@@ -28,7 +28,7 @@ from backend.preprocessing.pipeline import dip_pipeline
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-CLASS_NAMES = ["Mild Demented", "Moderate Demented", "Non Demented", "Very Mild Demented"]
+CLASS_NAMES = ["Non Demented", "Very Mild Demented", "Mild Demented", "Moderate Demented"]
 LABEL_MAP = {name: idx for idx, name in enumerate(CLASS_NAMES)}
 
 
