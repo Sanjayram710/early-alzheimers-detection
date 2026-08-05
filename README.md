@@ -85,21 +85,54 @@ Classifies structural MRI scans into 4 clinical Alzheimer's disease stages:
 
 ```mermaid
 graph TD
-    Client["React 18 Glassmorphism UI\n(Port 5173)"]
-    API["FastAPI REST Backend\n(Port 8000)"]
-    Auth["JWT Authentication & RBAC"]
-    DB[("SQLite / PostgreSQL\n(SQLAlchemy Async)")]
-    MLEngine["ML Inference Engine\n(TensorFlow / Keras)"]
-    GradCAM["Grad-CAM Explainability"]
-    PDFEngine["ReportLab PDF Engine"]
+    subgraph DataPipeline ["1. Data Pipeline and Processing"]
+        HFData["Hugging Face Parquet Hub - 6,400 Scans"]
+        LocalData["Local OriginalDataset - 6,400 Scans"]
+        Manifests[("Stratified Manifests - 12,800 Samples")]
+        DIP["DIP Pipeline - Denoise, CLAHE, Skull Strip, Normalize"]
+        
+        HFData --> Manifests
+        LocalData --> Manifests
+        Manifests --> DIP
+    end
 
-    Client -->|HTTP Requests / File Uploads| API
-    API --> Auth
-    API --> DB
-    API --> MLEngine
-    MLEngine --> GradCAM
-    API --> PDFEngine
-    PDFEngine -->|Download PDF Report| Client
+    subgraph Frontend ["2. React 18 Glassmorphism UI Port 5173"]
+        UI["Upload Page and Scan Viewer"]
+        Analytics["Clinical Analytics and History Dashboard"]
+    end
+
+    subgraph Backend ["3. FastAPI REST Backend Port 8000"]
+        APIEndpoints["FastAPI REST Controllers"]
+        Auth["OAuth2 JWT Authentication and RBAC"]
+        DB[("SQLite / PostgreSQL - SQLAlchemy Async ORM")]
+        
+        APIEndpoints --> Auth
+        APIEndpoints --> DB
+    end
+
+    subgraph MLEngine ["4. Deep Learning Engine"]
+        BatchLoader["tf.data Streaming Batch Loader"]
+        ModelReg["Model Registry - ResNet50, Custom CNN, ViT"]
+        GradCAM["Grad-CAM Explainability Module"]
+        
+        DIP --> BatchLoader
+        BatchLoader --> ModelReg
+        ModelReg --> GradCAM
+    end
+
+    subgraph PDFService ["5. Clinical PDF Reports"]
+        PDFEngine["ReportLab PDF Generator"]
+    end
+
+    UI -->|"HTTP MRI Upload"| APIEndpoints
+    APIEndpoints --> DIP
+    APIEndpoints --> ModelReg
+    ModelReg --> GradCAM
+    GradCAM --> APIEndpoints
+    APIEndpoints --> PDFEngine
+    PDFEngine -->|"Download PDF Report"| UI
+    APIEndpoints -->|"Heatmap and Probabilities"| UI
+    UI --> Analytics
 ```
 
 ---
