@@ -1,6 +1,6 @@
 {
-  "MildDemented": 0,
-  "ModerateDemented": 1,
-  "NonDemented": 2,
-  "VeryMildDemented": 3
+  "NonDemented": 0,
+  "VeryMildDemented": 1,
+  "MildDemented": 2,
+  "ModerateDemented": 3
 }

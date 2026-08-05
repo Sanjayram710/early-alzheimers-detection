@@ -20,7 +20,7 @@ MEDICAL_DISCLAIMER: str = (
     "medical specialist for clinical diagnosis."
 )
 
-DEFAULT_CLASSES = ["Mild Demented", "Moderate Demented", "Non Demented", "Very Mild Demented"]
+DEFAULT_CLASSES = ["Non Demented", "Very Mild Demented", "Mild Demented", "Moderate Demented"]
 
 
 class MRIPredictor:
