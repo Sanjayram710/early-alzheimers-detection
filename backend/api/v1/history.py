@@ -42,6 +42,7 @@ async def get_prediction_detail(
     if current_user.role.lower() != "admin" and pred.user_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied")
 
+    pred.populate_urls()
     pred.medical_disclaimer = (
         "DISCLAIMER: Research and clinical decision-support only. Not a medical diagnostic device."
     )

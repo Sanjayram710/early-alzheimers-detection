@@ -400,15 +400,15 @@ export const PredictionPage = () => {
 
             {visualTab === 'mip' ? (
               <EnhancedMIPViewer
-                originalUrl={prediction.original_image_url || prediction.original_base64 || prediction.original_image_path}
-                processedUrl={processed_base64 || prediction.processed_image_url}
+                originalUrl={prediction.original_image_url || prediction.original_image_path || prediction.original_base64}
+                processedUrl={prediction.processed_image_url || prediction.processed_image_path || prediction.processed_base64}
                 metadata={dip}
               />
             ) : (
               <GradCamViewer
-                originalUrl={prediction.original_image_url || prediction.original_base64 || prediction.original_image_path}
-                heatmapUrl={heatmap_base64 || prediction.heatmap_url || prediction.heatmap_path}
-                overlayUrl={overlay_base64 || prediction.overlay_url || prediction.overlay_path}
+                originalUrl={prediction.original_image_url || prediction.original_image_path || prediction.original_base64}
+                heatmapUrl={prediction.heatmap_url || prediction.heatmap_path || prediction.heatmap_base64}
+                overlayUrl={prediction.overlay_url || prediction.overlay_path || prediction.overlay_base64}
               />
             )}
           </GlassCard>

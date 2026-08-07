@@ -100,9 +100,7 @@ class InferenceService:
         prediction_record.processed_base64 = res.get("processed_base64")
         prediction_record.heatmap_base64 = res.get("heatmap_base64")
         prediction_record.overlay_base64 = res.get("overlay_base64")
-        prediction_record.original_image_url = f"/uploads/{Path(orig_path).name}"
-        if processed_path_str:
-            prediction_record.processed_image_url = f"/uploads/{Path(processed_path_str).name}"
+        prediction_record.populate_urls()
         prediction_record.preprocessing_metadata = res.get("preprocessing_metadata")
         prediction_record.medical_disclaimer = res["medical_disclaimer"]
 

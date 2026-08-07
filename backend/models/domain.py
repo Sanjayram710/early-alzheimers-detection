@@ -55,6 +55,18 @@ class Prediction(Base):
     report = relationship("Report", back_populates="prediction", uselist=False, cascade="all, delete-orphan")
     feedback = relationship("Feedback", back_populates="prediction", uselist=False, cascade="all, delete-orphan")
 
+    def populate_urls(self):
+        """Populates web accessible static upload URLs for API serialization."""
+        from pathlib import Path
+        if self.original_image_path:
+            self.original_image_url = f"/uploads/{Path(self.original_image_path).name}"
+        if self.processed_image_path:
+            self.processed_image_url = f"/uploads/{Path(self.processed_image_path).name}"
+        if self.heatmap_path:
+            self.heatmap_url = f"/uploads/{Path(self.heatmap_path).name}"
+        if self.overlay_path:
+            self.overlay_url = f"/uploads/{Path(self.overlay_path).name}"
+
 
 class Report(Base):
     __tablename__ = "reports"
