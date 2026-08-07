@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw, Maximize2, Minimize2, Sliders, Eye, Move, Info, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { formatImageUrl } from '../../utils/imageUtils';
 
 export const EnhancedMIPViewer = ({
   originalUrl,
@@ -14,6 +15,9 @@ export const EnhancedMIPViewer = ({
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef(null);
+
+  const formattedOriginal = formatImageUrl(originalUrl);
+  const formattedProcessed = formatImageUrl(processedUrl);
 
   const resolutionStr = metadata?.resolution
     ? `${metadata.resolution[0]} × ${metadata.resolution[1]}`
@@ -57,7 +61,7 @@ export const EnhancedMIPViewer = ({
     setIsFullscreen(!isFullscreen);
   };
 
-  const currentImgUrl = activeTab === 'enhanced' ? (processedUrl || originalUrl) : originalUrl;
+  const currentImgUrl = activeTab === 'enhanced' ? (formattedProcessed || formattedOriginal) : formattedOriginal;
 
   return (
     <div

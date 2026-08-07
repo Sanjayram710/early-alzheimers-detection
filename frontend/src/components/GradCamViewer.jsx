@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
 import { Layers, Sliders, ImageOff } from 'lucide-react';
 import { GlassCard } from './glass/GlassCard';
-
-const formatImageUrl = (img) => {
-  if (!img) return null;
-  if (typeof img !== 'string') return null;
-  const trimmed = img.trim();
-  if (trimmed.startsWith('data:') || trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/')) {
-    return trimmed;
-  }
-  if (trimmed.startsWith('uploads/')) {
-    return `/${trimmed}`;
-  }
-  // Base64 raw string fallback
-  return `data:image/png;base64,${trimmed}`;
-};
+import { formatImageUrl } from '../utils/imageUtils';
 
 export const GradCamViewer = ({ originalUrl, heatmapUrl, overlayUrl }) => {
   const [opacity, setOpacity] = useState(65);
